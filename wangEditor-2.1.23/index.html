@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="dist/css/wangEditor.css">
+    <script type="text/javascript" src="dist/js/lib/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="dist/js/wangEditor.js"></script>
+</head>
+
+<body>
+    <div id="div1" style="height:400px;max-height:500px;">
+        <p>请输入内容...</p>
+    </div>
+
+    <div class="btn-box">
+		<button id="J_btn-get-html">获取内容(html)</button>
+		<button id="J_btn-get-txt">获取文本(txt)</button>
+    </div>
+	<div style="height:1000px;"></div>
+    <script type="text/javascript">
+    var editor = new wangEditor('div1');
+   
+    editor.create();
+
+    
+
+    editor.onchange = function () {
+        // 编辑区域内容变化时，实时打印出当前内容
+        console.log(this.$txt.html());
+    };
+
+
+    $(function(){
+    	$("#J_btn-get-html").on("click",function(){
+    		var html = editor.$txt.html();
+    		console.dir(html);
+    	});
+
+    	$("#J_btn-get-txt").on("click",function(){
+    		var text = editor.$txt.text();
+    		console.dir(text);
+    	})
+    })
+	</script>
+</body>
+
+</html>
