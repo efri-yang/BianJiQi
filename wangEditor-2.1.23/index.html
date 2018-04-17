@@ -10,40 +10,36 @@
 </head>
 
 <body>
-    <div id="div1" style="height:400px;max-height:500px;">
-        <p>请输入内容...</p>
-    </div>
+   <!--  -->
+   <textarea id="J_xy-edit-textarea" style="height:400px;max-height:500px;">
+        
+    </textarea>
 
-    <div class="btn-box">
-		<button id="J_btn-get-html">获取内容(html)</button>
-		<button id="J_btn-get-txt">获取文本(txt)</button>
-    </div>
-	<div style="height:1000px;"></div>
+
     <script type="text/javascript">
-    var editor = new wangEditor('div1');
-   
-    editor.create();
 
-    
+        var editor = new wangEditor('J_xy-edit-textarea');
 
-    editor.onchange = function () {
-        // 编辑区域内容变化时，实时打印出当前内容
-        console.log(this.$txt.html());
-    };
+        //顶部头设置实现
+        
+        editor.config.menus = [
+                'source',
+                'location',
+                '|',
+                'bold',
+                'underline',
+                'italic',
+                'strikethrough',
+                'eraser',
+                'forecolor',
+                'bgcolor',
+                'fullscreen',
+            ];
+        
 
+        editor.create();
+    </script>
 
-    $(function(){
-    	$("#J_btn-get-html").on("click",function(){
-    		var html = editor.$txt.html();
-    		console.dir(html);
-    	});
-
-    	$("#J_btn-get-txt").on("click",function(){
-    		var text = editor.$txt.text();
-    		console.dir(text);
-    	})
-    })
-	</script>
 </body>
 
 </html>

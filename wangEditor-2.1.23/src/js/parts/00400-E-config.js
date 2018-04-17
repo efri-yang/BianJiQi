@@ -55,7 +55,9 @@ _e(function (E, $) {
         '|',
         'undo',
         'redo',
-        'fullscreen'
+        'fullscreen',
+
+        'fullscreen01'
     ];
 
     // 颜色配置

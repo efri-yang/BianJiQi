@@ -3257,7 +3257,9 @@ _e(function (E, $) {
         '|',
         'undo',
         'redo',
-        'fullscreen'
+        'fullscreen',
+
+        'fullscreen01'
     ];
 
     // 颜色配置
@@ -3537,6 +3539,10 @@ _e(function (E, $) {
         },
         fullscreen: {
             normal: '<a href="#" tabindex="-1"><i class="wangeditor-menu-img-enlarge2"></i></a>',
+            selected: '<a href="#" tabindex="-1" class="selected"><i class="wangeditor-menu-img-shrink2"></i></a>'
+        },
+        fullscreen01:{
+             normal: '<a href="#" tabindex="-1"><i class="wangeditor-menu-img-enlarge2"></i></a>',
             selected: '<a href="#" tabindex="-1" class="selected"><i class="wangeditor-menu-img-shrink2"></i></a>'
         }
      };
