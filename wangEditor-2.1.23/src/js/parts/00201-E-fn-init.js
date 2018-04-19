@@ -1,4 +1,4 @@
-// editor 绑定事件
+// editor 绑定事件  _e 是拓展函数 
 _e(function (E, $) {
 
     E.fn.init = function () {
