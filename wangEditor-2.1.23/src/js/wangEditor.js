@@ -586,7 +586,7 @@ _e(function (E, $) {
     E.fn.command = function (e, commandName, commandValue, callback) {
         var editor = this;
         var hooks;
-        
+       
         function commandFn() {
             if (!commandName) {
                 return;
@@ -611,7 +611,9 @@ _e(function (E, $) {
         // 取得查询elem的查询条件和验证函数
         var selector;
         var check;
+         alert("cccccc");
         if (typeof elemOpt === 'string') {
+
             selector = elemOpt;
         } else {
             selector = elemOpt.selector;
@@ -1454,15 +1456,17 @@ _e(function (E, $) {
 // dropList 构造函数
 _e(function (E, $) {
 
-    // 定义构造函数
+    // 定义构造函数 下拉 比如字体  标题  字号是有下拉框的
+    // menu 是一个对象
     var DropList = function (editor, menu, opt) {
         this.editor = editor;
         this.menu = menu;
-
+        
         // list 的数据源，格式 {'commandValue': 'title', ...}
         this.data = opt.data;
         // 要为每个item自定义的模板
         this.tpl = opt.tpl;
+
         // 为了执行 editor.commandForElem 而传入的elem查询方式
         this.selectorForELemCommand = opt.selectorForELemCommand;
 
@@ -1535,6 +1539,8 @@ _e(function (E, $) {
             if (beforeEvent && typeof beforeEvent === 'function') {
                 beforeEvent.call(e);
             }
+
+            alert(selectorForELemCommand);
 
             // 执行命令
             var commandValue = $(e.currentTarget).attr('commandValue');
@@ -4468,6 +4474,7 @@ _e(function (E, $) {
         menu.updateSelectedEvent = function () {
             var rangeElem = editor.getRangeElem();
             rangeElem = editor.getSelfOrParentByName(rangeElem, 'font[size]');
+
             if (rangeElem) {
                 return true;
             }

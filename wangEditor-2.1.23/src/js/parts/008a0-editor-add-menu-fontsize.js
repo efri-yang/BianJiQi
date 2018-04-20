@@ -39,6 +39,7 @@ _e(function (E, $) {
         menu.updateSelectedEvent = function () {
             var rangeElem = editor.getRangeElem();
             rangeElem = editor.getSelfOrParentByName(rangeElem, 'font[size]');
+
             if (rangeElem) {
                 return true;
             }
