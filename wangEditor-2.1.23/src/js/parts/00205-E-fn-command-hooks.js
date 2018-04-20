@@ -9,6 +9,7 @@ _e(function (E, $) {
         commandHooks.insertHtml = function (html) {
             var $elem = $(html);
             var rangeElem = editor.getRangeElem();
+
             var targetElem;
             
             targetElem = editor.getLegalTags(rangeElem);

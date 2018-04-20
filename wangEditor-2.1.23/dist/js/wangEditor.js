@@ -205,8 +205,8 @@ _e(function (E, $) {
         if (typeof menuIds === 'string') {
             menuIds = [menuIds];
         }
-
         $.each(this.menus, function (k, menu) {
+
             if (menuIds.indexOf(k) >= 0) {
                 return;
             }
@@ -556,6 +556,7 @@ _e(function (E, $) {
         commandHooks.insertHtml = function (html) {
             var $elem = $(html);
             var rangeElem = editor.getRangeElem();
+
             var targetElem;
             
             targetElem = editor.getLegalTags(rangeElem);

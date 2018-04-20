@@ -70,8 +70,8 @@ _e(function (E, $) {
         if (typeof menuIds === 'string') {
             menuIds = [menuIds];
         }
-
         $.each(this.menus, function (k, menu) {
+
             if (menuIds.indexOf(k) >= 0) {
                 return;
             }

@@ -12,9 +12,12 @@
 <body>
    <!--  -->
    <textarea id="J_xy-edit-textarea" style="height:400px;max-height:500px;">
-        
-    </textarea>
-
+        <p>要初始化的html内容...</p>
+   </textarea>
+    <button  id="btn-get-txt">获取文本(不包含html)</button>
+    <button  id="btn-get-html">获取内容(html和txt)</button>
+    <button  id="btn-get-select">获取选中的内容</button>
+    <button  id="btn-clear">清空内容</button>
 
     <script type="text/javascript">
 
@@ -22,23 +25,46 @@
 
         //顶部头设置实现
         
-        editor.config.menus = [
-                'source',
-                'location',
-                '|',
-                'bold',
-                'underline',
-                'italic',
-                'strikethrough',
-                'eraser',
-                'forecolor',
-                'bgcolor',
-                'fullscreen',
-                'fullscreen1'
-            ];
-        
-
+        // editor.config.menus = [
+        //         'source',
+        //         'location',
+        //         '|',
+        //         'bold',
+        //         'underline',
+        //         'italic',
+        //         'strikethrough',
+        //         'eraser',
+        //         'forecolor',
+        //         'bgcolor',
+        //         'fullscreen',
+        //         'fullscreen1'
+        //     ];
         editor.create();
+
+        console.dir(editor);
+
+
+        $("#btn-get-txt").on("click",function(){
+            alert(editor.$txt.text());
+
+        });
+
+        $("#btn-get-html").on("click",function(){
+            alert(editor.$txt.html());
+        });
+
+        $("#btn-clear").on("click",function(){
+            editor.clear();
+        });
+
+        $("#btn-get-select").on("click",function(){
+            alert(editor.getRangeText());
+
+            console.dir(editor.currentRange());
+        });
+
+        $("#btn-")
+
     </script>
 
 </body>
