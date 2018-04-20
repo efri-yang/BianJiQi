@@ -16,7 +16,7 @@ _e(function (E, $) {
     E.config.jsFilter = true;
 
     // 编辑器允许的标签
-    E.config.legalTags = 'p,h1,h2,h3,h4,h5,h6,blockquote,table,ul,ol,pre';
+    E.config.legalTags = 'p,h1,h2,h3,h4,h5,h6,blockquote,table,ul,ol,pre,li';
 
     // 语言包
     E.config.lang = E.langs['zh-cn'];

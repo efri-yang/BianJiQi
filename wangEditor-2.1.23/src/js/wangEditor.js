@@ -67,6 +67,8 @@
             return;   
         }
         this.valueNodeName = nodeName.toLowerCase();
+
+        console.dir(this.valueNodeName);
         this.$valueContainer = $elem;
 
         // 记录 elem 的 prev 和 parent（最后渲染 editor 要用到）
@@ -111,7 +113,7 @@
 _e(function (E, $) {
 
     E.fn.init = function () {
-
+        
         // 初始化 editor 默认配置
         this.initDefaultConfig();
 
@@ -576,6 +578,11 @@ _e(function (E, $) {
 _e(function (E, $) {
 
     // 基本命令
+    /**
+     * [command description]
+     * editor.command(e, 'Bold'); commandName 就是菜单配置中对应的value值
+     * editor.command(e, 'insertHtml', '<img style="max-width:100%;" src="' + src + '"/>', callback);
+     */
     E.fn.command = function (e, commandName, commandValue, callback) {
         var editor = this;
         var hooks;
@@ -2224,6 +2231,7 @@ _e(function (E, $) {
         var editor = self.editor;
         var $txt = self.$txt;
         var $p;
+       
 
         $txt.on('keydown', function (e) {
             if (e.keyCode !== 8) {
@@ -2276,8 +2284,10 @@ _e(function (E, $) {
                 return;
             }
             // 查找合法标签
-            var rangeElem = editor.getRangeElem();
+            var rangeElem = editor.getRangeElem();//换行的时候(enter)当前内容所属的编辑容器
             var targetElem = editor.getLegalTags(rangeElem);
+
+           
             var $targetElem;
             var $pElem;
 
@@ -2883,9 +2893,10 @@ _e(function (E, $) {
 
     // 最后插入试图插入 <p><br><p>
     Txt.fn.insertEmptyP = function () {
-        var $txt = this.$txt;
+        var $txt = this.$txt;//div.wangEditor-txt
         var $children = $txt.children();
 
+        
         if ($children.length === 0) {
             $txt.append($('<p><br></p>'));
             return;
@@ -3219,7 +3230,7 @@ _e(function (E, $) {
     E.config.jsFilter = true;
 
     // 编辑器允许的标签
-    E.config.legalTags = 'p,h1,h2,h3,h4,h5,h6,blockquote,table,ul,ol,pre';
+    E.config.legalTags = 'p,h1,h2,h3,h4,h5,h6,blockquote,table,ul,ol,pre,li';
 
     // 语言包
     E.config.lang = E.langs['zh-cn'];
@@ -3592,13 +3603,16 @@ _e(function (E, $) {
 
     // 存储创建菜单的函数
     E.createMenuFns = [];
+    //创建的Menu 被放到一个数组当中
     E.createMenu = function (fn) {
         E.createMenuFns.push(fn);
     };
 
-    // 创建所有菜单
+    // 创建所有菜单   
+    
     E.fn.addMenus = function () {
         var editor = this;
+        // 获取所有配置的menus
         var menuIds = editor.config.menus;
 
         // 检验 menuId 是否在配置中存在
@@ -3638,7 +3652,10 @@ _e(function (E, $) {
 
         // 定义选中状态下的click事件
         menu.clickEventSelected = function (e) {
+            console.dir(e);
+            // 选区内容是否为空？
             var isRangeEmpty = editor.isRangeEmpty();
+            //如果选区的内容不为空
             if (!isRangeEmpty) {
                 // 如果选区有内容，则执行基础命令
                 editor.command(e, 'Bold');

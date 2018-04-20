@@ -192,9 +192,10 @@ _e(function (E, $) {
 
     // 最后插入试图插入 <p><br><p>
     Txt.fn.insertEmptyP = function () {
-        var $txt = this.$txt;
+        var $txt = this.$txt;//div.wangEditor-txt
         var $children = $txt.children();
 
+        
         if ($children.length === 0) {
             $txt.append($('<p><br></p>'));
             return;

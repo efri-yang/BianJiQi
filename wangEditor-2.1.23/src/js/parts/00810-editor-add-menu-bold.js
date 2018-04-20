@@ -20,7 +20,10 @@ _e(function (E, $) {
 
         // 定义选中状态下的click事件
         menu.clickEventSelected = function (e) {
+            console.dir(e);
+            // 选区内容是否为空？
             var isRangeEmpty = editor.isRangeEmpty();
+            //如果选区的内容不为空
             if (!isRangeEmpty) {
                 // 如果选区有内容，则执行基础命令
                 editor.command(e, 'Bold');

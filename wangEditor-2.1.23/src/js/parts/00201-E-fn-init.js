@@ -2,7 +2,7 @@
 _e(function (E, $) {
 
     E.fn.init = function () {
-
+        
         // 初始化 editor 默认配置
         this.initDefaultConfig();
 

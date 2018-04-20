@@ -2,6 +2,11 @@
 _e(function (E, $) {
 
     // 基本命令
+    /**
+     * [command description]
+     * editor.command(e, 'Bold'); commandName 就是菜单配置中对应的value值
+     * editor.command(e, 'insertHtml', '<img style="max-width:100%;" src="' + src + '"/>', callback);
+     */
     E.fn.command = function (e, commandName, commandValue, callback) {
         var editor = this;
         var hooks;

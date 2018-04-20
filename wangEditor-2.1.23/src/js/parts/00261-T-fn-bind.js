@@ -60,6 +60,7 @@ _e(function (E, $) {
         var editor = self.editor;
         var $txt = self.$txt;
         var $p;
+       
 
         $txt.on('keydown', function (e) {
             if (e.keyCode !== 8) {
@@ -112,8 +113,10 @@ _e(function (E, $) {
                 return;
             }
             // 查找合法标签
-            var rangeElem = editor.getRangeElem();
+            var rangeElem = editor.getRangeElem();//换行的时候(enter)当前内容所属的编辑容器
             var targetElem = editor.getLegalTags(rangeElem);
+
+           
             var $targetElem;
             var $pElem;
 
