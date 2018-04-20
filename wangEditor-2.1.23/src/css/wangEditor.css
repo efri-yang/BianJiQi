@@ -120,6 +120,8 @@
   width: 100%;
   border-bottom: 1px solid #f1f1f1;
   background-color: #fff;
+  position: relative;
+  padding-right: 60px;
 }
 .wangEditor-menu-container a {
   text-decoration: none;
@@ -128,6 +130,16 @@
   float: left;
   padding: 0 8px;
   border-right: 1px solid #f1f1f1;
+}
+.wangEditor-menu-container .menu-group.fullscreen {
+  border-right: 0;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.wangEditor-menu-container .menu-group.backwards-2 {
+  border-right: none;
 }
 .wangEditor-menu-container .menu-item {
   float: left;

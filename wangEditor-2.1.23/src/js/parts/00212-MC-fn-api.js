@@ -3,11 +3,16 @@ _e(function (E, $) {
 
     var MenuContainer = E.MenuContainer;
 
+   
     MenuContainer.fn.render = function () {
         var $menuContainer = this.$menuContainer;
         var $editorContainer = this.editor.$editorContainer;
 
         $editorContainer.append($menuContainer);
+
+        //渲染完成以后
+        $menuContainer.children('.menu-group:last').addClass('fullscreen').prev().addClass("backwards-2");
+
     };
     
     // 获取菜单栏的高度
@@ -27,6 +32,7 @@ _e(function (E, $) {
         var $menuContainer = this.$menuContainer;
         var $menuGroup;
         if (!this.$currentGroup || this.currentGroupIdx !== groupIdx) {
+            console.dir(this.currentGroupIdx);
             $menuGroup = $('<div class="menu-group clearfix"></div>');
             $menuContainer.append($menuGroup);
 

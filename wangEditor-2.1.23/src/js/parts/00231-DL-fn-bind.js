@@ -55,7 +55,7 @@ _e(function (E, $) {
                 beforeEvent.call(e);
             }
 
-            alert(selectorForELemCommand);
+           
 
             // 执行命令
             var commandValue = $(e.currentTarget).attr('commandValue');
