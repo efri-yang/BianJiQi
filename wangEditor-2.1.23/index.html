@@ -10,63 +10,95 @@
 </head>
 
 <body>
-   <!--  -->
-   <textarea id="J_xy-edit-textarea" style="height:400px;max-height:500px;">
+    <!--  -->
+    <textarea id="J_xy-edit-textarea" style="height:400px;max-height:500px;">
         <p>要初始化的html内容...</p>
-   </textarea>
-    <button  id="btn-get-txt">获取文本(不包含html)</button>
-    <button  id="btn-get-html">获取内容(html和txt)</button>
-    <button  id="btn-get-select">获取选中的内容</button>
-    <button  id="btn-clear">清空内容</button>
-
+    </textarea>
+    <button id="btn-get-txt">获取文本(不包含html)</button>
+    <button id="btn-get-html">获取内容(html和txt)</button>
+    <button id="btn-get-select">获取选中的内容</button>
+    <button id="btn-clear">清空内容</button>
     <script type="text/javascript">
+    var editor = new wangEditor('J_xy-edit-textarea');
 
-        var editor = new wangEditor('J_xy-edit-textarea');
+    // 菜单配置
+    editor.config.menus = [
+        'source',
+        '|',
+        'fontfamily',
+        'fontsize',
+        'bold',
+        'underline',
+        'italic',
+        'forecolor',
+        'bgcolor',
+        'head',
+        'strikethrough',
+        'eraser',
+         '|',
+        'alignleft',
+        'aligncenter',
+        'alignright',
+        'unorderlist',
+        'orderlist',
+        '|',
+        'quote',
+        'link',
+        'unlink',
+        'table',
+        'emotion',
+        '|',
+        'img',
+        'video',
+        'location',
+        'insertcode',
+        '|',
+        'undo',
+        'redo',
+        'fullscreen',
 
-        //顶部头设置实现
-        
-        // editor.config.menus = [
-        //         'source',
-        //         'location',
-        //         '|',
-        //         'bold',
-        //         'underline',
-        //         'italic',
-        //         'strikethrough',
-        //         'eraser',
-        //         'forecolor',
-        //         'bgcolor',
-        //         'fullscreen',
-        //         'fullscreen1'
-        //     ];
-        editor.create();
+        'fullscreen01'
+    ];
 
-        console.dir(editor);
+    // editor.config.menus = [
+    //         'source',
+    //         'location',
+    //         '|',
+    //         'bold',
+    //         'underline',
+    //         'italic',
+    //         'strikethrough',
+    //         'eraser',
+    //         'forecolor',
+    //         'bgcolor',
+    //         'fullscreen',
+    //         'fullscreen1'
+    //     ];
+    editor.create();
+
+    console.dir(editor);
 
 
-        $("#btn-get-txt").on("click",function(){
-            alert(editor.$txt.text());
+    $("#btn-get-txt").on("click", function() {
+        alert(editor.$txt.text());
 
-        });
+    });
 
-        $("#btn-get-html").on("click",function(){
-            alert(editor.$txt.html());
-        });
+    $("#btn-get-html").on("click", function() {
+        alert(editor.$txt.html());
+    });
 
-        $("#btn-clear").on("click",function(){
-            editor.clear();
-        });
+    $("#btn-clear").on("click", function() {
+        editor.clear();
+    });
 
-        $("#btn-get-select").on("click",function(){
-            alert(editor.getRangeText());
+    $("#btn-get-select").on("click", function() {
+        alert(editor.getRangeText());
 
-            console.dir(editor.currentRange());
-        });
-
-       
-
+        console.dir(editor.currentRange());
+    });
     </script>
-	<div style="height:700px; "></div>
+    <div style="height:700px; "></div>
 </body>
 
 </html>

@@ -25,7 +25,7 @@
         }
         this.valueNodeName = nodeName.toLowerCase();
 
-        console.dir(this.valueNodeName);
+        
         this.$valueContainer = $elem;
 
         // 记录 elem 的 prev 和 parent（最后渲染 editor 要用到）

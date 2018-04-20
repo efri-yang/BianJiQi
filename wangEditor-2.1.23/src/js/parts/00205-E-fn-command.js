@@ -35,7 +35,7 @@ _e(function (E, $) {
         // 取得查询elem的查询条件和验证函数
         var selector;
         var check;
-         alert("cccccc");
+         
         if (typeof elemOpt === 'string') {
 
             selector = elemOpt;
