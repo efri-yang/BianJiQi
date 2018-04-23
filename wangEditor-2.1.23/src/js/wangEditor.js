@@ -8576,7 +8576,6 @@ _e(function (E, $) {
 _e(function (E, $) {
 
     E.plugin(function () {
-
         var editor = this;
         var customUpload = editor.config.customUpload;
         if (!customUpload) {
