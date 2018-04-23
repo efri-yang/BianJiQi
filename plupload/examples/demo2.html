@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>测试例子2</title>
+    <script type="text/javascript" src="../js/lib/jquery-1.10.2.min.js"></script>
+    <!-- <script type="text/javascript" src="../js/plupload.full.min.js"></script> -->
+    <script type="text/javascript" src="../js/moxie.js"></script>
+    <script type="text/javascript" src="../js/plupload.dev.js"></script>
+    <script type="text/javascript" src="../js/i18n/zh_CN.js"></script>
+    <script type="text/javascript" src="../js/jquery.plupload.js"></script>
+</head>
+
+<body>
+    <div id="plubload-container">
+        <div></div>
+    </div>
+    <div class="box-1"></div>
+    <div id="container">
+        <button id="pickfiles">选择文件</button>
+        <button id="uploadfiles">上传文件</button>
+    </div>
+    <div id="console"></div>
+    <script type="text/javascript">
+    $(function() {
+        $("#plubload-container").plupload({
+            runtimes: 'html5,flash,silverlight,html4',
+            url: '../upload.php',
+
+            // User can upload no more then 20 files in one go (sets multiple_queues to false)
+
+
+            chunk_size: '1mb',
+
+            // Resize images on clientside if we can
+            resize: {
+                width: 200,
+                height: 200,
+                quality: 90,
+                crop: true // crop to exact dimensions
+            },
+
+            flash_swf_url: '../js/Moxie.swf',
+            silverlight_xap_url: '../js/Moxie.xap',
+
+
+
+
+
+            filters: {
+                // Maximum file size
+                max_file_size: '1000mb',
+                // Specify what files to browse for
+                mime_types: [
+                    { title: "Image files", extensions: "jpg,gif,png" },
+                    { title: "Zip files", extensions: "zip" }
+                ]
+            },
+        })
+    })
+    </script>
+</body>
+
+</html>

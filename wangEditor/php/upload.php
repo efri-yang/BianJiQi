@@ -39,7 +39,7 @@ exit; // finish preflight CORS requests here
 
 // Settings
 // $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-$targetDir = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "wangEditor-2.1.23" . DIRECTORY_SEPARATOR . "plupload" . DIRECTORY_SEPARATOR . "uploads";
+$targetDir = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "BianJiQi" . DIRECTORY_SEPARATOR . "plupload" . DIRECTORY_SEPARATOR . "uploads";
 //$targetDir = 'uploads';
 $cleanupTargetDir = true; // Remove old files
 $maxFileAge = 5 * 3600; // Temp file age in seconds

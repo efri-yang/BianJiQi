@@ -88,7 +88,7 @@
     E.getComputedStyle = window.getComputedStyle;
     E.w3cRange = typeof document.createRange === 'function';
     E.hostname = location.hostname.toLowerCase();
-    E.websiteHost = 'wangeditor.github.io|www.wangeditor.com|wangeditor.coding.me';
+    E.websiteHost = 'http://localhost/BianJiQi/wangEditor|http://localhost/BianJiQi/wangEditor';
     E.isOnWebsite = E.websiteHost.indexOf(E.hostname) >= 0;
     E.docsite = 'http://www.kancloud.cn/wangfupeng/wangeditor2/113961';
 
@@ -6585,7 +6585,7 @@ _e(function (E, $) {
                 alert(resultText.split('|')[1]);
             } else {
                 E.log('上传成功，即将插入编辑区域，结果为：' + resultText);
-
+               
                 // 将结果插入编辑器
                 img = document.createElement('img');
                 img.onload = function () {
@@ -6687,6 +6687,7 @@ _e(function (E, $) {
         // -------- xhr 上传图片 --------
         editor.xhrUploadImg = function (opt) {
             // opt 数据
+           
             var event = opt.event;
             var fileName = opt.filename || '';
             var base64 = opt.base64;
@@ -6713,8 +6714,10 @@ _e(function (E, $) {
             }
 
             // ------------ begin 预览模拟上传 ------------
+           
             if (E.isOnWebsite) {
                 E.log('预览模拟上传');
+
                 insertImg(base64, event);
                 return;
             }
@@ -6751,10 +6754,13 @@ _e(function (E, $) {
                 }
 
                 // 记录文件名到 editor.uploadImgOriginalName ，插入图片时，可做 alt 属性用
+              
                 editor.uploadImgOriginalName = fileName;
                 if (fileName.indexOf('.') > 0) {
                     editor.uploadImgOriginalName = fileName.split('.')[0];
                 }
+
+
 
                 // 执行load函数，任何操作，都应该在load函数中定义
                 loadfn && loadfn.call(editor, xhr.responseText, xhr);
@@ -7025,6 +7031,7 @@ _e(function (E, $) {
                 fileType: fileType,
                 name: uploadFileName,
                 loadfn: function (resultText, xhr) {
+
                     clearInput();
                     // 执行配置中的方法
                     var editor = this;

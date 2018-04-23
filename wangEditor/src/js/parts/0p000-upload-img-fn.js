@@ -37,6 +37,9 @@ _e(function (E, $) {
 
         });
 
+        alert(
+            sadfasdfasdf)
+
         // -------- 定义tiemout函数 --------
         fns.ontimeout || (fns.ontimeout = function (xhr) {
             E.error('上传图片超时');

@@ -717,7 +717,6 @@ $.widget("ui.plupload", {
 	*/
 	getFile: function(id) {
 		var file;
-
 		if (typeof id === 'number') {
 			file = this.uploader.files[id];
 		} else {

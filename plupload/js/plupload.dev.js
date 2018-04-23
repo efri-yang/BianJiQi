@@ -1848,7 +1848,6 @@ plupload.Uploader = function(options) {
 		 */
 		init : function() {
 			var self = this, opt, preinitOpt, err;
-
 			preinitOpt = self.getOption('preinit');
 			if (typeof(preinitOpt) == "function") {
 				preinitOpt(self);
@@ -1874,7 +1873,7 @@ plupload.Uploader = function(options) {
 			if (err) {
 				return self.trigger('Error', err);
 			}
-
+alert(settings.browse_button);
 
 			if (!settings.browse_button && !settings.drop_element) {
 				return self.trigger('Error', {
@@ -1882,6 +1881,8 @@ plupload.Uploader = function(options) {
 					message : plupload.translate("You must specify either browse_button or drop_element.")
 				});
 			}
+
+
 
 
 			initControls.call(self, settings, function(inited) {
