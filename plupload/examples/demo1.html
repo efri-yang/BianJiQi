@@ -1,34 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title></title>
-	<script type="text/javascript" src="../js/lib/jquery-1.10.2.min.js"></script>
-	<script type="text/javascript" src="../js/plupload.full.min.js"></script>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="../js/lib/jquery-1.10.2.min.js"></script>
+   
+    <script type="text/javascript" src="../js/plupload.full.min.js"></script>
+     <script type="text/javascript" src="../js/i18n/zh_CN.js"></script>
 </head>
+
 <body>
-	
-	<div id="uploader">
-		<p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
-	</div>
-	<div id="container">
-		<button id="pickfiles">选择文件</button>
-		<button id="uploadfiles">上传文件</button>
-	</div>
+    <div id="filelist">Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
+    <div class="box-1"></div>
+    <style type="text/css">
+		.box-1{
+			width:200px;
+			height:10px;
+			background:#fff;
+			border:1px solid #666; 
+		}
+		.box-1  span{
+			display:block;
+			height: 100%; 
+			width:100%; 
+			background:#f60; 
+		}
+	</style>
+    <div id="container">
+        <button id="pickfiles">选择文件</button>
+        <button id="uploadfiles">上传文件</button>
+    </div>
+    <div id="console"></div>
+    <script type="text/javascript">
+    var uploader = new plupload.Uploader({
+        runtimes: 'html5,flash,silverlight,html4',
+        browse_button: 'pickfiles', // you can pass an id...
+        container: document.getElementById('container'), // ... or DOM Element itself
+        url: 'upload.php',
+        flash_swf_url: '../js/Moxie.swf',
+        silverlight_xap_url: '../js/Moxie.xap',
 
-	<script type="text/javascript">
-		$(function(){
-			$("#uploader").plupload({
-				runtimes : 'html5,flash,silverlight,html4',
-				url : '../upload.php',
-				// Flash settings
-				flash_swf_url : '../js/Moxie.swf',
+        filters: {
+            max_file_size: '3mb',
+            mime_types: [
+                { title: "Image files", extensions: "jpg,gif,png" }
+                // 
+            ]
+        },
+        init: {
+        	init:function(){
+        		console.group("init");
+        	},
+            PostInit: function() {
+            	console.group("PostInit");
+                document.getElementById('filelist').innerHTML = '';
 
-				// Silverlight settings
-				silverlight_xap_url : '../js/Moxie.xap'
-			})
+                document.getElementById('uploadfiles').onclick = function() {
+                    uploader.start();
+                    return false;
+                };
+            },
+            Browse: function(up) {
+                // 点击选择文件
+                console.group('Browse');
+            },
+            
+ 
+			FileFiltered:function(uploader,file){
+				console.group("FileFiltered");
+				console.dir(uploader);
+			},
+			QueueChanged:function(){
+				console.group("QueueChanged");
+			},
+			Refresh: function(up) {
+                //添加文件的手在FilesAdded 之前QueueChanged 之后触发
+				console.group('Refresh');
+            },
 			
-		})
-	</script>
+ 
+            
+			OptionChanged: function(up, name, value, oldValue) {
+				// 当使用Plupload实例的setOption()方法改变当前配置参数后触发
+				console.group("OptionChanged");
+			},
+            FilesAdded: function(up, files) {
+            	console.group("FilesAdded");
+            	console.dir(files); 
+                plupload.each(files, function(file) {
+                    document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+                });
+            },
+            StateChanged: function(up) {
+                // Called when the state of the queue is changed
+                console.group("StateChanged");
+				console.dir(up);
+            },
+			BeforeUpload:function(){
+				console.group("BeforeUpload");
+			},
+			UploadFile:function(){
+				console.group("UploadFile");
+			},
+			UploadProgress: function(uploader,file) {
+            	console.group("UploadProgress");
+            	$("#xx1").css("width",file.percent+"%");
+            	console.dir(file.percent);
+                document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+            },
+			FileUploaded:function(uploader,file,responseObject){
+				console.group("FileUploaded");
+				console.dir(uploader);
+				console.dir(file);
+				console.dir(responseObject)
+			},
+
+			UploadComplete:function(uploader,files){
+				console.group("UploadComplete");
+				console.dir(uploader);
+				console.group(files);
+			},
+			
+
+			
+
+            FilesRemoved:function(up, files){
+            	console.group("FilesRemoved");
+            },
+            Error: function(up, err) {
+            	console.group("Error");
+                document.getElementById('console').appendChild(document.createTextNode("\nError #" + err.code + ": " + err.message));
+            }
+        }
+    });
+
+    uploader.init();
+    </script>
 </body>
+
 </html>

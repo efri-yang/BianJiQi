@@ -232,7 +232,7 @@ function renderUI(obj) {
 				'</table>' +
 
 				'<div class="plupload_content">' +
-					'<div class="plupload_droptext">' + _("Drag files here.") + '</div>' +
+					'<div class="plupload_droptext"></div>' +
 					'<ul class="plupload_filelist_content"> </ul>' +
 					'<div class="plupload_clearer">&nbsp;</div>' +
 				'</div>' +

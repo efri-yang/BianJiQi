@@ -232,7 +232,7 @@ function renderUI(obj) {
 				'</table>' +
 
 				'<div class="plupload_content">' +
-					'<div class="plupload_droptext"></div>' +
+					'<div class="plupload_droptext">' + _("Drag files here.") + '</div>' +
 					'<ul class="plupload_filelist_content"> </ul>' +
 					'<div class="plupload_clearer">&nbsp;</div>' +
 				'</div>' +
@@ -309,7 +309,6 @@ $.widget("ui.plupload", {
 
 	_create: function() {
 		var id = this.element.attr('id');
-
 		if (!id) {
 			id = plupload.guid();
 			this.element.attr('id', id);
@@ -411,7 +410,6 @@ $.widget("ui.plupload", {
 		this.filelist.on('click', function(e) {
 			var me = $(e.target), fileContainer;
 			if (me.hasClass('plupload_action_icon')) {
-			    //获取容器的id
 				fileContainer = me.closest('.plupload_file');
 				if (fileContainer.hasClass('plupload_delete')) {
 					self.removeFile(fileContainer.attr('id'));
@@ -509,7 +507,6 @@ $.widget("ui.plupload", {
 
 
 		uploader.bind('PostInit', function(up) {
-
 			// all buttons are optional, so they can be disabled and hidden
 			if (!self.options.buttons.browse) {
 				self.browse_button.button('disable').hide();
@@ -566,12 +563,11 @@ $.widget("ui.plupload", {
 				self._enableSortingList();
 			}
 
-			// self._trigger('updatelist', null, { filelist: self.filelist });
+			self._trigger('updatelist', null, { filelist: self.filelist });
 
 			if (self.options.autostart) {
 				// set a little delay to make sure that QueueChanged triggered by the core has time to complete
 				setTimeout(function() {
-
 					self.start();
 				}, 10);
 			}
@@ -596,7 +592,7 @@ $.widget("ui.plupload", {
 				}
 			}
 
-			// self._trigger('updatelist', null, { filelist: self.filelist });
+			self._trigger('updatelist', null, { filelist: self.filelist });
 			self._trigger('removed', null, { up: up, files: files } );
 		});
 
@@ -1071,7 +1067,7 @@ $.widget("ui.plupload", {
 		function preloadThumb(file, cb) {
 			var img = new o.image.Image();
 			var resolveUrl = o.core.utils.Url.resolveUrl;
-			
+
 			img.onload = function() {
 				var thumb = $('#' + file.id + ' .plupload_file_thumb', self.filelist);
 				this.embed(thumb[0], {
@@ -1156,7 +1152,6 @@ $.widget("ui.plupload", {
 		}
 
 		$.each(files, function(i, file) {
-			console.dir(files);
 			var ext = o.core.utils.Mime.getFileExtension(file.name) || 'none';
 
 			html += file_html.replace(/\{(\w+)\}/g, function($0, $1) {
@@ -1172,16 +1167,12 @@ $.widget("ui.plupload", {
 						return ext;
 
 					default:
-						console.dir(file[$1]);
 						return file[$1] || '';
 				}
 			});
 		});
 
-
 		self.filelist.append(html);
-
-
 	},
 
 
@@ -1349,7 +1340,7 @@ $.widget("ui.plupload", {
 
 			stop: function() {
 				var files = [];
-				console.dir($(this).sortable('toArray'));
+
 				$.each($(this).sortable('toArray'), function(i, id) {
 					files[files.length] = self.uploader.getFile(id);
 				});
@@ -1357,12 +1348,8 @@ $.widget("ui.plupload", {
 				files.unshift(files.length);
 				files.unshift(0);
 
-				console.dir(self.uploader.files);
-				console.dir(files);
-
 				// re-populate files array
 				Array.prototype.splice.apply(self.uploader.files, files);
-				console.dir(self.uploader.files);
 			}
 		});
 	}
