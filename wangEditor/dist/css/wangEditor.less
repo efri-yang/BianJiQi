@@ -596,6 +596,246 @@
     }
     
 }
+.wangeditor-imgupload-dialog {
+    position: absolute;
+    left: 30%;
+    top: 0;
+    z-index: 1000;
+    width: 700px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    height:465px;
+
+    .imgupload-tab-hd {
+        background: #F8F8F8;
+        height: 42px;
+        line-height: 42px;
+        border-bottom: 1px solid #eee;
+        li {
+            float: left;
+            a {
+                padding: 0 20px;
+                font-size: 14px;
+                color: #333;
+                min-width: 80px;
+                max-width: 260px;
+                text-align: center;
+                display: block;
+                text-decoration: none;
+            }
+            &.active {
+                height: 43px;
+                border-left: 1px solid #eee;
+                border-right: 1px solid #eee;
+                background-color: #fff;
+            }
+        }
+    }
+}
+
+.wangeditor-localupload-start {
+    margin: 10px;
+    border: 2px dashed #e6e6e6;
+    height: 172px;
+    padding-top: 175px;
+    text-align: center;
+    background: url(../images/webuploader/not_file_image.png) center 70px no-repeat #fafafa;
+    color: #cccccc;
+    font-size: 18px;
+    position: relative;
+    top: 0;
+    display: none;
+    .tip-1 {
+        margin-top: 10px;
+        color: #cccccc;
+    }
+}
+
+.wangeditor-uploadfile-container {
+    position: relative;
+}
+
+.wangeditor-uploadfile-list {
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    height: 300px;
+    border-bottom: 1px solid #e6e6e6;
+    &:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden
+    }
+    li {
+        float: left;
+        width: 110px;
+        margin: 16px 8px 0px;
+        height: 110px;
+        position: relative;
+        border: 1px solid #e5e5e5;
+    }
+    .img-before-preview {
+        width: 100%;
+        height: 100%;
+        background: url("../images/webuploader/bg.png") repeat;
+        .txt-1 {
+            text-align: center;
+            margin-top: 15px;
+            color: #999;
+        }
+    }
+    .title {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 10px;
+        overflow: hidden;
+        text-align: center;
+        color: #999;
+    }
+
+    .img-after-preview {
+        width: 100%;
+        height: 100%;
+        line-height: 110px;
+        font-size: 0;
+        text-align: center;
+        .img-upload {
+            max-width: 100%;
+            max-height: 100%;
+            display: inline-block;
+            vertical-align: min-height;
+        }
+    }
+    .img-del-btn {
+        position: absolute;
+        right: -8px;
+        top: -8px;
+        width: 16px;
+        height: 16px;
+        border-radius: 100%;
+        background: #555;
+    }
+
+    .img-progress {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+
+        height: 16px;
+        span {
+            display: block;
+            height: 100%;
+            background: url("../images/webuploader/progress.png") repeat-x #1483d8;
+        }
+    }
+
+    .img-success {
+        display: block;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        height: 40px;
+        width: 40px;
+        z-index: 200;
+        background: url("../images/webuploader/success.png") no-repeat right bottom;
+    }
+    .img-error {
+        background: #f43838;
+        color: #fff;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 28px;
+        line-height: 28px;
+        width: 100%;
+        z-index: 100;
+        text-align: center;
+    }
+}
+
+.wangeditor-uploadfile-hd {
+    height: 45px;
+    border-bottom: 1px solid #dadada;
+    margin: 0 10px;
+    padding: 0;
+    line-height: 45px;
+    background: #fff;
+    vertical-align: middle;
+    position: relative;
+    .img-upload-btn {
+        background: #00b7ee;
+        color: #fff;
+        text-decoration: none;
+        padding: 0 18px;
+        display: inline-block;
+        border-radius: 3px;
+        margin-left: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        float: right;
+        height: 32px;
+        line-height: 32px;
+        margin-top: 6.5px;
+        &:hover {
+            background: #00a2d4;
+        }
+    }
+    .img-upload-info {
+        float: left;
+        font-size: 14px;
+        color: #666666;
+    }
+}
+
+
+.wangeditor-uploadfile-ft {
+	padding: 20px 15px;
+	&:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden
+    }
+    .ft-btn-cancel {
+        background: #ffffff;
+        border: 1px solid #cfcfcf;
+        color: #565656;
+        padding: 0 30px;
+        border-radius: 3px;
+        cursor: pointer;
+        float: right;
+         height: 35px;
+        line-height: 35px;
+        text-decoration: none;
+        &:hover{
+        	    background: #f0f0f0;
+        }
+    }
+    .ft-btn-insert {
+        float: right;
+        background: #00b7ee;
+        color: #fff;
+        text-decoration: none;
+        padding: 0 30px;
+        display: inline-block;
+        border-radius: 3px;
+        margin-left: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        float: right;
+        height: 35px;
+        line-height: 35px;
+       
+        &:hover {
+            background: #00a2d4;
+        }
+    }
+}
 @font-face {
     font-family: 'icomoon';
     src:url('../fonts/icomoon.eot?-qdfu1s');

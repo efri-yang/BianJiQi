@@ -20,7 +20,7 @@ _e(function (E, $) {
         function findPasteImgAndUpload() {
             var reg = /^data:(image\/\w+);base64/;
             var $imgs = $txt.find('img');
-
+           
             E.log('粘贴后，检查到编辑器有' + $imgs.length + '个图片。开始遍历图片，试图找到刚刚粘贴过来的图片');
 
             $.each($imgs, function () {

@@ -5260,9 +5260,9 @@ _e(function (E, $) {
 
 });
 // img 菜单
-_e(function (E, $) {
+_e(function(E, $) {
 
-    E.createMenu(function (check) {
+    E.createMenu(function(check) {
         var menuId = 'img';
         if (!check(menuId)) {
             return;
@@ -5277,156 +5277,31 @@ _e(function (E, $) {
             title: lang.img
         });
 
-        // 创建 panel content
-        var $panelContent = $('<div class="panel-tab"></div>');
-        var $tabContainer = $('<div class="tab-container"></div>');
-        var $contentContainer = $('<div class="content-container"></div>');
-        $panelContent.append($tabContainer).append($contentContainer);
-
-        // tab
-        var $uploadTab = $('<a href="#">' + lang.uploadImg + '</a>');
-        var $linkTab = $('<a href="#">' + lang.linkImg + '</a>');
-        $tabContainer.append($uploadTab).append($linkTab);
-
-        // 上传图片 content
-        var $uploadContent = $('<div class="content"></div>');
-        $contentContainer.append($uploadContent);
-
-        // 网络图片 content
-        var $linkContent = $('<div class="content"></div>');
-        $contentContainer.append($linkContent);
-        linkContentHandler(editor, menu, $linkContent);
-
-        // 添加panel
-        menu.dropPanel = new E.DropPanel(editor, menu, {
-            $content: $panelContent,
-            width: 400,
-            onRender: function () {
-                // 渲染后的回调事件，用于执行自定义上传的init
-                // 因为渲染之后，上传面板的dom才会被渲染到页面，才能让第三方空间获取到
-                var init = editor.config.customUploadInit;
-                init && init.call(editor);
-            }
-        });
+        menu.clickEvent = function(e) {
+            layer.tab({
+                area: ['600px', '300px'],
+                tab: [{
+                    title: '本地上传',
+                    content:$("#J_wangeditor-localupload-container").html()
+                }, {
+                    title: '相册选择',
+                    content:$("#J_wangeditor-gallery-container")
+                }]
+            });
+        }
 
         // 增加到editor对象中
         editor.menus[menuId] = menu;
 
-        // tab 切换事件
-        function tabToggle() {
-            $uploadTab.click(function (e) {
-                $tabContainer.children().removeClass('selected');
-                $contentContainer.children().removeClass('selected');
-                $uploadContent.addClass('selected');
-                $uploadTab.addClass('selected');
-                e.preventDefault();
-            });
-            $linkTab.click(function (e) {
-                $tabContainer.children().removeClass('selected');
-                $contentContainer.children().removeClass('selected');
-                $linkContent.addClass('selected');
-                $linkTab.addClass('selected');
-                e.preventDefault();
 
-                // focus input
-                if (E.placeholder) {
-                    $linkContent.find('input[type=text]').focus();
-                }
-            });
 
-            // 默认情况
-            // $uploadTab.addClass('selected');
-            // $uploadContent.addClass('selected');
-            $uploadTab.click();
-        }
 
-        // 隐藏上传图片
-        function hideUploadImg() {
-            $tabContainer.remove();
-            $uploadContent.remove();
-            $linkContent.addClass('selected');
-        }
 
-        // 隐藏网络图片
-        function hideLinkImg() {
-            $tabContainer.remove();
-            $linkContent.remove();
-            $uploadContent.addClass('selected');
-        }
 
-        // 判断用户是否配置了上传图片
-        editor.ready(function () {
-            var editor = this;
-            var config = editor.config;
-            var uploadImgUrl = config.uploadImgUrl;
-            var customUpload = config.customUpload;
-            var linkImg = config.hideLinkImg;
-            var $uploadImgPanel;
-
-            if (uploadImgUrl || customUpload) {
-                // 第一，暴露出 $uploadContent 以便用户自定义 ！！！重要
-                editor.$uploadContent = $uploadContent;
-
-                // 第二，绑定tab切换事件
-                tabToggle();
-
-                if (linkImg) {
-                    // 隐藏网络图片
-                    hideLinkImg();
-                }
-            } else {
-                // 未配置上传图片功能
-                hideUploadImg();
-            }
-
-            // 点击 $uploadContent 立即隐藏 dropPanel
-            // 为了兼容IE8、9的上传，因为IE8、9使用 modal 上传
-            // 这里使用异步，为了不妨碍高级浏览器通过点击 $uploadContent 选择文件
-            function hidePanel() {
-                menu.dropPanel.hide();
-            }
-            $uploadContent.click(function () {
-                setTimeout(hidePanel);
-            });
-        });
     });
 
     // --------------- 处理网络图片content ---------------
-    function linkContentHandler (editor, menu, $linkContent) {
-        var lang = editor.config.lang;
-        var $urlContainer = $('<div style="margin:20px 10px 10px 10px;"></div>');
-        var $urlInput = $('<input type="text" class="block" placeholder="http://"/>');
-        $urlContainer.append($urlInput);
-        var $btnSubmit = $('<button class="right">' + lang.submit + '</button>');
-        var $btnCancel = $('<button class="right gray">' + lang.cancel + '</button>');
 
-        $linkContent.append($urlContainer).append($btnSubmit).append($btnCancel);
-
-        // 取消
-        $btnCancel.click(function (e) {
-            e.preventDefault();
-            menu.dropPanel.hide();
-        });
-
-        // callback 
-        function callback() {
-            $urlInput.val('');
-        }
-
-        // 确定
-        $btnSubmit.click(function (e) {
-            e.preventDefault();
-            var url = $.trim($urlInput.val());
-            if (!url) {
-                // 无内容
-                $urlInput.focus();
-                return;
-            }
-
-            var imgHtml = '<img style="max-width:100%;" src="' + url + '"/>';
-            editor.command(e, 'insertHtml', imgHtml, callback);
-        });
-    }
 
 });
 // video 菜单
@@ -5933,10 +5808,10 @@ _e(function (E, $) {
             // 不要重复加载
             return;
         }
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = "//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js";
-        document.body.appendChild(script);
+        // var script = document.createElement("script");
+        // script.type = "text/javascript";
+        // script.src = "//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js";
+        // document.body.appendChild(script);
     }
     
 
@@ -6873,7 +6748,7 @@ _e(function (E, $) {
         var config = editor.config;
         var uploadImgUrl = config.uploadImgUrl;
         var uploadTimeout = config.uploadTimeout;
-        var event;
+       
 
         if (!uploadImgUrl) {
             return;
@@ -6890,345 +6765,8 @@ _e(function (E, $) {
         $uploadContent.append($uploadIcon);
 
         // ---------- 构建上传对象 ----------
-        var upfile = new E.UploadFile({
-            editor: editor,
-            uploadUrl: uploadImgUrl,
-            timeout: uploadTimeout,
-            fileAccept: 'image/jpg,image/jpeg,image/png,image/gif,image/bmp'    // 只允许选择图片 
-        });
-
-        // 选择本地文件，上传
-        $uploadIcon.click(function (e) {
-            event = e;
-            upfile.selectFiles();
-        });
+        
     });
-});
-// h5 方式上传图片
-_e(function (E, $) {
-
-    if (!window.FileReader || !window.FormData) {
-        // 如果不支持html5的文档操作，直接返回
-        return;
-    }
-
-    // 构造函数
-    var UploadFile = function (opt) {
-        this.editor = opt.editor;
-        this.uploadUrl = opt.uploadUrl;
-        this.timeout = opt.timeout;
-        this.fileAccept = opt.fileAccept;
-        this.multiple = true;
-    };
-
-    UploadFile.fn = UploadFile.prototype;
-
-    // clear
-    UploadFile.fn.clear = function () {
-        this.$input.val('');
-        E.log('input value 已清空');
-    };
-
-    // 渲染
-    UploadFile.fn.render = function () {
-        var self = this;
-        if (self._hasRender) {
-            // 不要重复渲染
-            return;
-        }
-
-        E.log('渲染dom');
-
-        var fileAccept = self.fileAccept;
-        var acceptTpl = fileAccept ? 'accept="' + fileAccept + '"' : '';
-        var multiple = self.multiple;
-        var multipleTpl = multiple ? 'multiple="multiple"' : '';
-        var $input = $('<input type="file" ' + acceptTpl + ' ' + multipleTpl + '/>');
-        var $container = $('<div style="display:none;"></div>');
-
-        $container.append($input);
-        E.$body.append($container);
-
-        // onchange 事件
-        $input.on('change', function (e) {
-            self.selected(e, $input.get(0));
-        });
-
-        // 记录对象数据
-        self.$input = $input;
-
-        // 记录
-        self._hasRender = true;
-    };
-
-    // 选择
-    UploadFile.fn.selectFiles = function () {
-        var self = this;
-
-        E.log('使用 html5 方式上传');
-
-        // 先渲染
-        self.render();
-
-        // 选择
-        E.log('选择文件');
-        self.$input.click();
-    };
-
-    // 选中文件之后
-    UploadFile.fn.selected = function (e, input) {
-        var self = this;
-        var files = input.files || [];
-        if (files.length === 0) {
-            return;
-        }
-
-        E.log('选中 ' + files.length + ' 个文件');
-
-        // 遍历选中的文件，预览、上传
-        $.each(files, function (key, value) {
-            self.upload(value);
-        });
-    };
-
-    // 上传单个文件
-    UploadFile.fn.upload = function (file) {
-        var self = this;
-        var editor = self.editor;
-        var filename = file.name || '';
-        var fileType = file.type || '';
-        var uploadImgFns = editor.config.uploadImgFns;
-        var uploadFileName = editor.config.uploadImgFileName || 'wangEditorH5File';
-        var onload = uploadImgFns.onload;
-        var ontimeout = uploadImgFns.ontimeout;
-        var onerror = uploadImgFns.onerror;
-        var reader = new FileReader();
-
-        if (!onload || !ontimeout || !onerror) {
-            E.error('请为编辑器配置上传图片的 onload ontimeout onerror 回调事件');
-            return;
-        }
-
-
-        E.log('开始执行 ' + filename + ' 文件的上传');
-
-        // 清空 input 数据
-        function clearInput() {
-            self.clear();
-        }
-
-        // onload事件
-        reader.onload = function (e) {
-            E.log('已读取' + filename + '文件');
-
-            var base64 = e.target.result || this.result;
-            editor.xhrUploadImg({
-                event: e,
-                filename: filename,
-                base64: base64,
-                fileType: fileType,
-                name: uploadFileName,
-                loadfn: function (resultText, xhr) {
-                    clearInput();
-                    // 执行配置中的方法
-                    var editor = this;
-                    onload.call(editor, resultText, xhr);
-                },
-                errorfn: function (xhr) {
-                    clearInput();
-                    if (E.isOnWebsite) {
-                        alert('wangEditor官网暂时没有服务端，因此报错。实际项目中不会发生');
-                    }
-                    // 执行配置中的方法
-                    var editor = this;
-                    onerror.call(editor, xhr);
-                },
-                timeoutfn: function (xhr) {
-                    clearInput();
-                    if (E.isOnWebsite) {
-                        alert('wangEditor官网暂时没有服务端，因此超时。实际项目中不会发生');
-                    }
-                    // 执行配置中的方法
-                    var editor = this;
-                    ontimeout(editor, xhr);
-                }
-            });
-        };
-
-        // 开始取文件
-        reader.readAsDataURL(file);
-    };
-
-    // 暴露给 E
-    E.UploadFile = UploadFile;
-
-});
-// form方式上传图片
-_e(function (E, $) {
-
-    if (window.FileReader && window.FormData) {
-        // 如果支持 html5 上传，则返回
-        return;
-    }
-    
-    // 构造函数
-    var UploadFile = function (opt) {
-        this.editor = opt.editor;
-        this.uploadUrl = opt.uploadUrl;
-        this.timeout = opt.timeout;
-        this.fileAccept = opt.fileAccept;
-        this.multiple = false;
-    };
-
-    UploadFile.fn = UploadFile.prototype;
-
-    // clear
-    UploadFile.fn.clear = function () {
-        this.$input.val('');
-        E.log('input value 已清空');
-    };
-
-    // 隐藏modal
-    UploadFile.fn.hideModal = function () {
-        this.modal.hide();
-    };
-
-    // 渲染
-    UploadFile.fn.render = function () {
-        var self = this;
-        var editor = self.editor;
-        var uploadFileName = editor.config.uploadImgFileName || 'wangEditorFormFile';
-        if (self._hasRender) {
-            // 不要重复渲染
-            return;
-        }
-
-        // 服务器端路径
-        var uploadUrl = self.uploadUrl;
-
-        E.log('渲染dom');
-
-        // 创建 form 和 iframe
-        var iframeId = 'iframe' + E.random();
-        var $iframe = $('<iframe name="' + iframeId + '" id="' + iframeId + '" frameborder="0" width="0" height="0"></iframe>');
-        var multiple = self.multiple;
-        var multipleTpl = multiple ? 'multiple="multiple"' : '';
-        var $p = $('<p>选择图片并上传</p>');
-        var $input = $('<input type="file" ' + multipleTpl + ' name="' + uploadFileName + '"/>');
-        var $btn = $('<input type="submit" value="上传"/>');
-        var $form = $('<form enctype="multipart/form-data" method="post" action="' + uploadUrl + '" target="' + iframeId + '"></form>');
-        var $container = $('<div style="margin:10px 20px;"></div>');
-
-        $form.append($p).append($input).append($btn);
-
-        // 增加用户配置的参数，如 token
-        $.each(editor.config.uploadParams, function (key, value) {
-            $form.append( $('<input type="hidden" name="' + key + '" value="' + value + '"/>') );
-        });
-
-        $container.append($form);
-        $container.append($iframe);
-
-        self.$input = $input;
-        self.$iframe = $iframe;
-
-        // 生成 modal
-        var modal = new E.Modal(editor, undefined, {
-            $content: $container
-        });
-        self.modal = modal;
-
-        // 记录
-        self._hasRender = true;
-    };
-
-    // 绑定 iframe load 事件
-    UploadFile.fn.bindLoadEvent = function () {
-        var self = this;
-        if (self._hasBindLoad) {
-            // 不要重复绑定
-            return;
-        }
-
-        var editor = self.editor;
-        var $iframe = self.$iframe;
-        var iframe = $iframe.get(0);
-        var iframeWindow = iframe.contentWindow;
-        var onload = editor.config.uploadImgFns.onload;
-
-        // 定义load事件
-        function onloadFn() {
-            var resultText = $.trim(iframeWindow.document.body.innerHTML);
-            if (!resultText) {
-                return;
-            }
-
-            // 获取文件名
-            var fileFullName = self.$input.val();  // 结果如 C:\folder\abc.png 格式
-            var fileOriginalName = fileFullName;
-            if (fileFullName.lastIndexOf('\\') >= 0) {
-                // 获取 abc.png 格式
-                fileOriginalName = fileFullName.slice(fileFullName.lastIndexOf('\\') + 1);
-                if (fileOriginalName.indexOf('.') > 0) {
-                    // 获取 abc （即不带扩展名的文件名）
-                    fileOriginalName = fileOriginalName.split('.')[0];
-                }
-            }
-
-            // 将文件名暂存到 editor.uploadImgOriginalName ，插入图片时，可作为 alt 属性来用
-            editor.uploadImgOriginalName = fileOriginalName;
-
-            // 执行load函数，插入图片的操作，应该在load函数中执行
-            onload.call(editor, resultText);
-
-            // 清空 input 数据
-            self.clear();
-
-            // 隐藏modal
-            self.hideModal();
-        }
-
-        // 绑定 load 事件
-        if (iframe.attachEvent) {
-            iframe.attachEvent('onload', onloadFn);
-        } else {
-            iframe.onload = onloadFn;
-        }
-
-        // 记录
-        self._hasBindLoad = true;
-    };
-
-    UploadFile.fn.show = function () {
-        var self = this;
-        var modal = self.modal;
-
-        function show() {
-            modal.show();
-            self.bindLoadEvent();
-        }
-        setTimeout(show);
-    };
-
-    // 选择
-    UploadFile.fn.selectFiles = function () {
-        var self = this;
-
-        E.log('使用 form 方式上传');
-
-        // 先渲染
-        self.render();
-
-        // 先清空
-        self.clear();
-
-        // 显示
-        self.show();
-    };
-
-    // 暴露给 E
-    E.UploadFile = UploadFile;
-
 });
 // upload img 插件 粘贴图片
 _e(function (E, $) {
@@ -7252,7 +6790,7 @@ _e(function (E, $) {
         function findPasteImgAndUpload() {
             var reg = /^data:(image\/\w+);base64/;
             var $imgs = $txt.find('img');
-
+           
             E.log('粘贴后，检查到编辑器有' + $imgs.length + '个图片。开始遍历图片，试图找到刚刚粘贴过来的图片');
 
             $.each($imgs, function () {
@@ -8609,10 +8147,6 @@ _e(function (E, $) {
         editor.customUploadContainerId = containerId;
     });
 
-});
-// 版权提示
-_e(function (E, $) {
-    E.info('本页面富文本编辑器由 wangEditor 提供 http://wangeditor.github.io/ ');
 });
     
     // 最终返回wangEditor构造函数

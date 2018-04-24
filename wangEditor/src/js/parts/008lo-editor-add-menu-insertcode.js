@@ -11,10 +11,10 @@ _e(function (E, $) {
             // 不要重复加载
             return;
         }
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = "//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js";
-        document.body.appendChild(script);
+        // var script = document.createElement("script");
+        // script.type = "text/javascript";
+        // script.src = "//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js";
+        // document.body.appendChild(script);
     }
     
 

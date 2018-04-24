@@ -6,7 +6,7 @@ _e(function (E, $) {
         var config = editor.config;
         var uploadImgUrl = config.uploadImgUrl;
         var uploadTimeout = config.uploadTimeout;
-        var event;
+       
 
         if (!uploadImgUrl) {
             return;
@@ -23,17 +23,6 @@ _e(function (E, $) {
         $uploadContent.append($uploadIcon);
 
         // ---------- 构建上传对象 ----------
-        var upfile = new E.UploadFile({
-            editor: editor,
-            uploadUrl: uploadImgUrl,
-            timeout: uploadTimeout,
-            fileAccept: 'image/jpg,image/jpeg,image/png,image/gif,image/bmp'    // 只允许选择图片 
-        });
-
-        // 选择本地文件，上传
-        $uploadIcon.click(function (e) {
-            event = e;
-            upfile.selectFiles();
-        });
+        
     });
 });

@@ -1,18 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" type="text/css" href="http://bbs.xmfish.com/images/pw_core.css?v=151020">
     <link rel="stylesheet" type="text/css" href="dist/css/wangEditor.css">
+    <link rel="stylesheet" type="text/css" href="dist/webuploader/webuploader.css">
     <script type="text/javascript" src="dist/js/lib/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="src/js/wangEditor.js"></script>
+    <script type="text/javascript" src="static/layer/layer.js"></script>
+    <script type="text/javascript" src="dist/webuploader/webuploader.js"></script>
+    <script type="text/javascript" src="dist/js/imgupload.js"></script>
 </head>
 
 <body>
     <!--  -->
     <textarea id="J_xy-edit-textarea" style="height:400px;max-height:500px;">
     </textarea>
+
+    <div class="wangeditor-imgupload-dialog" id="J_wangeditor-imgupload-dialog">
+        <ul class="imgupload-tab-hd">
+            <li class="active"><a href="#J_wangeditor-localupload-container">本地上传</a></li>
+            <li><a href="#J_wangeditor-gallery-container">相册图片</a></li>
+        </ul>
+        <div class="wangeditor-localupload-container" id="J_wangeditor-localupload-container">
+            <div class="wangeditor-localupload-start">
+                <div class="webuploader-container" id="J_filePicker"></div>
+                <p class="tip-1">或将照片拖到这里，单次最多可选30张</p>
+            </div>
+            <div class="wangeditor-uploadfile-container">
+                <div class="wangeditor-uploadfile-hd">
+                    <div class="img-upload-info">选中14张图片，共5.81M。</div>
+                    <a href="#" class="img-upload-btn">开始上传</a>
+                    <!-- <a href="#" class="img-add-btn">继续添加</a> -->
+                </div>
+                <ul class="wangeditor-uploadfile-list">
+                    <li>
+                        <div class="img-before-preview">
+                            <p class="title">图片名称图片名称图片名称.png</p>
+                            <p class="txt-1">预览中...</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                    </li>
+                    <li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        <div class="img-progress"><span style="width:50%;"></span></div>
+                    </li>
+
+                    <li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        
+                        <span class="img-success"></span>
+                    </li>
+
+                    <li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        
+                        <span class="img-success"></span>
+                    </li><li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        
+                        <span class="img-success"></span>
+                    </li><li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        
+                        <span class="img-success"></span>
+                    </li><li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        
+                        <span class="img-success"></span>
+                    </li><li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        
+                        <span class="img-success"></span>
+                    </li><li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        
+                        <span class="img-success"></span>
+                    </li><li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        
+                        <span class="img-success"></span>
+                    </li>
+                    <li>
+                        <div class="img-after-preview">
+                            <img src="uploadDemo/01.jpg" class="img-upload" />
+                        </div>
+                        <a href="#" class="img-del-btn"></a>
+                        
+                        <span class="img-error">上传失败，请重试</span>
+                    </li>
+                </ul>
+
+                <div class="wangeditor-uploadfile-ft">
+                    <a href="#" class="ft-btn-insert">插入</a>
+                    <a href="#" class="ft-btn-cancel">取消</a>
+                    
+                </div>
+
+            </div>
+        </div>
+        <div class="wangeditor-gallery-container" style="display: none;" id="J_wangeditor-gallery-container">
+            <p>sdfasdfasdfasdf</p>
+        </div>
+    </div>
+
+    
+
     <button id="btn-get-txt">获取文本(不包含html)</button>
     <button id="btn-get-html">获取内容(html和txt)</button>
     <button id="btn-get-select">获取选中的内容</button>
