@@ -14,10 +14,10 @@ if (!file_exists($uploadDir)) {
     @mkdir($uploadDir);
 }
 
-if (isset($_REQUEST["name"])) {
-    $fileName = $_REQUEST["name"];
+if (isset($_REQUEST["wangFile"])) {
+    $fileName = $_REQUEST["wangfile"]["name"];
 } elseif (!empty($_FILES)) {
-    $fileName = $_FILES["file"]["name"];
+    $fileName = $_FILES["wangfile"]["name"];
 } else {
     $fileName = uniqid("file_");
 }
@@ -26,8 +26,6 @@ $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 $uploadPath = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
 
 
-$imgUrl="http://localhost/BianJiQi/wangEditor/".$uploadDir."/".$fileName;
-echo $imgUrl;
 
 $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
 $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 1;
@@ -59,11 +57,11 @@ if (!$out = @fopen("{$filePath}_{$chunk}.parttmp", "wb")) {
 }
 
 if (!empty($_FILES)) {
-    if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
+    if ($_FILES["wangfile"]["error"] || !is_uploaded_file($_FILES["wangfile"]["tmp_name"])) {
         die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
     }
 
-    if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
+    if (!$in = @fopen($_FILES["wangfile"]["tmp_name"], "rb")) {
         die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
     }
 } else {
@@ -112,3 +110,13 @@ if ( $done ) {
     }
     @fclose($out);
 }
+
+$ext=@strtolower(end(explode(".",$fileName)));
+
+$uniName=md5(uniqid(microtime(true),true)).".".$ext;
+
+$destination=$uploadDir."/".$uniName;
+if(!@move_uploaded_file($_FILES["wangfile"]["tmp_name"],$destination)){
+      echo "上传失败！";
+ }
+ echo "http://localhost/BianJiQi/wangEditor/php/".$destination;
