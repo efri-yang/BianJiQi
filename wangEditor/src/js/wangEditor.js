@@ -5278,17 +5278,8 @@ _e(function(E, $) {
         });
 
         menu.clickEvent = function(e) {
-            layer.tab({
-                area: ['600px', '300px'],
-                tab: [{
-                    title: '本地上传',
-                    content:$("#J_wangeditor-localupload-container").html()
-                }, {
-                    title: '相册选择',
-                    content:$("#J_wangeditor-gallery-container")
-                }]
-            });
-        }
+            
+        };
 
         // 增加到editor对象中
         editor.menus[menuId] = menu;

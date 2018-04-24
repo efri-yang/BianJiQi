@@ -6,7 +6,7 @@
     width: 700px;
     background: #fff;
     border: 1px solid #e5e5e5;
-    height:450px;
+    height: 450px;
 
     .imgupload-tab-hd {
         background: #F8F8F8;
@@ -46,16 +46,19 @@
     font-size: 18px;
     position: relative;
     top: 0;
-    
+
     .tip-1 {
         margin-top: 10px;
         color: #cccccc;
+    }
+    &.webuploader-dnd-over {
+        border-color: #999;
     }
 }
 
 .wangeditor-uploadfile-container {
     position: relative;
-    display:none; 
+    display: none;
 }
 
 .wangeditor-uploadfile-list {
@@ -137,7 +140,7 @@
     }
 
     .img-success {
-       
+
         position: absolute;
         right: 0;
         bottom: 0;
@@ -187,20 +190,29 @@
             background: #00a2d4;
         }
     }
-    .img-add-btn{
-        background: #ffffff;
-        border: 1px solid #cfcfcf;
-        color: #565656;
-       padding: 0 18px;
-        border-radius: 3px;
-        cursor: pointer;
+    .img-add-btn {
         float: right;
-        height: 32px;
-        line-height: 32px;
         margin-top: 6px;
-        text-decoration: none;
-        &:hover{
+       pointer:relative;
+       *{
+       	width:100% !important; 
+       }
+           
+        .webuploader-pick {
+            background: #ffffff;
+            border: 1px solid #cfcfcf;
+            height: 32px;
+            width:auto !important; 
+            line-height: 32px;
+            color: #565656;
+            padding: 0 18px;
+            border-radius: 3px;
+            cursor: pointer;
+            display:block; 
+            text-decoration: none;
+            &:hover {
                 background: #f0f0f0;
+            }
         }
     }
     .img-upload-info {
@@ -212,8 +224,8 @@
 
 
 .wangeditor-uploadfile-ft {
-	padding: 12px 15px;
-	&:after {
+    padding: 12px 15px;
+    &:after {
         content: ".";
         display: block;
         height: 0;
@@ -228,11 +240,11 @@
         border-radius: 3px;
         cursor: pointer;
         float: right;
-         height: 35px;
+        height: 35px;
         line-height: 35px;
         text-decoration: none;
-        &:hover{
-        	    background: #f0f0f0;
+        &:hover {
+            background: #f0f0f0;
         }
     }
     .ft-btn-insert {
@@ -249,68 +261,69 @@
         float: right;
         height: 35px;
         line-height: 35px;
-       
+
         &:hover {
             background: #00a2d4;
         }
     }
-    .ft-save-checkbox{
-        float:left;
-        padding:5px 0;
-        margin-right:10px;  
-        input{
-            vertical-align:middle; 
-        } 
+    .ft-save-checkbox {
+        float: left;
+        padding: 5px 0;
+        margin-right: 10px;
+        input {
+            vertical-align: middle;
+        }
     }
-    .ft-gallery-sel{
-        float:left;
-        border:1px solid #cfcfcf;
-        padding:5px 10px; 
+    .ft-gallery-sel {
+        float: left;
+        border: 1px solid #cfcfcf;
+        padding: 5px 10px;
     }
 }
 
-.wangeditor-gallery-nodata{
-    text-align:center;
-    font-size:16px;
-    color:#666;
-    padding-top:120px;    
+.wangeditor-gallery-nodata {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    padding-top: 120px;
 }
 
-.wangeditor-gallery-container{
-    display:none; 
+.wangeditor-gallery-container {
+    display: none;
 }
-.wangeditor-gallery-list{
-    height:315px;
-    padding:15px 10px;  
+
+.wangeditor-gallery-list {
+    height: 315px;
+    padding: 15px 10px;
     overflow-x: hidden;
     overflow-y: auto;
-    position: relative; 
-    li{
+    position: relative;
+    li {
         width: 112px;
         height: 112px;
-        float:left;
-        margin: 10px  10px 0; 
-        overflow:hidden;
-        
-        position:relative; 
-        .pic{
-            display:block;
+        float: left;
+        margin: 10px 10px 0;
+        overflow: hidden;
+
+        position: relative;
+        .pic {
+            display: block;
             height: 110px;
             overflow: hidden;
             line-height: 110px;
-            font-size:0;
-            border:1px solid #ccc;
+            font-size: 0;
+            border: 1px solid #ccc;
             text-align: center;
-            img{
-                max-width:100%;
-                max-height:100%;
-                overflow:hidden;
-                vertical-align:middle; 
-                display: inline-block;   
-            }  
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                overflow: hidden;
+                vertical-align: middle;
+                display: inline-block;
+            }
         }
-        .status-check{
-            display:none; 
+        .status-check {
+            display: none;
             position: absolute;
             right: 0;
             bottom: 0;
@@ -319,20 +332,20 @@
             z-index: 200;
             background: url("../images/webuploader/success.png") no-repeat right bottom;
         }
-        &.active{
-            .pic{
-                border-color:#00b7ee; 
+        &.active {
+            .pic {
+                border-color: #00b7ee;
             }
-             .status-check{
+            .status-check {
                 display: block;
-             }
+            }
         }
     }
 }
 
-.wangeditor-gallery-ft{
-    border-top:1px solid #eee;
-     padding: 12px 15px;
+.wangeditor-gallery-ft {
+    border-top: 1px solid #eee;
+    padding: 12px 15px;
     &:after {
         content: ".";
         display: block;
@@ -340,14 +353,14 @@
         clear: both;
         visibility: hidden
     }
-    .ft-galleryall-sel{
-        float:left;
-        border:1px solid #cfcfcf;
-        padding:5px 10px;
-        margin-top:5px;  
+    .ft-galleryall-sel {
+        float: left;
+        border: 1px solid #cfcfcf;
+        padding: 5px 10px;
+        margin-top: 5px;
     }
 
-    .ft-galleryall-cancel{
+    .ft-galleryall-cancel {
         background: #ffffff;
         border: 1px solid #cfcfcf;
         color: #565656;
@@ -355,14 +368,14 @@
         border-radius: 3px;
         cursor: pointer;
         float: right;
-         height: 35px;
+        height: 35px;
         line-height: 35px;
         text-decoration: none;
-        &:hover{
-                background: #f0f0f0;
+        &:hover {
+            background: #f0f0f0;
         }
     }
-    .ft-galleryall-insert{
+    .ft-galleryall-insert {
         float: right;
         background: #00b7ee;
         color: #fff;
@@ -376,7 +389,7 @@
         float: right;
         height: 35px;
         line-height: 35px;
-       
+
         &:hover {
             background: #00a2d4;
         }

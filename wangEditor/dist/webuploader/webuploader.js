@@ -2915,6 +2915,7 @@
     
                 me.queue.append( file );
                 me.owner.trigger( 'fileQueued', file );
+
                 return file;
             },
     
@@ -4085,13 +4086,14 @@
                 tr.appendBlob( opts.fileVal, block.blob, file.name );
                 tr.append( data );
                 tr.setRequestHeader( headers );
+                // console.dir(data);
                 tr.send();
             },
     
             // 完成上传。
             _finishFile: function( file, ret, hds ) {
                 var owner = this.owner;
-    
+                
                 return owner
                         .request( 'after-send-file', arguments, function() {
                             file.setStatus( Status.COMPLETE );
