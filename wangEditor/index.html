@@ -32,7 +32,7 @@
                 <div class="wangeditor-uploadfile-hd">
                     <div class="img-upload-info">选中14张图片，共5.81M。</div>
                     <a href="#" class="img-upload-btn">开始上传</a>
-                    <!-- <a href="#" class="img-add-btn">继续添加</a> -->
+                    <a href="#" class="img-add-btn">继续添加</a>
                 </div>
                 <ul class="wangeditor-uploadfile-list">
                     <li>
@@ -125,6 +125,10 @@
                 </ul>
 
                 <div class="wangeditor-uploadfile-ft">
+                    <label class="ft-save-checkbox"><input type="checkbox" name="" />保存到相册</label>
+                    <select class="ft-gallery-sel" disabled>
+                        <option value="1">默认相册</option>
+                    </select>
                     <a href="#" class="ft-btn-insert">插入</a>
                     <a href="#" class="ft-btn-cancel">取消</a>
                     
@@ -132,8 +136,77 @@
 
             </div>
         </div>
-        <div class="wangeditor-gallery-container" style="display: none;" id="J_wangeditor-gallery-container">
-            <p>sdfasdfasdfasdf</p>
+        <div class="wangeditor-gallery-container"  id="J_wangeditor-gallery-container">
+            <div class="wangeditor-gallery-nodata">
+                    您的相册目前还没有照片,<a href="#">立马去上传</a>
+            </div>
+            <div class="wangeditor-gallery-hasdata">
+                <ul class="wangeditor-gallery-list">
+                    <li class="active">
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li>
+                    <li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li>
+                    <li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li>
+                    <li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li><li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li><li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li><li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li><li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li><li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li><li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li><li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li><li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li>
+                    <li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li>
+                    <li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li>
+                    <li>
+                        <div class="pic"><img src="uploadDemo/01.jpg"  /></div>
+                        <span class="status-check"></span>
+                    </li>
+                    
+                    
+                </ul>
+                <div class="wangeditor-gallery-ft">
+                    <select class="ft-galleryall-sel">
+                         <option value="1">默认相册</option>
+                         <option value="2">相册2</option>
+                    </select>
+                    <a href="#" class="ft-galleryall-insert">插入</a>
+                    <a href="#" class="ft-galleryall-cancel">取消</a>
+                </div>
+            </div>
+            
         </div>
     </div>
 

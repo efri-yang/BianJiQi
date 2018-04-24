@@ -531,7 +531,7 @@
   width: 700px;
   background: #fff;
   border: 1px solid #e5e5e5;
-  height: 465px;
+  height: 450px;
 }
 .wangeditor-imgupload-dialog .imgupload-tab-hd {
   background: #F8F8F8;
@@ -561,7 +561,7 @@
 .wangeditor-localupload-start {
   margin: 10px;
   border: 2px dashed #e6e6e6;
-  height: 172px;
+  height: 208px;
   padding-top: 175px;
   text-align: center;
   background: url(../images/webuploader/not_file_image.png) center 70px no-repeat #fafafa;
@@ -569,7 +569,6 @@
   font-size: 18px;
   position: relative;
   top: 0;
-  display: none;
 }
 .wangeditor-localupload-start .tip-1 {
   margin-top: 10px;
@@ -577,6 +576,7 @@
 }
 .wangeditor-uploadfile-container {
   position: relative;
+  display: none;
 }
 .wangeditor-uploadfile-list {
   overflow-x: hidden;
@@ -653,7 +653,6 @@
   background: url("../images/webuploader/progress.png") repeat-x #1483d8;
 }
 .wangeditor-uploadfile-list .img-success {
-  display: block;
   position: absolute;
   right: 0;
   bottom: 0;
@@ -697,10 +696,26 @@
   float: right;
   height: 32px;
   line-height: 32px;
-  margin-top: 6.5px;
+  margin-top: 6px;
 }
 .wangeditor-uploadfile-hd .img-upload-btn:hover {
   background: #00a2d4;
+}
+.wangeditor-uploadfile-hd .img-add-btn {
+  background: #ffffff;
+  border: 1px solid #cfcfcf;
+  color: #565656;
+  padding: 0 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  float: right;
+  height: 32px;
+  line-height: 32px;
+  margin-top: 6px;
+  text-decoration: none;
+}
+.wangeditor-uploadfile-hd .img-add-btn:hover {
+  background: #f0f0f0;
 }
 .wangeditor-uploadfile-hd .img-upload-info {
   float: left;
@@ -708,7 +723,7 @@
   color: #666666;
 }
 .wangeditor-uploadfile-ft {
-  padding: 20px 15px;
+  padding: 12px 15px;
 }
 .wangeditor-uploadfile-ft:after {
   content: ".";
@@ -747,6 +762,124 @@
   line-height: 35px;
 }
 .wangeditor-uploadfile-ft .ft-btn-insert:hover {
+  background: #00a2d4;
+}
+.wangeditor-uploadfile-ft .ft-save-checkbox {
+  float: left;
+  padding: 5px 0;
+  margin-right: 10px;
+}
+.wangeditor-uploadfile-ft .ft-save-checkbox input {
+  vertical-align: middle;
+}
+.wangeditor-uploadfile-ft .ft-gallery-sel {
+  float: left;
+  border: 1px solid #cfcfcf;
+  padding: 5px 10px;
+}
+.wangeditor-gallery-nodata {
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+  padding-top: 120px;
+}
+.wangeditor-gallery-container {
+  display: none;
+}
+.wangeditor-gallery-list {
+  height: 315px;
+  padding: 15px 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+}
+.wangeditor-gallery-list li {
+  width: 112px;
+  height: 112px;
+  float: left;
+  margin: 10px  10px 0;
+  overflow: hidden;
+  position: relative;
+}
+.wangeditor-gallery-list li .pic {
+  display: block;
+  height: 110px;
+  overflow: hidden;
+  line-height: 110px;
+  font-size: 0;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+.wangeditor-gallery-list li .pic img {
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  vertical-align: middle;
+  display: inline-block;
+}
+.wangeditor-gallery-list li .status-check {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  width: 40px;
+  z-index: 200;
+  background: url("../images/webuploader/success.png") no-repeat right bottom;
+}
+.wangeditor-gallery-list li.active .pic {
+  border-color: #00b7ee;
+}
+.wangeditor-gallery-list li.active .status-check {
+  display: block;
+}
+.wangeditor-gallery-ft {
+  border-top: 1px solid #eee;
+  padding: 12px 15px;
+}
+.wangeditor-gallery-ft:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.wangeditor-gallery-ft .ft-galleryall-sel {
+  float: left;
+  border: 1px solid #cfcfcf;
+  padding: 5px 10px;
+  margin-top: 5px;
+}
+.wangeditor-gallery-ft .ft-galleryall-cancel {
+  background: #ffffff;
+  border: 1px solid #cfcfcf;
+  color: #565656;
+  padding: 0 30px;
+  border-radius: 3px;
+  cursor: pointer;
+  float: right;
+  height: 35px;
+  line-height: 35px;
+  text-decoration: none;
+}
+.wangeditor-gallery-ft .ft-galleryall-cancel:hover {
+  background: #f0f0f0;
+}
+.wangeditor-gallery-ft .ft-galleryall-insert {
+  background: #00b7ee;
+  color: #fff;
+  text-decoration: none;
+  padding: 0 30px;
+  display: inline-block;
+  border-radius: 3px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  float: right;
+  height: 35px;
+  line-height: 35px;
+}
+.wangeditor-gallery-ft .ft-galleryall-insert:hover {
   background: #00a2d4;
 }
 @font-face {
