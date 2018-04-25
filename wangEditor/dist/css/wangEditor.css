@@ -704,12 +704,16 @@
   line-height: 32px;
   margin-top: 6px;
 }
-.wangeditor-uploadfile-hd .img-upload-btn.state-ready {
+.wangeditor-uploadfile-hd .img-upload-btn.state-ready,
+.wangeditor-uploadfile-hd .img-upload-btn.state-finish,
+.wangeditor-uploadfile-hd .img-upload-btn.state-confirm {
   background: #00b7ee;
   border: 1px solid #00b7ee;
   color: #fff;
 }
-.wangeditor-uploadfile-hd .img-upload-btn.state-ready:hover {
+.wangeditor-uploadfile-hd .img-upload-btn.state-ready:hover,
+.wangeditor-uploadfile-hd .img-upload-btn.state-finish:hover,
+.wangeditor-uploadfile-hd .img-upload-btn.state-confirm:hover {
   background: #00a2d4;
 }
 .wangeditor-uploadfile-hd .img-upload-btn.state-uploading,

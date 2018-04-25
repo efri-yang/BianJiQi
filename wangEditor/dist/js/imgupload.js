@@ -21,7 +21,7 @@
             // 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。
             disableGlobalDnd: true,
             //限制文件的大小
-            fileSingleSizeLimit: 2 * 1024 * 1024,
+            fileSingleSizeLimit: 4 * 1024 * 1024,
             // fileSingleSizeLimit:2 * 1024 * 1024,
             fileNumLimit:30,
             fileSizeLimit: 100 * 1024 * 1024
@@ -164,6 +164,7 @@
                 } else if (cur === 'progress') {
                     $delBtnElem.hide();
                     $progressElem.show();
+                    $errorElem.hide();
                 } else if (cur === 'complete') {
                     $progressElem.hide();
                     $successElem.show();
@@ -174,7 +175,9 @@
                 event.preventDefault();
                 uploader.removeFile(file, true);
                 console.dir(uploader.getFiles("inited"));
-                console.dir(uploader.getFiles("cancelled"))
+                console.dir(uploader.getFiles("cancelled"));
+                updateTotalProgress();
+
             });
 
         }
@@ -229,8 +232,14 @@
                 case 'ready': //选完图片以后
                     uploader.refresh();
                     break;
+                case 'pedding':
+                	$startContainer.show();
+                	$uploadfileContainer.hide();
+                	uploader.refresh();
+                    break;
                 case 'uploading':
                     //上传进度条要显示，上传按钮要隐藏，继续添加按钮要隐藏
+                    $uploadAllPgElem.show();
                     $uploadAllPgElem.show();
                     $(".img-add-btn").hide();
                     $uploadBtn.text( '暂停上传' );
@@ -242,6 +251,7 @@
                 	//上传进度条要隐藏
                     $uploadAllPgElem.hide();
                     $addBtn.show();
+                    $uploadBtn.text( '开始上传' );
                     stats = uploader.getStats();
                     if (stats.successNum && !stats.uploadFailNum) {
                         setState('finish');
@@ -271,7 +281,7 @@
 
         //假设设定最多上传3个文件，那么第四个不会被上传，其他的三个会被上传，但是还是会报错
         uploader.on("fileQueued", function(file) {
-            console.group("触发了：fileQueued事件(当文件被加入队列以后触发)");
+            // console.group("触发了：fileQueued事件(当文件被加入队列以后触发)");
             if (file.getStatus() === 'invalid') {
                 //文件不合格，不能重试上传。会自动从队列中移除。
 
@@ -287,37 +297,53 @@
                 addFile(file);
                 setState('ready');
                 updateTotalProgress();
-                console.dir(uploader.getFiles("inited"));
+                
             }
 
         });
 
         uploader.on("filesQueued", function(file) {
-            console.group("触发了：filesQueued事件(当一批文件添加进队列以后触发)");
+            // console.group("触发了：filesQueued事件(当一批文件添加进队列以后触发)");
         });
 
+        uploader.on('fileDequeued',function(file){
+        	 fileCount--;
+            fileSize -= file.size;
+
+            if ( !fileCount ) {
+                setState( 'pedding' );
+            }
+            removeFile( file );
+            updateTotalProgress();
+        });
+
+        function removeFile(file){
+        	var $li = $('#'+file.id);
+            delete percentages[ file.id ];
+            $li.remove();
+            updateTotalProgress();
+        }
         uploader.on("uploadStart", function(file) {
             //这个时候文件就会被加入队列
-            console.group("触发了：uploadStart事件(某个文件开始上传前触发，一个文件只会触发一次)");
-            console.dir(uploader.getFiles("inited"))
-            console.dir(uploader.getFiles("queued"))
+            // console.group("触发了：uploadStart事件(某个文件开始上传前触发，一个文件只会触发一次)");
+            // console.dir(uploader.getFiles("inited"))
+            // console.dir(uploader.getFiles("queued"))
             setState('uploading');
         });
 
         uploader.on("stopUpload", function(file, data) {
-            console.group("触发了：uploadAccept事件");
+            // console.group("触发了：uploadAccept事件");
             setState( 'paused' );
             
         });
 
         uploader.on("uploadBeforeSend", function(file) {
-            console.group("触发了：uploadBeforeSend事件");
+            // console.group("触发了：uploadBeforeSend事件");
         });
         uploader.on("uploadProgress", function(file, percentage) {
-            console.dir(percentage);
-            console.group("触发了：uploadProgress事件");
-            console.dir(uploader.getFiles("queued"));
-            console.dir(uploader.getFiles("progress"));
+           
+            // console.group("触发了：uploadProgress事件");
+           
 
             var $li = $('#' + file.id),
                 $percent = $li.find('.img-progress span');
@@ -328,7 +354,7 @@
         });
 
         uploader.on("uploadAccept", function(file, data) {
-            console.group("触发了：uploadAccept事件");
+            // console.group("触发了：uploadAccept事件");
         });
 
 
@@ -338,23 +364,26 @@
 
 
         uploader.on("uploadSuccess", function(file, response) {
-            console.group("触发了：uploadSuccess");
-            console.dir(uploader.getFiles("progress"));
-            console.dir(uploader.getFiles("complete"))
+            // console.group("触发了：uploadSuccess");
+            // console.dir(uploader.getFiles("progress"));
+            // console.dir(uploader.getFiles("complete"))
 
         });
 
         uploader.on("uploadComplete", function(file, response) {
-            console.group("触发了：uploadComplete");
-            console.dir(uploader.getFiles("progress"));
-            console.dir(uploader.getFiles("error"))
+            // console.group("触发了：uploadComplete");
+            // console.dir(uploader.getFiles("progress"));
+            // console.dir(uploader.getFiles("error"))
         });
 
         uploader.on("uploadFinished", function(file, response) {
-            console.group("触发了：uploadFinished");
+            // console.group("触发了：uploadFinished");
             setState('confirm');
 
         });
+
+
+         
 
 
 
@@ -399,9 +428,44 @@
         });
 
 
+        $uploadfileContainer.on("click",".retry",function(){
+        	uploader.retry();
+        })
+
+        $uploadfileContainer.on("click",".ignore",function(){
+        	//忽略 这个时候的状态是confirm
+        	console.dir(uploader.getFiles())
+        	console.dir(fileSize)
+        	var files=uploader.getFiles("error");
+        	for (var i =0; i <files.length; i++) {
+        		uploader.removeFile(files[i],true);
+        		$("#"+files[i].id).remove();
+        	}
+
+        	updateStatus();
+        	setState("ready");
+
+        	
+        })
+
 
         $uploadBtn.addClass( 'state-' + state );
         updateTotalProgress();
+
+
+
+        $(".imgupload-tab-hd li").on("click",function(){
+        	var $this=$(this);
+        	$this.addClass('active').siblings().removeClass("active");
+        	var index=$(".imgupload-tab-hd li").index(this);
+        	if(index==0){
+        		$(".wangeditor-localupload-container").show();
+        		$(".wangeditor-gallery-container").hide();
+        	}else{
+        		$(".wangeditor-localupload-container").hide();
+        		$(".wangeditor-gallery-container").show();
+        	}
+        })
 
 
 
