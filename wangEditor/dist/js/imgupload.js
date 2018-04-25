@@ -36,6 +36,10 @@
 	    var fileCount=0;
 	    var $startContainer=$("#J_wangeditor-localupload-start");
 	    var $uploadfileContainer=$("#J_wangeditor-uploadfile-container");
+	    var $uploadfileUL=$("#J_wangeditor-uploadfile-list");
+
+	    // 所有文件的进度信息，key为file id
+        var percentages = {};
 
 
 	    console.dir(uploader);
@@ -71,8 +75,47 @@
     	}  
 
     	//
-    	function addFile(){
-    		
+    	function addFile(file){
+    		var str='<li id="'+file.id+'">'+
+                        '<div class="img-before-preview">'+
+                            '<p class="title">'+file.name+'</p>'+
+                            '<p class="txt-1">预览中...</p>'+
+                        '</div>'+
+                        '<div class="img-after-preview">'+
+                            '<img src="" class="img-upload" />'+
+                        '</div>'+
+                        '<a href="#" class="img-del-btn"></a>'+
+                        '<div class="img-progress"><span style="width:50%;"></span></div>'+
+                        '<span class="img-error">上传失败，请重试</span>'+
+                    '</li>';
+    		var $li=$(str);
+    		$uploadfileUL.append($li);
+
+    		var $prewTxtElem=$li.find(".img-before-preview .txt-1");
+    		var $imgElem=$li.find(".img-upload");
+    		var $beforePreviewElem=$li.find(".img-before-preview");
+    		var $afterPreviewElem=$li.find(".img-after-preview");
+    		var $delBtnElem=$li.find(".img-del-btn");
+
+
+    		//base64位预览
+    		uploader.makeThumb( file, function( error, src) {
+    			if (error) {
+                    $prewTxtElem.text( '不能预览' );
+                    return;
+                }
+                $beforePreviewElem.hide();
+                $imgElem.attr("src",src);
+                $afterPreviewElem.show();
+                $delBtnElem.show();
+
+    		});
+    		//进度信息
+    		percentages[ file.id ] = [ file.size, 0 ];
+
+    		file.on('statuschange', function( cur, prev ) {
+    			
+    		})
     	}
 
 
@@ -104,6 +147,11 @@
 	    			$startContainer.hide();
 	    			$uploadfileContainer.show();
 	    		}
+	    		//添加li
+	    		addFile(file);
+
+	    		
+	    		
 	    	}
 	    });
 

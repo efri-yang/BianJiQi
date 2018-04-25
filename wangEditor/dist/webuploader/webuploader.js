@@ -2231,6 +2231,9 @@
                     width = null;
                 }
     
+                // width = width || opts.width;
+                // height = height || opts.height;
+                
                 width = width || opts.width;
                 height = height || opts.height;
     

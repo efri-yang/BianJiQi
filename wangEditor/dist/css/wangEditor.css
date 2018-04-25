@@ -627,12 +627,13 @@
   line-height: 110px;
   font-size: 0;
   text-align: center;
+  display: none;
 }
 .wangeditor-uploadfile-list .img-after-preview .img-upload {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 100% !important;
+  max-height: 100% !important;
   display: inline-block;
-  vertical-align: min-height;
+  vertical-align: middle;
 }
 .wangeditor-uploadfile-list .img-del-btn {
   position: absolute;
@@ -642,6 +643,7 @@
   height: 16px;
   border-radius: 100%;
   background: #555;
+  display: none;
 }
 .wangeditor-uploadfile-list .img-progress {
   position: absolute;
@@ -649,6 +651,7 @@
   bottom: 0;
   right: 0;
   height: 16px;
+  display: none;
 }
 .wangeditor-uploadfile-list .img-progress span {
   display: block;
@@ -675,6 +678,7 @@
   width: 100%;
   z-index: 100;
   text-align: center;
+  display: none;
 }
 .wangeditor-uploadfile-hd {
   height: 45px;
