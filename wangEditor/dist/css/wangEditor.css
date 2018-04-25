@@ -692,8 +692,6 @@
   position: relative;
 }
 .wangeditor-uploadfile-hd .img-upload-btn {
-  background: #00b7ee;
-  color: #fff;
   text-decoration: none;
   padding: 0 18px;
   display: inline-block;
@@ -706,13 +704,28 @@
   line-height: 32px;
   margin-top: 6px;
 }
-.wangeditor-uploadfile-hd .img-upload-btn:hover {
+.wangeditor-uploadfile-hd .img-upload-btn.state-ready {
+  background: #00b7ee;
+  border: 1px solid #00b7ee;
+  color: #fff;
+}
+.wangeditor-uploadfile-hd .img-upload-btn.state-ready:hover {
   background: #00a2d4;
+}
+.wangeditor-uploadfile-hd .img-upload-btn.state-uploading,
+.wangeditor-uploadfile-hd .img-upload-btn.state-paused {
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  color: #565656;
+}
+.wangeditor-uploadfile-hd .img-upload-btn.state-uploading:hover,
+.wangeditor-uploadfile-hd .img-upload-btn.state-paused:hover {
+  background: #f0f0f0;
 }
 .wangeditor-uploadfile-hd .img-add-btn {
   float: right;
   margin-top: 6px;
-  pointer: relative;
+  position: relative;
 }
 .wangeditor-uploadfile-hd .img-add-btn .webuploader-pick {
   background: #ffffff;

@@ -178,8 +178,8 @@
     vertical-align: middle;
     position: relative;
     .img-upload-btn {
-        background: #00b7ee;
-        color: #fff;
+        
+       
         text-decoration: none;
         padding: 0 18px;
         display: inline-block;
@@ -191,14 +191,31 @@
         height: 32px;
         line-height: 32px;
         margin-top: 6px;
-        &:hover {
-            background: #00a2d4;
+        
+       
+        &.state-ready{
+            background: #00b7ee;
+            border: 1px solid #00b7ee;
+             color: #fff;
+            &:hover{
+                background: #00a2d4;
+            }
         }
+        &.state-uploading,&.state-paused{
+            background: #fff;
+            border: 1px solid #cfcfcf;
+                color: #565656; 
+            &:hover{
+                background: #f0f0f0;
+            }
+        }
+        
     }
+
     .img-add-btn {
         float: right;
         margin-top: 6px;
-       pointer:relative;
+        position:relative;
      
            
         .webuploader-pick {
