@@ -16,7 +16,7 @@
 	            extensions: 'gif,jpg,bmp,png',
 	            mimeTypes: 'image/jpg,image/jpeg,image/png'
 	        },
-	        server: '../server/fileupload.php',
+	        server: './php/fileupload.php',
 	        swf: '../../dist/Uploader.swf',
 	        // 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。
 	        disableGlobalDnd: true,
@@ -33,16 +33,53 @@
 	    });
 
 
-	    var fileCount=0;
+	    
 	    var $startContainer=$("#J_wangeditor-localupload-start");
 	    var $uploadfileContainer=$("#J_wangeditor-uploadfile-container");
 	    var $uploadfileUL=$("#J_wangeditor-uploadfile-list");
+	    var $uploadfileInfo=$("#J_wangeditor-uploadfile-info");
+	    var $uploadfileCount=$uploadfileInfo.find(".filecount");
+	    var $uploadfileSize=$uploadfileInfo.find(".filesize");
 
 	    // 所有文件的进度信息，key为file id
         var percentages = {};
+        var fileSize = 0;
+        var fileCount=0;
+        // 可能有pedding(继续添加按钮), ready(添加完图片以后), uploading(图片正上传的时候), confirm(图片都上传好了), done.
+        var state = 'pedding';
 
 
 	    console.dir(uploader);
+
+	    function updateBarInfo(){
+	    	var loaded = 0,
+                total = 0,
+                percent;
+            $.each( percentages, function( k, v ) {
+                total += v[ 0 ];
+                loaded += v[ 0 ] * v[ 1 ];
+            } );
+	    }
+
+	    function updateStatus(){
+	    	var text = '', stats;
+	    	if ( state === 'ready' ) {
+	    		text = '选中' + fileCount + '张图片，共' + WebUploader.formatSize( fileSize ) + '。';
+	    	}else if ( state === 'confirm' ) {
+	    		stats = uploader.getStats();
+	    		if ( stats.uploadFailNum ) {
+	    			text = '已成功上传' + stats.successNum+ '张照片至相册，'+ stats.uploadFailNum + '张照片上传失败，<a class="retry" href="#">重新上传</a>失败图片或<a class="ignore" href="#">忽略</a>'
+	    		}
+	    	}else{
+	    		stats=uploader.getStats();
+	    		text='共' + fileCount + '张（' + WebUploader.formatSize( fileSize )  + '），已上传' + stats.successNum + '张';
+	    		if ( stats.uploadFailNum ) {
+	    			text += '，失败' + stats.uploadFailNum + '张';
+	    		}
+	    	}
+	    }
+
+
 
 	    //显示错误函数
 	    function showError(txt){
@@ -73,8 +110,22 @@
 	        }  
 	        return sizestr;  
     	}  
-
-    	//
+    	//单个图片显示错误
+    	function showErrorForSingle(code,$elem){
+    		switch( code ) {
+                case 'exceed_size':
+                    text = '文件大小超出';
+                    break;
+                case 'interrupt':
+                    text = '上传暂停';
+                    break;
+                default:
+                    text = '上传失败，请重试';
+                    break;
+            }
+            $elem.text(text).show();
+    	}
+    	//添加li
     	function addFile(file){
     		var str='<li id="'+file.id+'">'+
                         '<div class="img-before-preview">'+
@@ -87,6 +138,7 @@
                         '<a href="#" class="img-del-btn"></a>'+
                         '<div class="img-progress"><span style="width:50%;"></span></div>'+
                         '<span class="img-error">上传失败，请重试</span>'+
+                        '<span class="img-success"></span>'+
                     '</li>';
     		var $li=$(str);
     		$uploadfileUL.append($li);
@@ -96,6 +148,9 @@
     		var $beforePreviewElem=$li.find(".img-before-preview");
     		var $afterPreviewElem=$li.find(".img-after-preview");
     		var $delBtnElem=$li.find(".img-del-btn");
+    		var $successElem=$li.find(".img-success");
+    		var $progressElem=$li.find(".img-progress");
+    		var $errorElem=$li.find(".img-error");
 
 
     		//base64位预览
@@ -112,10 +167,31 @@
     		});
     		//进度信息
     		percentages[ file.id ] = [ file.size, 0 ];
-
+    		//记住 uploader.on("error"）主要对于intered的时候进行检测报错，这里是对于单个文件进行检测
     		file.on('statuschange', function( cur, prev ) {
-    			
-    		})
+    			 if (cur === 'error' || cur === 'invalid' ) {
+    			 	showErrorForSingle(file.statusText,$errorElem);
+    			 	percentages[ file.id ][ 1 ] = 1;
+    			 }else if ( cur === 'interrupt' ) {
+    			 	showError( 'interrupt' );
+    			 }else if ( cur === 'queued' ) {
+    			 	percentages[ file.id ][ 1 ] = 0;
+    			 }else if ( cur === 'progress' ) {
+    			 	$delBtnElem.hide();
+    			 	$progressElem.show();
+    			 }else if ( cur === 'complete' ) {
+    			 	$progressElem.hide();
+    			 	$successElem.show();
+    			 }
+    		});
+
+    		$delBtnElem.on("click",function(event){
+    			event.preventDefault();
+    			 uploader.removeFile(file,true);
+    			 console.dir(uploader.getFiles("inited"));
+	    	 	 console.dir(uploader.getFiles("cancelled"))
+    		});
+
     	}
 
 
@@ -130,11 +206,10 @@
 	    });
 
 	    uploader.on("beforeFileQueued", function(file) {
-
-
 	        // console.group("触发了：beforeFileQueued事件(当文件被加入队列之前触发)");
 	    });
 
+	    //假设设定最多上传3个文件，那么第四个不会被上传，其他的三个会被上传，但是还是会报错
 	    uploader.on("fileQueued", function(file) {
 	    	console.group("触发了：fileQueued事件(当文件被加入队列以后触发)");
 	    	if(file.getStatus() === 'invalid'){
@@ -147,13 +222,65 @@
 	    			$startContainer.hide();
 	    			$uploadfileContainer.show();
 	    		}
-	    		//添加li
-	    		addFile(file);
-
-	    		
-	    		
+	    		//添加li，并绑定事件
+	    		addFile(file);	
+	    		console.dir(uploader.getFiles("inited"));
 	    	}
+
 	    });
+
+	    uploader.on("filesQueued", function(file) {
+	        console.group("触发了：filesQueued事件(当一批文件添加进队列以后触发)");
+	    });
+
+	    uploader.on("uploadStart", function(file) {
+	    	//这个时候文件就会被加入队列
+        	console.group("触发了：uploadStart事件(某个文件开始上传前触发，一个文件只会触发一次)");
+        	console.dir(uploader.getFiles("inited"))
+        	console.dir(uploader.getFiles("queued"))
+    	});
+
+    	uploader.on("uploadBeforeSend", function(file) {
+	        console.group("触发了：uploadBeforeSend事件");
+	    });
+	    uploader.on("uploadProgress", function(file, percentage) {
+	    	console.dir(percentage);
+	    	console.group("触发了：uploadProgress事件");
+	    	console.dir(uploader.getFiles("queued"));
+	    	console.dir(uploader.getFiles("progress"));
+
+	    	var $li = $( '#'+file.id ),
+	    		$percent = $li.find('.img-progress span');
+           	$percent.css( 'width', percentage * 100 + '%' );  
+
+	    });
+
+	    uploader.on("uploadAccept", function( file, data){
+	        console.group("触发了：uploadAccept事件");
+	    });
+
+	    uploader.on("uploadSuccess", function(file, response) {
+	         console.group("触发了：uploadSuccess");
+	         console.dir(uploader.getFiles("progress"));
+	    	 console.dir(uploader.getFiles("complete"))
+	         
+	    });
+
+	    uploader.on("uploadComplete", function(file, response) {
+	         console.group("触发了：uploadComplete");
+	         console.dir(uploader.getFiles("progress"));
+	    	 console.dir(uploader.getFiles("error"))
+	    });
+
+	    uploader.on("uploadFinished", function(file, response) {
+	         console.group("触发了：uploadFinished");
+	         
+	    });
+
+
+
+
+
 
 
 
@@ -177,6 +304,11 @@
 	    			showError("文件上传出错！");
 	    	}
 	    });
+
+
+	    $(".img-upload-btn").on("click", function() {
+	    	uploader.upload();
+	    })
 	   
 
 

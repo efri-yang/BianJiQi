@@ -151,6 +151,7 @@
         width: 40px;
         z-index: 200;
         background: url("../images/webuploader/success.png") no-repeat right bottom;
+        display:none; 
     }
     .img-error {
         background: #f43838;
@@ -198,15 +199,13 @@
         float: right;
         margin-top: 6px;
        pointer:relative;
-       *{
-       	width:100% !important; 
-       }
+     
            
         .webuploader-pick {
             background: #ffffff;
             border: 1px solid #cfcfcf;
             height: 32px;
-            width:auto !important; 
+           
             line-height: 32px;
             color: #565656;
             padding: 0 18px;
@@ -223,6 +222,33 @@
         float: left;
         font-size: 14px;
         color: #666666;
+    }
+    .img-upload-allprogress{
+    	border: 1px solid #1483d8;
+	    width: 198px;
+	    display:none; 
+	    background: #fff;
+	    height: 18px;
+	    float:left;
+	    position:relative;
+	    text-align: center;
+	    line-height: 20px;
+	    color: #6dbfff;
+	    position: relative;
+	    margin-right: 10px;
+	    margin-top:12px; 
+	    .txt{
+	    	position: relative;
+    		z-index: 10;
+	    }
+	    .percentage{
+	    	    width: 0;
+	    height: 100%;
+	    left: 0;
+	    top: 0;
+	    background: #1483d8;
+	    position: absolute;
+	    }
     }
 }
 

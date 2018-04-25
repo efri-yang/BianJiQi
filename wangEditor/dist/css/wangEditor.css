@@ -666,6 +666,7 @@
   width: 40px;
   z-index: 200;
   background: url("../images/webuploader/success.png") no-repeat right bottom;
+  display: none;
 }
 .wangeditor-uploadfile-list .img-error {
   background: #f43838;
@@ -713,14 +714,10 @@
   margin-top: 6px;
   pointer: relative;
 }
-.wangeditor-uploadfile-hd .img-add-btn * {
-  width: 100% !important;
-}
 .wangeditor-uploadfile-hd .img-add-btn .webuploader-pick {
   background: #ffffff;
   border: 1px solid #cfcfcf;
   height: 32px;
-  width: auto !important;
   line-height: 32px;
   color: #565656;
   padding: 0 18px;
@@ -736,6 +733,32 @@
   float: left;
   font-size: 14px;
   color: #666666;
+}
+.wangeditor-uploadfile-hd .img-upload-allprogress {
+  border: 1px solid #1483d8;
+  width: 198px;
+  display: none;
+  background: #fff;
+  height: 18px;
+  float: left;
+  text-align: center;
+  line-height: 20px;
+  color: #6dbfff;
+  position: relative;
+  margin-right: 10px;
+  margin-top: 12px;
+}
+.wangeditor-uploadfile-hd .img-upload-allprogress .txt {
+  position: relative;
+  z-index: 10;
+}
+.wangeditor-uploadfile-hd .img-upload-allprogress .percentage {
+  width: 0;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #1483d8;
+  position: absolute;
 }
 .wangeditor-uploadfile-ft {
   padding: 12px 15px;
