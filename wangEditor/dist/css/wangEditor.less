@@ -597,15 +597,13 @@
     
 }
 .wangeditor-imgupload-dialog {
-    position: absolute;
-    left: 30%;
-    top: 0;
-    z-index: 1000;
+   float:left;
     width: 700px;
     background: #fff;
     border: 1px solid #e5e5e5;
     height: 450px;
-
+    overflow: hidden;
+    display:none;
     .imgupload-tab-hd {
         background: #F8F8F8;
         height: 42px;
@@ -807,6 +805,11 @@
                 background: #f0f0f0;
             }
         }
+        &.disabled{
+             opacity: 0.5;
+            
+                cursor: not-allowed;
+        }
         
     }
 
@@ -909,6 +912,11 @@
 
         &:hover {
             background: #00a2d4;
+        }
+        &.disabled{
+             opacity: 0.5;
+            
+                cursor: not-allowed;
         }
     }
     .ft-save-checkbox {

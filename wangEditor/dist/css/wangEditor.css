@@ -524,14 +524,13 @@
   cursor: pointer;
 }
 .wangeditor-imgupload-dialog {
-  position: absolute;
-  left: 30%;
-  top: 0;
-  z-index: 1000;
+  float: left;
   width: 700px;
   background: #fff;
   border: 1px solid #e5e5e5;
   height: 450px;
+  overflow: hidden;
+  display: none;
 }
 .wangeditor-imgupload-dialog .imgupload-tab-hd {
   background: #F8F8F8;
@@ -728,6 +727,10 @@
 .wangeditor-uploadfile-hd .img-upload-btn.state-paused:hover {
   background: #f0f0f0;
 }
+.wangeditor-uploadfile-hd .img-upload-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .wangeditor-uploadfile-hd .img-add-btn {
   float: right;
   margin-top: 6px;
@@ -820,6 +823,10 @@
 }
 .wangeditor-uploadfile-ft .ft-btn-insert:hover {
   background: #00a2d4;
+}
+.wangeditor-uploadfile-ft .ft-btn-insert.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .wangeditor-uploadfile-ft .ft-save-checkbox {
   float: left;

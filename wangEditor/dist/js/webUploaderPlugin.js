@@ -33,6 +33,9 @@
         var $uploadBtn = $webuploaderDialog.find(".img-upload-btn");//上传文件按钮
         var $addBtn = $webuploaderDialog.find(".img-add-btn");//添加文件按钮
 
+        var $insertBtn=$webuploaderDialog.find(".ft-btn-insert");
+        var $galleryListUL=$webuploaderDialog.find(".wangeditor-gallery-list");
+
 
         //*****webuploader默认的配置 初始化**************************************************
         var defaultConfig = {
@@ -48,7 +51,7 @@
             //     mimeTypes: 'image/jpg,image/jpeg,image/png'
             // },
             server: './php/fileupload.php',
-            swf: '../../dist/Uploader.swf',
+            swf: './dist/webuploader/Uploader.swf',
             // 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。
             disableGlobalDnd: true,
             //限制文件的大小
@@ -199,7 +202,7 @@
             } else if (editor.uploader.state === 'confirm') {
                 stats = editor.uploader.getStats();
                 if (stats.uploadFailNum) {
-                    text = '已成功上传' + stats.successNum + '张照片至相册，' + stats.uploadFailNum + '张照片上传失败，<a class="retry" href="#">重新上传</a>失败图片或<a class="ignore" href="#">忽略</a>'
+                    text = '已成功上传' + stats.successNum + '张照片，' + stats.uploadFailNum + '张照片上传失败，<a class="retry" href="#">重新上传</a>失败图片或<a class="ignore" href="#">忽略</a>'
                 }
             } else {
                 stats = editor.uploader.getStats();
@@ -223,6 +226,8 @@
             switch (editor.uploader.state) {
                 case 'ready': //选完图片以后
                     editor.uploader.refresh();
+                    $uploadBtn.removeClass('disabled');
+
                     break;
                 case 'pedding':
                     $uploadStartContainer.show();
@@ -233,7 +238,8 @@
                     //上传进度条要显示，上传按钮要隐藏，继续添加按钮要隐藏
                     $uploadAllPgElem.show();
                     $uploadAllPgElem.show();
-                    $(".img-add-btn").hide();
+                    $addBtn.hide();
+                    $insertBtn.addClass('disabled');
                     $uploadBtn.text('暂停上传');
                     break;
                 case 'paused':
@@ -244,19 +250,27 @@
                     $uploadAllPgElem.hide();
                     $addBtn.show();
                     $uploadBtn.text('开始上传');
+                    $insertBtn.removeClass('disabled');
+                    $uploadBtn.addClass('disabled');
                     stats = editor.uploader.getStats();
+                    !!stats.successNum ? $insertBtn.removeClass('disabled') :$insertBtn.addClass('disabled');
                     if (stats.successNum && !stats.uploadFailNum) {
                         setState('finish');
                         return;
                     }
                     break;
                 case 'finish':
+                    $uploadBtn.addClass('disabled');
                     break;
 
             }
             updateStatus();
         }
 
+        function closeLayer(){
+            var layerIndex=editor.$valueContainer.attr("layer-index");
+            layer.close(layerIndex);
+        }
 
 
 
@@ -283,6 +297,7 @@
                     //隐藏初始点击上传图片
                     $uploadStartContainer.hide();
                     $uploadfileContainer.show();
+                    editor.uploader.refresh();
                 }
                 //添加li，并绑定事件
                 addFile(file);
@@ -393,7 +408,8 @@
         });
 
         //*****点击上传按钮**************************************************
-        $uploadBtn.on("click", function() {
+        $uploadBtn.on("click", function(event) {
+            event.preventDefault();
             if ($(this).hasClass('disabled')) {
                 return false;
             }
@@ -406,6 +422,41 @@
             }
         });
 
+        //*****本地上传点击插入按钮**************************************************
+        $insertBtn.on("click",function(event){
+            event.preventDefault();
+            if($(this).hasClass('disabled')) return;
+            var html="",url;
+            //
+            $uploadfileUL.children('li').each(function(index, el) {
+                var $el=$(el);
+                if($el.hasClass('had-insert')) return;
+                url=$el.attr("data-url");
+                if(!!url){
+                    html="<img src='"+url+"' style='max-width:100%;'/>";
+                }
+                !!html&& editor.command(null, 'insertHtml', html,function(){
+                      $(el).addClass('had-insert')  
+                });
+            });
+
+
+            closeLayer();
+        });
+
+        //*****本地上传点击插入按钮**************************************************  
+        var $galleryallInsertBtn= $webuploaderDialog.find(".ft-galleryall-insert");
+        $galleryallInsertBtn.on("click",function(){
+            var html="",url;
+             $galleryListUL.children('li').each(function(index, el) {
+                 url=$(el).find("img").attr("src");
+                if(!!url){
+                    html+="<img src='"+url+"' style='max-width:100%;'/>";
+                }
+             });
+             !!html&& editor.command(null, 'insertHtml', html);
+             closeLayer();
+        })
 
 
 
@@ -414,15 +465,46 @@
         //*****tab选项卡切换**************************************************
         $webuploaderDialog.find('.imgupload-tab-hd a').click(function(e) {
             e.preventDefault()
-            $(this).editorTab('show')
+            $(this).editorTab('show');
+            editor.uploader.refresh();
         });
 
 
         //*****重新上传**************************************************
         
+        $webuploaderDialog.on("click", ".retry", function() {
+            editor.uploader.retry();
+        })
+        
         //*****忽略按钮**************************************************
+        $webuploaderDialog.on("click", ".ignore", function() {
+            var files = editor.uploader.getFiles("error");
+            for (var i = 0; i < files.length; i++) {
+                editor.uploader.removeFile(files[i], true);
+                $("#" + files[i].id).remove();
+            }
+            updateStatus();
+            setState("ready");
+        });
 
+        //*****相册列表**************************************************
+        $galleryListUL.on("click","li",function(){
+            var $this=$(this);
+            if(!$this.hasClass('active')){
+                $this.addClass('active');
+            }else{
+                $this.removeClass('active');
+            }
+        })
 
+        //*****上传关闭按钮**************************************************
+        $webuploaderDialog.find(".ft-btn-cancel,.ft-galleryall-cancel").on("click",function(event){
+                event.preventDefault();
+                closeLayer();
+        });
+
+        //*****上传关闭按钮**************************************************
+        
         //初始化执行
         $uploadBtn.addClass('state-' + editor.uploader.state);
         updateTotalProgress();
