@@ -23,7 +23,7 @@
             //限制文件的大小
             fileSingleSizeLimit: 4 * 1024 * 1024,
             // fileSingleSizeLimit:2 * 1024 * 1024,
-            fileNumLimit:30,
+            fileNumLimit: 30,
             fileSizeLimit: 100 * 1024 * 1024
         });
 
@@ -45,7 +45,7 @@
 
 
         var $uploadBtn = $(".img-upload-btn");
-        var $addBtn=$(".img-add-btn");
+        var $addBtn = $(".img-add-btn");
 
         // 所有文件的进度信息，key为file id
         var percentages = {};
@@ -221,37 +221,37 @@
 
 
         function setState(val) {
-        	var file, stats;
-        	if ( val === state ) {
+            var file, stats;
+            if (val === state) {
                 return;
             }
-            $uploadBtn.removeClass( 'state-' + state );
-            $uploadBtn.addClass( 'state-' + val );
+            $uploadBtn.removeClass('state-' + state);
+            $uploadBtn.addClass('state-' + val);
             state = val;
             switch (state) {
                 case 'ready': //选完图片以后
                     uploader.refresh();
                     break;
                 case 'pedding':
-                	$startContainer.show();
-                	$uploadfileContainer.hide();
-                	uploader.refresh();
+                    $startContainer.show();
+                    $uploadfileContainer.hide();
+                    uploader.refresh();
                     break;
                 case 'uploading':
                     //上传进度条要显示，上传按钮要隐藏，继续添加按钮要隐藏
                     $uploadAllPgElem.show();
                     $uploadAllPgElem.show();
                     $(".img-add-btn").hide();
-                    $uploadBtn.text( '暂停上传' );
+                    $uploadBtn.text('暂停上传');
                     break;
                 case 'paused':
-                    $uploadBtn.text( '继续上传' );
+                    $uploadBtn.text('继续上传');
                     break;
                 case 'confirm':
-                	//上传进度条要隐藏
+                    //上传进度条要隐藏
                     $uploadAllPgElem.hide();
                     $addBtn.show();
-                    $uploadBtn.text( '开始上传' );
+                    $uploadBtn.text('开始上传');
                     stats = uploader.getStats();
                     if (stats.successNum && !stats.uploadFailNum) {
                         setState('finish');
@@ -297,7 +297,7 @@
                 addFile(file);
                 setState('ready');
                 updateTotalProgress();
-                
+
             }
 
         });
@@ -306,20 +306,20 @@
             // console.group("触发了：filesQueued事件(当一批文件添加进队列以后触发)");
         });
 
-        uploader.on('fileDequeued',function(file){
-        	 fileCount--;
+        uploader.on('fileDequeued', function(file) {
+            fileCount--;
             fileSize -= file.size;
 
-            if ( !fileCount ) {
-                setState( 'pedding' );
+            if (!fileCount) {
+                setState('pedding');
             }
-            removeFile( file );
+            removeFile(file);
             updateTotalProgress();
         });
 
-        function removeFile(file){
-        	var $li = $('#'+file.id);
-            delete percentages[ file.id ];
+        function removeFile(file) {
+            var $li = $('#' + file.id);
+            delete percentages[file.id];
             $li.remove();
             updateTotalProgress();
         }
@@ -333,17 +333,17 @@
 
         uploader.on("stopUpload", function(file, data) {
             // console.group("触发了：uploadAccept事件");
-            setState( 'paused' );
-            
+            setState('paused');
+
         });
 
         uploader.on("uploadBeforeSend", function(file) {
             // console.group("触发了：uploadBeforeSend事件");
         });
         uploader.on("uploadProgress", function(file, percentage) {
-           
+
             // console.group("触发了：uploadProgress事件");
-           
+
 
             var $li = $('#' + file.id),
                 $percent = $li.find('.img-progress span');
@@ -358,7 +358,7 @@
         });
 
 
-       
+
 
 
 
@@ -367,6 +367,7 @@
             // console.group("触发了：uploadSuccess");
             // console.dir(uploader.getFiles("progress"));
             // console.dir(uploader.getFiles("complete"))
+            $("#" + file.id).attr("data-url", response);
 
         });
 
@@ -383,7 +384,7 @@
         });
 
 
-         
+
 
 
 
@@ -415,64 +416,67 @@
 
 
         $uploadBtn.on("click", function() {
-        	if ($(this).hasClass( 'disabled' ) ) {
+            if ($(this).hasClass('disabled')) {
                 return false;
             }
-            if ( state === 'ready' ) {
+            if (state === 'ready') {
                 uploader.upload();
-            } else if ( state === 'paused' ) {
+            } else if (state === 'paused') {
                 uploader.upload();
-            } else if ( state === 'uploading' ) {
+            } else if (state === 'uploading') {
                 uploader.stop();
             }
         });
 
 
-        $uploadfileContainer.on("click",".retry",function(){
-        	uploader.retry();
+        $uploadfileContainer.on("click", ".retry", function() {
+            uploader.retry();
         })
 
-        $uploadfileContainer.on("click",".ignore",function(){
-        	//忽略 这个时候的状态是confirm
-        	console.dir(uploader.getFiles())
-        	console.dir(fileSize)
-        	var files=uploader.getFiles("error");
-        	for (var i =0; i <files.length; i++) {
-        		uploader.removeFile(files[i],true);
-        		$("#"+files[i].id).remove();
-        	}
+        $uploadfileContainer.on("click", ".ignore", function() {
+            //忽略 这个时候的状态是confirm
+            console.dir(uploader.getFiles())
+            console.dir(fileSize)
+            var files = uploader.getFiles("error");
+            for (var i = 0; i < files.length; i++) {
+                uploader.removeFile(files[i], true);
+                $("#" + files[i].id).remove();
+            }
 
-        	updateStatus();
-        	setState("ready");
+            updateStatus();
+            setState("ready");
 
-        	
+
         })
 
 
-        $uploadBtn.addClass( 'state-' + state );
+        $uploadBtn.addClass('state-' + state);
         updateTotalProgress();
 
 
 
-        $(".imgupload-tab-hd li").on("click",function(){
-        	var $this=$(this);
-        	$this.addClass('active').siblings().removeClass("active");
-        	var index=$(".imgupload-tab-hd li").index(this);
-        	if(index==0){
-        		$(".wangeditor-localupload-container").show();
-        		$(".wangeditor-gallery-container").hide();
-        	}else{
-        		$(".wangeditor-localupload-container").hide();
-        		$(".wangeditor-gallery-container").show();
-        	}
+
+
+        $('.imgupload-tab-hd a').click(function(e) {
+            e.preventDefault()
+            $(this).editorTab('show')
         })
 
 
 
 
 
+        $(".ft-btn-insert").on("click",function(){
+        	var $url=$("#J_wangeditor-uploadfile-list li").eq(0).attr("data-url");
+        	html="<img src='"+$url+"' style='max-width:100%;'/>";
+        	editor.command(null, 'insertHtml', html);
+
+        	$("#J_wangeditor-imgupload-dialog").hide();
+        	
+        })
 
 
+   console.dir(editor.customCommand)
 
 
 

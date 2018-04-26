@@ -18,14 +18,12 @@
 #!! is not recommended to be used in production environment as it is. Be sure to
 #!! revise it and customize to your needs.
 
-
 // Make sure file is not cached (as it happens for example on iOS devices)
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-
 
 // Support CORS
 // header("Access-Control-Allow-Origin: *");
@@ -34,10 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit; // finish preflight CORS requests here
 }
 
-
-if ( !empty($_REQUEST[ 'debug' ]) ) {
-    $random = rand  (0, intval($_REQUEST[ 'debug' ]) );
-    if ( $random === 0 ) {
+if (!empty($_REQUEST['debug'])) {
+    $random = rand(0, intval($_REQUEST['debug']));
+    if ($random === 0) {
         header("HTTP/1.0 500 Internal Server Error");
         exit;
     }
@@ -46,12 +43,11 @@ if ( !empty($_REQUEST[ 'debug' ]) ) {
 // header("HTTP/1.0 500 Internal Server Error");
 // exit;
 
-
 // 5 minutes execution time
 @set_time_limit(5 * 60);
 // 设置脚本最大执行时间
-// 
-// 
+//
+//
 // Uncomment this one to fake upload time
 // usleep(5000);
 
@@ -60,14 +56,11 @@ if ( !empty($_REQUEST[ 'debug' ]) ) {
 // 虚拟文件存放的目录
 $targetDir = 'upload_tmp';
 
-
 //文件上传后的目录
 $uploadDir = 'upload';
 
-
 $cleanupTargetDir = false; // Remove old files
 $maxFileAge = 5 * 3600; // Temp file age in seconds
-
 
 // Create target dir
 // 文件目录不存在 那么就创建一个
@@ -99,9 +92,8 @@ $uploadPath = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
 $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
 $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 1;
 
-
 // Remove old temp files
-// 
+//
 //  打开目录句柄 opendir
 if ($cleanupTargetDir) {
     if (!is_dir($targetDir) || !$dir = opendir($targetDir)) {
@@ -123,7 +115,6 @@ if ($cleanupTargetDir) {
     }
     closedir($dir);
 }
-
 
 // Open temp file
 if (!$out = @fopen("{$filePath}_{$chunk}.parttmp", "wb")) {
@@ -158,20 +149,20 @@ rename("{$filePath}_{$chunk}.parttmp", "{$filePath}_{$chunk}.part");
 
 $index = 0;
 $done = true;
-for( $index = 0; $index < $chunks; $index++ ) {
-    if ( !file_exists("{$filePath}_{$index}.part") ) {
+for ($index = 0; $index < $chunks; $index++) {
+    if (!file_exists("{$filePath}_{$index}.part")) {
         $done = false;
         break;
     }
 }
-if ( $done ) {
+if ($done) {
     $pathInfo = pathinfo($fileName);
     if (!$out = @fopen($uploadPath, "wb")) {
         die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
     }
     // flock — 轻便的咨询文件锁定   取得独占锁定（写入的程序。
-    if ( flock($out, LOCK_EX) ) {
-        for( $index = 0; $index < $chunks; $index++ ) {
+    if (flock($out, LOCK_EX)) {
+        for ($index = 0; $index < $chunks; $index++) {
             if (!$in = @fopen("{$filePath}_{$index}.part", "rb")) {
                 break;
             }
@@ -190,16 +181,16 @@ if ( $done ) {
     @fclose($out);
 
     $response = [
-        'success'=>true,
-        'oldName'=>$oldName,
-        'filePath'=>$uploadPath,
-        'fileSize'=>$_REQUEST['size'],
-        'fileSuffixes'=>$pathInfo['extension'],
-        'file_id'=>$_REQUEST['id'],
-        ];
+        'success' => true,
+        'oldName' => $oldName,
+        'filePath' => "http://localhost/BianJiQi/wangEditor/php/" . $uploadDir . "/" . $fileName,
+        'fileSize' => $_REQUEST['size'],
+        'fileSuffixes' => $pathInfo['extension'],
+        'file_id' => $_REQUEST['id'],
+    ];
 
-    // die(json_encode($fileName));
+    echo json_encode($response["filePath"]);
 }
 
 // Return Success JSON-RPC response
-die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+// die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');

@@ -12,66 +12,68 @@
     <script type="text/javascript" src="static/layer/layer.js"></script>
     <script type="text/javascript" src="dist/webuploader/webuploader.js"></script>
     <script type="text/javascript" src="dist/js/imgupload.js"></script>
+    <script type="text/javascript" src="dist/js/tab.js"></script>
+    <script type="text/javascript" src="dist/js/webUploaderPlugin.js"></script>
 </head>
 
 <body>
     <!--  -->
-    <textarea id="J_xy-editor-textarea" style="height:400px;max-height:500px;">
-    </textarea>
+    <div id="J_xy-editor-textarea" style="height:400px;max-height:500px;">
+    </div>
     <div class="wangeditor-imgupload-dialog" id="J_wangeditor-imgupload-dialog">
-        <ul class="imgupload-tab-hd">
-            <li class="active"><a href="#J_wangeditor-localupload-container">本地上传</a></li>
-            <li><a href="#J_wangeditor-gallery-container">相册图片</a></li>
-        </ul>
-        <div class="wangeditor-localupload-container" id="J_wangeditor-localupload-container">
-            <div class="wangeditor-localupload-start" id="J_wangeditor-localupload-start">
-                <div class="webuploader-container" id="J_filePicker_1"></div>
-                <p class="tip-1">或将照片拖到这里，单次最多可选30张</p>
-            </div>
-            <div class="wangeditor-uploadfile-container" id="J_wangeditor-uploadfile-container">
-                <div class="wangeditor-uploadfile-hd">
-                    <div class="img-upload-allprogress">
-                        <span class="txt"></span>
-                        <span class="percentage"></span>
+            <ul class="imgupload-tab-hd">
+                <li class="active"><a href="#J_wangeditor-localupload-container">本地上传</a></li>
+                <li><a href="#J_wangeditor-gallery-container">相册图片</a></li>
+            </ul>
+            <div class="wangeditor-localupload-container active" id="J_wangeditor-localupload-container">
+                <div class="wangeditor-localupload-start" id="J_wangeditor-localupload-start">
+                    <div class="webuploader-container" id="J_filePicker_1"></div>
+                    <p class="tip-1">或将照片拖到这里，单次最多可选30张</p>
+                </div>
+                <div class="wangeditor-uploadfile-container" id="J_wangeditor-uploadfile-container">
+                    <div class="wangeditor-uploadfile-hd">
+                        <div class="img-upload-allprogress">
+                            <span class="txt"></span>
+                            <span class="percentage"></span>
+                        </div>
+                        <div class="img-upload-info"></div>
+                        <a href="#" class="img-upload-btn">开始上传</a>
+                        <div class="img-add-btn" id="J_filePicker_2">继续添加</div>
                     </div>
-                    <div class="img-upload-info"></div>
-                    <a href="#" class="img-upload-btn">开始上传</a>
-                    <div class="img-add-btn" id="J_filePicker_2">继续添加</div>
-                </div>
-                <ul class="wangeditor-uploadfile-list" id="J_wangeditor-uploadfile-list"></ul>
-                <div class="wangeditor-uploadfile-ft">
-                    <label class="ft-save-checkbox">
-                        <input type="checkbox" name="" />保存到相册</label>
-                    <select class="ft-gallery-sel" disabled>
-                        <option value="1">默认相册</option>
-                    </select>
-                    <a href="#" class="ft-btn-insert">插入</a>
-                    <a href="#" class="ft-btn-cancel">关闭</a>
+                    <ul class="wangeditor-uploadfile-list" id="J_wangeditor-uploadfile-list"></ul>
+                    <div class="wangeditor-uploadfile-ft">
+                        <label class="ft-save-checkbox">
+                            <input type="checkbox" name="" />保存到相册</label>
+                        <select class="ft-gallery-sel" disabled>
+                            <option value="1">默认相册</option>
+                        </select>
+                        <a href="#" class="ft-btn-insert">插入</a>
+                        <a href="#" class="ft-btn-cancel">关闭</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="wangeditor-gallery-container" id="J_wangeditor-gallery-container">
-            <div class="wangeditor-gallery-nodata">
-                您的相册目前还没有照片,<a href="#">立马去上传</a>
-            </div>
-            <div class="wangeditor-gallery-hasdata">
-                <ul class="wangeditor-gallery-list">
-                    <!-- <li class="active">
+            <div class="wangeditor-gallery-container" id="J_wangeditor-gallery-container">
+                <div class="wangeditor-gallery-nodata">
+                    您的相册目前还没有照片,<a href="#">立马去上传</a>
+                </div>
+                <div class="wangeditor-gallery-hasdata">
+                    <ul class="wangeditor-gallery-list">
+                        <!-- <li class="active">
                         <div class="pic"><img src="uploadDemo/01.jpg" /></div>
                         <span class="status-check"></span>
                     </li>
                      -->
-                </ul>
-                <div class="wangeditor-gallery-ft">
-                    <select class="ft-galleryall-sel">
-                        <option value="1">默认相册</option>
-                        <option value="2">相册2</option>
-                    </select>
-                    <a href="#" class="ft-galleryall-insert">插入</a>
-                    <a href="#" class="ft-galleryall-cancel">取消</a>
+                    </ul>
+                    <div class="wangeditor-gallery-ft">
+                        <select class="ft-galleryall-sel">
+                            <option value="1">默认相册</option>
+                            <option value="2">相册2</option>
+                        </select>
+                        <a href="#" class="ft-galleryall-insert">插入</a>
+                        <a href="#" class="ft-galleryall-cancel">取消</a>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
     <button id="btn-get-txt">获取文本(不包含html)</button>
     <button id="btn-get-html">获取内容(html和txt)</button>
@@ -119,6 +121,10 @@
 
     editor.config.uploadImgUrl = './php/uploader.php';
     editor.config.uploadImgFileName = "wangfile";
+
+    editor.config.webuploader={
+        aaa:10
+    }
     // editor.config.uploadImgFns = {
     //     onload: function(resultText, xhr) {
     //         alert(resultText);
@@ -162,9 +168,7 @@
     });
     </script>
     <div style="height:200px; "></div>
-
-    <textarea id="J_xy-editor-textarea-2" style="height:400px;max-height:500px;">
-    </textarea>
+    
 </body>
 
 </html>
