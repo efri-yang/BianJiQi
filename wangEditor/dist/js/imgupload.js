@@ -471,8 +471,7 @@
         	html="<img src='"+$url+"' style='max-width:100%;'/>";
         	editor.command(null, 'insertHtml', html);
 
-        	$("#J_wangeditor-imgupload-dialog").hide();
-        	
+        	$("#J_wangeditor-imgupload-dialog").hide();	
         })
 
 
