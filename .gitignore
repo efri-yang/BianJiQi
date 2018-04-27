@@ -16,3 +16,4 @@ src/XiaoYuCheZhan/cheXingXiangQing.html
 php/upload/*
 plupload/uploads/*
 upload
+*.zip
