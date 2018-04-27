@@ -5279,7 +5279,7 @@ _e(function(E, $) {
 
         menu.clickEvent = function(e) {
             var uploaderDialigId=editor.$valueContainer.attr("id")+"-imgupload-dialog";
-            layer.open({
+            window.layer.open({
               type: 1,
               shade: false,
               move: '#'+uploaderDialigId+' .mine-move',
@@ -5287,8 +5287,8 @@ _e(function(E, $) {
               area: '702px',
               content: $("#"+uploaderDialigId), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
               success: function(layero, index){
-                editor.uploader.refresh();
                 editor.$valueContainer.attr("layer-index",index);
+                !!editor.uploader && editor.uploader.refresh();
               },
               cancel: function(index, layero){ 
                 editor.$valueContainer.removeAttr("layer-index");

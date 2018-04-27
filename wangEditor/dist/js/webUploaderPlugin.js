@@ -447,15 +447,17 @@
         //*****本地上传点击插入按钮**************************************************  
         var $galleryallInsertBtn= $webuploaderDialog.find(".ft-galleryall-insert");
         $galleryallInsertBtn.on("click",function(){
+
             var html="",url;
              $galleryListUL.children('li').each(function(index, el) {
                  url=$(el).find("img").attr("src");
+                    console.dir(url);
                 if(!!url){
                     html+="<img src='"+url+"' style='max-width:100%;'/>";
                 }
              });
-             !!html&& editor.command(null, 'insertHtml', html);
-             closeLayer();
+             // !!html&& editor.command(null, 'insertHtml', html);
+             // closeLayer();
         })
 
 
