@@ -30,7 +30,10 @@ var initSample = ( function() {
 
 		// Depending on the wysiwygare plugin availability initialize classic or inline editor.
 		if ( wysiwygareaAvailable ) {
-			CKEDITOR.replace( 'editor' );
+			CKEDITOR.replace( 'editor',{
+				cloudServices_tokenUrl: 'https://wnworld.com/api/fileupload.php',
+    			cloudServices_uploadUrl: 'https://wnworld.com/api/fileupload.php'
+			});
 		} else {
 			editorElement.setAttribute( 'contenteditable', 'true' );
 			CKEDITOR.inline( 'editor' );
