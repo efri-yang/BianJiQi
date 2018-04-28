@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+-->
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>CKEditor Sample</title>
+	
+	<script src="../ckeditor.js"></script>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>
+	<link rel="stylesheet" href="css/samples.css">
+	<link rel="stylesheet" href="toolbarconfigurator/lib/codemirror/neo.css">
+</head>
+<body style="padding: 150px 150px;">
+<div id="editor">
+	
+</div>
+
+<button id="btn-get-content">获取内容</button>
+<script>
+
+	
+
+	var editor=CKEDITOR.replace( 'editor',{
+		extraPlugins: 'abbr',
+		allowedContent: true
+	});
+
+	var command = new CKEDITOR.command( editor, {
+    exec: function( editor ) {
+        alert( editor.document.getBody().getHtml() );
+    }
+} );
+
+
+
+
+	$(function(){
+		$("#btn-get-content").on("click",function(){
+			
+		})
+	})
+</script>
+
+</body>
+</html>
