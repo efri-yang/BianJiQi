@@ -16,18 +16,15 @@ CKEDITOR.plugins.add( 'abbr', {
 
 	// The plugin initialization logic goes inside this method.
 	init: function( editor ) {
-		console.dir(editor);
 
 		// Define an editor command that opens our dialog window.
-		// editor.addCommand( 'abbr', new CKEDITOR.dialogCommand( 'abbrDialog' ) );
-		
 		editor.addCommand( 'abbr', new CKEDITOR.dialogCommand( 'abbrDialog' ) );
 
 		// Create a toolbar button that executes the above command.
 		editor.ui.addButton( 'Abbr', {
 
 			// The text part of the button (if available) and the tooltip.
-			label: '图标的信息提示',
+			label: 'Insert Abbreviation',
 
 			// The command to execute on click.
 			command: 'abbr',
@@ -35,6 +32,24 @@ CKEDITOR.plugins.add( 'abbr', {
 			// The button placement in the toolbar (toolbar group name).
 			toolbar: 'insert'
 		});
+		console.dir( editor.contextMenu);
+		if ( editor.contextMenu ) {
+			
+			// Add a context menu group with the Edit Abbreviation item.
+			editor.addMenuGroup( 'abbrGroup' );
+			editor.addMenuItem( 'abbrItem', {
+				label: 'Edit Abbreviation',
+				icon: this.path + 'icons/abbr.png',
+				command: 'abbr',
+				group: 'abbrGroup'
+			});
+
+			editor.contextMenu.addListener( function( element ) {
+				if ( element.getAscendant( 'abbr', true ) ) {
+					return { abbrItem: CKEDITOR.TRISTATE_OFF };
+				}
+			});
+		}
 
 		// Register our dialog file -- this.path is the plugin folder path.
 		CKEDITOR.dialog.add( 'abbrDialog', this.path + 'dialogs/abbr.js' );

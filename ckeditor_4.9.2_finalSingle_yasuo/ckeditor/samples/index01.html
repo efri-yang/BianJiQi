@@ -15,7 +15,12 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 </head>
 <body style="padding: 150px 150px;">
 <div id="editor">
-	
+	<img src="img/logo.png">
+	<p>文本01</p>
+	<p>文本02</p>
+	<p>文本03</p>
+	<p>文本04</p>
+	<p>文本05</p>
 </div>
 
 <button id="btn-get-content">获取内容</button>
@@ -28,11 +33,8 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 		allowedContent: true
 	});
 
-	var command = new CKEDITOR.command( editor, {
-    exec: function( editor ) {
-        alert( editor.document.getBody().getHtml() );
-    }
-} );
+	
+
 
 
 
