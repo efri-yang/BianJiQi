@@ -7,33 +7,47 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 <head>
 	<meta charset="utf-8">
 	<title>CKEditor Sample</title>
-	
-	<script src="../ckeditor.js"></script>
 	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>
+	<script src="../ckeditor.js"></script>
+	<script type="text/javascript" src="./js/layer/layer.js"></script>
 	<link rel="stylesheet" href="css/samples.css">
 	<link rel="stylesheet" href="toolbarconfigurator/lib/codemirror/neo.css">
 </head>
 <body style="padding: 150px 150px;">
-<div id="editor">
-	<img src="img/logo.png">
-	<p>文本01</p>
-	<p>文本02</p>
-	<p>文本03</p>
-	<p>文本04</p>
-	<p>文本05</p>
-</div>
+
+
+<div id="editor"></div>
+
+
+<div id="editor2"></div>
 
 <button id="btn-get-content">获取内容</button>
 <script>
 
-	
+
 
 	var editor=CKEDITOR.replace( 'editor',{
-		extraPlugins: 'abbr,image',
+		extraPlugins: 'simplebox,abbr,image',
 		allowedContent: true
 	});
 
-	
+
+	var editor2=CKEDITOR.replace( 'editor2',{
+		extraPlugins: 'simplebox,abbr,image',
+		allowedContent: true
+	});
+
+
+
+
+
+
+
+
+	// var tpl = new CKEDITOR.template( '<div class="{cls}">{label}</div>' );
+	// alert( tpl.output( { cls: 'cke-label', label: 'foo'} ) );
+
+
 
 
 
@@ -41,7 +55,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 
 	$(function(){
 		$("#btn-get-content").on("click",function(){
-			
+			alert(editor.Text.getData());
 		})
 	})
 </script>

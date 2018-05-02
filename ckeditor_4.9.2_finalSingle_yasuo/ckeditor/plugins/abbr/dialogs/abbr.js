@@ -50,6 +50,9 @@ CKEDITOR.dialog.add( 'abbrDialog', function( editor ) {
 						type: 'text',
 						id: 'title',
 						label: 'Explanation',
+
+						// Require the title attribute to be enabled.
+						requiredContent: 'abbr[title]',
 						validate: CKEDITOR.dialog.validate.notEmpty( "Explanation field cannot be empty." ),
 
 						// Called by the main setupContent method call on dialog initialization.
@@ -69,6 +72,9 @@ CKEDITOR.dialog.add( 'abbrDialog', function( editor ) {
 			{
 				id: 'tab-adv',
 				label: 'Advanced Settings',
+
+				// Require the id attribute to be enabled.
+				requiredContent: 'abbr[id]',
 				elements: [
 					{
 						// Another text field for the abbr element id.
@@ -127,6 +133,10 @@ CKEDITOR.dialog.add( 'abbrDialog', function( editor ) {
 
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
 		onOk: function() {
+
+			// The context of this function is the dialog object itself.
+			// http://docs.ckeditor.com/ckeditor4/docs/#!/api/CKEDITOR.dialog
+			var dialog = this;
 
 			// Create a new <abbr> element.
 			var abbr = this.element;

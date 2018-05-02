@@ -5,37 +5,39 @@ Licensed under the terms of the MIT License (see LICENSE.md).
 -->
 <html>
 <head>
-	<title>Tutorial &mdash; Abbreviation Plugin, Part 2</title>
+	<title>Tutorial &mdash; ACF Integration with the Abbreviation Plugin</title>
 	<meta charset="utf-8">
 	<script src="../../../ckeditor.js"></script>
 	<link href="../../../samples/sample.css" rel="stylesheet">
 </head>
 <body>
 	<h1 class="samples">
-		CKEditor Tutorial &mdash; Abbreviation Plugin, Part 2
+		CKEditor Tutorial &mdash; ACF Integration with the Abbreviation Plugin
 	</h1>
 
 	<p>
-		This sample demonstrates the <strong>Abbreviation</strong> plugin that was created in the
-		<a href="http://docs.ckeditor.com/ckeditor4/docs/#!/guide/plugin_sdk_sample_2">second installment</a> of
-		of the CKEditor plugin tutorial series.
+		This sample demonstrates the integration of <a href="http://docs.ckeditor.com/ckeditor4/docs/#!/guide/dev_acf">Advanced Content Filter (ACF)</a>
+		with a custom <strong>Abbreviation</strong> plugin, as explained in the
+		<a href="http://docs.ckeditor.com/ckeditor4/docs/#!/guide/plugin_sdk_integration_with_acf">Integrating Plugins with Advanced Content Filter</a>
+		article.
 	</p>
 
 	<p>
-		The custom Abbreviation plugin created in the tutorial lets the users insert abbreviations into their documents.
-		The abbreviations use the <code>&lt;abbr&gt;</code> HTML element and are added and edited through a dialog window
-		that is opened after clicking the dedicated <strong>Insert Abbreviation</strong> (<img src="../icons/abbr.png">)
-		toolbar button available in the editor instance below.
+		Advanced Content Filter (ACF) is a CKEditor core feature that <strong>filters incoming HTML content</strong> by transforming and deleting disallowed elements, attributes, classes and styles. The introduction of content filtering have impacted the plugin development process and slightly changed the data processing model of CKEditor. With ACF plugins can take control over the content available in the editor and adaptively adjust the user interface when allowed content changes.
 	</p>
 
 	<p>
-		<strong>Note:</strong> This version of the Abbreviation plugin was built upon the source code created in the 
-		<a href="http://docs.ckeditor.com/ckeditor4/docs/#!/guide/plugin_sdk_sample_1">first part of the plugin tutorial</a> and was
-		extended with context menu support as well as the possibility to edit a previously inserted element.
+		The custom Abbreviation plugin created in the tutorials lets the users insert abbreviations into their documents.
+		The abbreviations use the <code>&lt;abbr&gt;</code> HTML element and its attributes, so content filtering rules needed
+		to be adjusted to allow these elements.
+	</p>
+
+	<p>
+		<strong>Note:</strong> Advanced Content Filter was introduced in <strong>CKEditor 4.1</strong>.
 	</p>
 
 	<textarea id="editor1" cols="10" rows="10">
-		&lt;p&gt;This is some sample text. You are using &lt;a href=&quot;http://ckeditor.com&quot;&gt;CKEditor&lt;/a&gt;, an online &lt;abbr title=&quot;What You See Is What You Get&quot;&gt;WYSIWYG&lt;/abbr&gt;&amp;nbsp;editor.&lt;/p&gt;
+		&lt;p&gt;This is some sample text. You are using &lt;a href=&quot;http://ckeditor.com&quot;&gt;CKEditor&lt;/a&gt;, an online &lt;abbr title=&quot;What You See Is What You Get&quot;&gt;WYSIWYG&lt;/abbr&gt;&amp;nbsp;editor. This editor instance implements&amp;nbsp;&lt;abbr title=&quot;Advanced Content Filter&quot;&gt;ACF&lt;/abbr&gt;.&lt;/p&gt;
 	</textarea>
 
 	<script>
@@ -43,9 +45,6 @@ Licensed under the terms of the MIT License (see LICENSE.md).
 		CKEDITOR.replace( 'editor1', {
 			// Load the abbr plugin.
 			extraPlugins: 'abbr',
-
-			// Disable Advanced Content Filter as the plugin does not implement it (yet).
-			allowedContent: true,
 
 			// The following options are set to make the sample more clear for demonstration purposes.
 

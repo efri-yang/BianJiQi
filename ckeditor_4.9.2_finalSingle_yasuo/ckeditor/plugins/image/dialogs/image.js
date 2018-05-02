@@ -4,21 +4,34 @@
  */
 CKEDITOR.dialog.add( 'imageDialog', function( editor ) {
 	return {
-		title: '弹出框标题',
-		minWidth: 400,
-		minHeight: 200,
+		title: '上传图片',
+		minWidth: 600,
+		minHeight: 300,
 		contents: [
 			{
 				// Definition of the Basic Settings dialog tab (page).
-				id: 'tab-1', //不是真正的id 通过添加 id="cke_tab-1_67"
-				label: '选项卡1',
+				id: 'tab1', //不是真正的id 通过添加 id="cke_tab-1_67"
+				label: '本地上传',
+
+				// The tab content.
+				elements: [
+	                {
+	                    type: 'html',
+	                    html: '<div id="">asdfasdfasdfasdf</div>'
+	                }
+	            ]
+			},
+			{
+				// Definition of the Basic Settings dialog tab (page).
+				id: 'tab2', //不是真正的id 通过添加 id="cke_tab-1_67"
+				label: '相册图片',
 
 				// The tab content.
 				elements: [
 					{
 						// Text input field for the abbreviation text.
 						type: 'text',
-						id: 'abbr',
+						id: 'upload-localcccc',
 						label: '文本1111',
 
 						// Validation checking whether the field is not empty.
@@ -29,7 +42,9 @@ CKEDITOR.dialog.add( 'imageDialog', function( editor ) {
 
 		],
 		onShow: function() {
-				
+				var element = CKEDITOR.document.getById( 'myElement' );
+				alert( element.getId() ); // 'm
+
 		},
 		onOk: function() {
 			var dialog = this;
@@ -37,7 +52,7 @@ CKEDITOR.dialog.add( 'imageDialog', function( editor ) {
 			console.dir(dialog);
 			var p = editor.document.createElement( 'p' );
 			var title=dialog.getValueOf( 'tab-1', 'abbr' );
-			$(p).html(title);
+			p.setText(title);
 
 			// Finally, insert the element into the editor at the caret position.
 			editor.insertElement(p);

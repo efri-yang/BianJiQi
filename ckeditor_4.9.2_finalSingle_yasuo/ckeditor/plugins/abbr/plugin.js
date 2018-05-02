@@ -18,7 +18,20 @@ CKEDITOR.plugins.add( 'abbr', {
 	init: function( editor ) {
 
 		// Define an editor command that opens our dialog window.
-		editor.addCommand( 'abbr', new CKEDITOR.dialogCommand( 'abbrDialog' ) );
+		editor.addCommand( 'abbr', new CKEDITOR.dialogCommand( 'abbrDialog', {
+
+			// Allow the abbr tag with an optional title attribute.
+			allowedContent: 'abbr[title,id]',
+
+			// Require the abbr tag to be allowed for the feature to work.
+			requiredContent: 'abbr',
+
+			// Prefer abbr over acronym. Transform acronym elements into abbr elements.
+			contentForms: [
+				'abbr',
+				'acronym'
+			]
+		} ) );
 
 		// Create a toolbar button that executes the above command.
 		editor.ui.addButton( 'Abbr', {
@@ -32,7 +45,7 @@ CKEDITOR.plugins.add( 'abbr', {
 			// The button placement in the toolbar (toolbar group name).
 			toolbar: 'insert'
 		});
-		console.dir( editor.contextMenu);
+
 		if ( editor.contextMenu ) {
 			
 			// Add a context menu group with the Edit Abbreviation item.
