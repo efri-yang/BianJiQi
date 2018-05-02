@@ -6,6 +6,7 @@
 <title>Plupload - Custom example</title>
 
 <!-- production -->
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>
 <script type="text/javascript" src="../js/plupload.full.min.js"></script>
 
 
@@ -24,13 +25,75 @@
 <div id="filelist">Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
 <br />
 
+
+
 <div id="container">
     <a id="pickfiles" href="javascript:;">[Select files]</a> 
     <a id="uploadfiles" href="javascript:;">[Upload files]</a>
 </div>
-
-<br />
 <pre id="console"></pre>
+
+
+<div class="wangeditor-imgupload-dialog" data-relateto="J_xy-editor-textarea" style="top:20%;">
+            <ul class="imgupload-tab-hd">
+                <li class="active"><a href="#tabbd-localupload-container">本地上传</a></li>
+                <li><a href="#tabbd-gallery-container">相册图片</a></li>
+            </ul>
+            <div class="wangeditor-localupload-container active"  data-relateto="#tabbd-localupload-container" >
+                <div class="wangeditor-localupload-start" id="J_wangeditor-localupload-start">
+                    <div class="webuploader-container" id="J_filePicker_1"></div>
+                    <p class="tip-1">或将照片拖到这里，单次最多可选30张</p>
+                </div>
+                <div class="wangeditor-uploadfile-container">
+                    <div class="wangeditor-uploadfile-hd">
+                        <div class="img-upload-allprogress">
+                            <span class="txt"></span>
+                            <span class="percentage"></span>
+                        </div>
+                        <div class="img-upload-info"></div>
+                        <a href="#" class="img-upload-btn">开始上传</a>
+                        <div class="img-add-btn" id="J_filePicker_2">继续添加</div>
+                    </div>
+                    <ul class="wangeditor-uploadfile-list"></ul>
+                    <div class="wangeditor-uploadfile-ft">
+                        <label class="ft-save-checkbox">
+                            <input type="checkbox" name="" />保存到相册</label>
+                        <select class="ft-gallery-sel" disabled>
+                            <option value="1">默认相册</option>
+                        </select>
+                        <a href="#" class="ft-btn-insert disabled">插入</a>
+                        <a href="#" class="ft-btn-cancel">关闭</a>
+                    </div>
+                </div>
+            </div>
+            <div class="wangeditor-gallery-container" data-relateto="#tabbd-gallery-container">
+                <div class="wangeditor-gallery-nodata" style="display:none;">
+                    您的相册目前还没有照片,<a href="#">立马去上传</a>
+                </div>
+                <div class="wangeditor-gallery-hasdata" style="display:block;">
+                    <ul class="wangeditor-gallery-list">
+                        <li class="active">
+                            <div class="pic"><img src="uploadDemo/01.jpg" /></div>
+                            <span class="status-check"></span>
+                        </li>
+
+                        <li>
+                            <div class="pic"><img src="uploadDemo/01.jpg" /></div>
+                            <span class="status-check"></span>
+                        </li>
+                    
+                    </ul>
+                    <div class="wangeditor-gallery-ft">
+                        <select class="ft-galleryall-sel">
+                            <option value="1">默认相册</option>
+                            <option value="2">相册2</option>
+                        </select>
+                        <a href="#" class="ft-galleryall-insert">插入</a>
+                        <a href="#" class="ft-galleryall-cancel">取消</a>
+                    </div>
+                </div>
+            </div>
+    </div>
 
 
 <script type="text/javascript">
@@ -53,11 +116,7 @@ var uploader = new plupload.Uploader({
 	},
 
 	init: {
-		init:function(){
-			console.group("init");
-		},
 		PostInit: function() {
-			console.group("PostInit事件");
 			document.getElementById('filelist').innerHTML = '';
 
 			document.getElementById('uploadfiles').onclick = function() {
@@ -65,39 +124,27 @@ var uploader = new plupload.Uploader({
 				return false;
 			};
 		},
-		OptionChanged:function(uploader,option_name,new_value,old_value){
-			console.group("OptionChanged事件");
-		},
-
-		StateChanged:function(uploader){
-			console.group("OptionChanged事件");
-		},
-
-		UploadFile:function(){
-			console.group("OptionChanged事件");
-		},
 
 		FilesAdded: function(up, files) {
-			console.group("FilesAdded事件");
 			plupload.each(files, function(file) {
 				document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
 			});
 		},
-		UploadFile:function(){
 
-		},
 		UploadProgress: function(up, file) {
-			console.group("UploadProgress事件");
 			document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
 		},
-		FileUploaded:function(uploader,file,responseObject){
-			console.group("FileUploaded");
-			console.dir(responseObject);
-		},
+
+		FileUploaded: function(up, file, info) {
+			console.dir(info);
+            // Called when file has finished uploading
+            $("#img-1").attr("src",info.response);
+        },
+
+
 
 
 		Error: function(up, err) {
-			console.group("Error事件");
 			document.getElementById('console').appendChild(document.createTextNode("\nError #" + err.code + ": " + err.message));
 		}
 	}

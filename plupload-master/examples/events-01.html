@@ -48,12 +48,12 @@
         // PreInit events, bound before the internal events
         preinit: {
             Init: function(up, info) {
-                log('[Init]', 'Info:', info, 'Features:', up.features);
+                console.group("preinit-Init事件")
             },
 
             UploadFile: function(up, file) {
-                log('[UploadFile]', file);
-
+                console.group("preinit-UploadFile事件");
+                
                 // You can override settings before the file is uploaded
                 // up.setOption('url', 'upload.php?id=' + file.id);
                 // up.setOption('multipart_params', {param1 : 'value1', param2 : 'value2'});
@@ -64,7 +64,7 @@
         init: {
             PostInit: function() {
                 // Called after initialization is finished and internal event handlers bound
-                log('[PostInit]');
+                console.group("PostInit事件");
 
                 document.getElementById('uploadfiles').onclick = function() {
                     uploader.start();
@@ -74,42 +74,48 @@
 
             Browse: function(up) {
                 // Called when file picker is clicked
-                log('[Browse]');
+                console.group("Browse事件");
             },
 
             Refresh: function(up) {
                 // Called when the position or dimensions of the picker change
-                log('[Refresh]');
+                console.group("Refresh事件");
             },
 
             StateChanged: function(up) {
                 // Called when the state of the queue is changed
-                log('[StateChanged]', up.state == plupload.STARTED ? "STARTED" : "STOPPED");
+                console.group("StateChanged事件");
+                // log('[StateChanged]', up.state == plupload.STARTED ? "STARTED" : "STOPPED");
             },
 
             QueueChanged: function(up) {
                 // Called when queue is changed by adding or removing files
-                log('[QueueChanged]');
+                console.group("QueueChanged事件");
             },
 
             OptionChanged: function(up, name, value, oldValue) {
                 // Called when one of the configuration options is changed
-                log('[OptionChanged]', 'Option Name: ', name, 'Value: ', value, 'Old Value: ', oldValue);
+                // log('[OptionChanged]', 'Option Name: ', name, 'Value: ', value, 'Old Value: ', oldValue);
+                console.group("OptionChanged事件");
             },
 
             BeforeUpload: function(up, file) {
                 // Called right before the upload for a given file starts, can be used to cancel it if required
                 log('[BeforeUpload]', 'File: ', file);
+                console.group("BeforeUpload事件");
+
             },
 
             UploadProgress: function(up, file) {
                 // Called while file is being uploaded
                 log('[UploadProgress]', 'File:', file, "Total:", up.total);
+                console.group("UploadProgress事件");
             },
 
             FileFiltered: function(up, file) {
                 // Called when file successfully files all the filters
                 log('[FileFiltered]', 'File:', file);
+                console.group("FileFiltered事件");
             },
 
             FilesAdded: function(up, files) {
@@ -119,6 +125,7 @@
                 plupload.each(files, function(file) {
                     log('  File:', file);
                 });
+                console.group("FilesAdded事件");
             },
 
             FilesRemoved: function(up, files) {
@@ -128,31 +135,37 @@
                 plupload.each(files, function(file) {
                     log('  File:', file);
                 });
+
+                console.group("FilesRemoved事件");
             },
 
             FileUploaded: function(up, file, info) {
                 // Called when file has finished uploading
                 log('[FileUploaded] File:', file, "Info:", info);
+                console.group("FileUploaded事件");
             },
 
             ChunkUploaded: function(up, file, info) {
                 // Called when file chunk has finished uploading
                 log('[ChunkUploaded] File:', file, "Info:", info);
+                console.group("ChunkUploaded事件");
             },
 
             UploadComplete: function(up, files) {
                 // Called when all files are either uploaded or failed
                 log('[UploadComplete]');
+                console.group("UploadComplete");
             },
 
             Destroy: function(up) {
                 // Called when uploader is destroyed
                 log('[Destroy] ');
+                console.group("Destroy");
             },
 
             Error: function(up, args) {
                 // Called when error occurs
-                log('[Error] ', args);
+                console.group("Error");
             }
         }
     });
