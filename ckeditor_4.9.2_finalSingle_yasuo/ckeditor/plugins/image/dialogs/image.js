@@ -26,9 +26,10 @@ CKEDITOR.dialog.add( 'imageDialog', function( editor ) {
 					}
 				]
 			}
+
 		],
 		onShow: function() {
-				alert("xxxxxx");
+				
 		},
 		onOk: function() {
 			var dialog = this;
@@ -36,10 +37,10 @@ CKEDITOR.dialog.add( 'imageDialog', function( editor ) {
 			console.dir(dialog);
 			var p = editor.document.createElement( 'p' );
 			var title=dialog.getValueOf( 'tab-1', 'abbr' );
-			p.setAttribute( 'id', title );
+			$(p).html(title);
 
 			// Finally, insert the element into the editor at the caret position.
-			editor.insertElement( p );
+			editor.insertElement(p);
 			// abbr.setAttribute( 'title', dialog.getValueOf( 'tab-1' ) );
 		}
 	}
