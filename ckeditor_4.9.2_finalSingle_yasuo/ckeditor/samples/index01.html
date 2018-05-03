@@ -25,12 +25,13 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 </style>
 
 <body style="padding: 150px 150px;">
-    <div id="editor"><img src="http://localhost/plupupload/src/uploads/qrcode_1.jpg" id="img1"><img src="http://localhost/plupupload/src/uploads/01.jpg" width="100" height="100" id="img2"></div>
+    <div id="editor">
+        <!-- <img src="http://localhost/plupupload/src/uploads/qrcode_1.jpg" id="img1"><img src="http://localhost/plupupload/src/uploads/01.jpg" width="100" height="100" id="img2"> --></div>
   
 
 
 
-  <div id="editor2"></div>
+
 
 
 
@@ -41,12 +42,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
     <button id="btn-get-content">获取内容</button>
     <script>
     var editor = CKEDITOR.replace('editor', {
-        extraPlugins: 'simplebox,abbr,image',
-        allowedContent: true
-    });
-
-    var editor = CKEDITOR.replace('editor2', {
-        extraPlugins: 'simplebox,abbr,image',
+        extraPlugins: 'simplebox,abbr,imagegallery',
         allowedContent: true
     });
 

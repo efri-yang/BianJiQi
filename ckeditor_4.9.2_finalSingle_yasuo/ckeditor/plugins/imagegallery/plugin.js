@@ -1,5 +1,5 @@
-﻿CKEDITOR.plugins.add('image', {
-    icons: 'image',
+﻿CKEDITOR.plugins.add('imagegallery', {
+    icons: 'imagegallery',
 
     _editImgInit: function() {
         var editor = this;
@@ -46,18 +46,56 @@
     _uploadImgRender: function() {
         var editor = this;
 
-        var htmlStr = '<div class="ckeditor-imgupload-dialog" id="' + editor.uploaderImg.dialogId + '"><ul class="imgupload-tab-hd"><li class="active"><a href="#'+editor.name+'-tabbd-localupload-container">本地上传</a></li><li><a href="#'+editor.name+'-tabbd-gallery-container">相册图片</a></li><li class="move-seat"></li></ul><div class="ckeditor-localupload-container active" id="'+editor.name+'-tabbd-localupload-container"><div class="ckeditor-uploadfile-container"><div class="ckeditor-uploadfile-hd"><div class="img-upload-allprogress"><span class="txt"></span><span class="percentage"></span></div><div class="img-upload-info"></div><a href="javascript:void(0);" class="img-upload-btn disabled">开始上传</a><div class="img-add-btn">添加文件</div></div><ul class="ckeditor-uploadfile-list"></ul><div class="ckeditor-uploadfile-ft"><label class="ft-save-checkbox"><input type="checkbox" name="" />保存到相册</label><select class="ft-gallery-sel" disabled><option value="1">默认相册</option></select><a href="#" class="ft-btn-insert disabled">插入</a><a href="#" class="ft-btn-cancel">关闭</a></div></div></div><div class="ckeditor-gallery-container" id="'+editor.name+'-tabbd-gallery-container"><div class="ckeditor-gallery-nodata" style="display:none;">您的相册目前还没有照片,<a href="#">立马去上传</a></div><div class="ckeditor-gallery-hasdata" style="display:block;"><ul class="ckeditor-gallery-list"></ul><div class="ckeditor-gallery-ft"><select class="ft-galleryall-sel"><option value="1">默认相册</option><option value="2">相册2</option></select><a href="#" class="ft-galleryall-insert">插入</a><a href="#" class="ft-galleryall-cancel">取消</a></div></div></div></div>';
+        var htmlStr = '<div class="ckeditor-imgupload-dialog" id="' + editor.uploaderImg.dialogId + '"><ul class="imgupload-tab-hd"><li class="active"><a href="#'+editor.name+'-tabbd-localupload-container">本地上传</a></li><li><a href="#'+editor.name+'-tabbd-gallery-container">相册图片</a></li><li class="move-seat"></li></ul><div class="ckeditor-localupload-container active" id="'+editor.name+'-tabbd-localupload-container"><div class="ckeditor-uploadfile-container"><div class="ckeditor-uploadfile-hd"><div class="img-upload-allprogress"><span class="txt"></span><span class="percentage"></span></div><div class="img-upload-info"></div><a href="javascript:void(0);" class="img-upload-btn disabled">开始上传</a><div class="img-add-btn">添加文件</div></div><ul class="ckeditor-uploadfile-list"></ul><div class="ckeditor-uploadfile-ft"><label class="ft-save-checkbox"><input type="checkbox" name="saveingallery" />保存到相册</label><select class="ft-gallery-sel" disabled></select><a href="#" class="ft-btn-insert disabled">插入</a><a href="#" class="ft-btn-cancel">关闭</a></div></div></div><div class="ckeditor-gallery-container" id="'+editor.name+'-tabbd-gallery-container"><div class="ckeditor-gallery-nodata" style="display:none;">您的相册目前还没有照片,<a href="#">立马去上传</a></div><div class="ckeditor-gallery-hasdata" style="display:block;"><ul class="ckeditor-gallery-list"></ul><div class="ckeditor-gallery-ft"><select class="ft-galleryall-sel"></select><a href="#" class="ft-galleryall-insert">插入</a><a href="#" class="ft-galleryall-cancel">取消</a></div></div></div></div>';
         $(htmlStr).appendTo($("body"));
-
         var $dialog = $("#" + editor.uploaderImg.dialogId);
-        var $uploadBtn = $dialog.find(".img-upload-btn");
-        var $addBtn = $dialog.find(".img-add-btn");
-        var $insertBtn = $dialog.find(".ft-btn-insert");
-        var $closeBtn = $dialog.find(".ft-btn-cancel");
-        var $fileListUL = $dialog.find(".ckeditor-uploadfile-list");
+         editor.uploaderImg.$dialog=$dialog;
+
+        $.ajax({
+                url:"./gallerytype.php",
+                type:"post",
+                data:"",//用户id
+                dataType:"json",
+                beforeSend:function(){
+
+                },
+                success:function(data, textStatus){
+                    var strArr=[];
+                    $.each(data.list,function(index,obj){
+                        strArr.push('<option value="'+obj.id+'">'+obj.text+'</option>');
+                    });
+                   $dialog.find(".ft-galleryall-sel,.ft-gallery-sel").html(strArr.join(""));
+                   
+                },
+                complete:function(XMLHttpRequest, textStatus){
+
+                }
+        })
+        //tab 选项卡
+        $dialog.find('.imgupload-tab-hd a').click(function(e) {
+            e.preventDefault();
+            $(this).editorTab('show');
+        });
+
+        
+
+        
+       
+
+       
+    },
+    _uploadImgUpHandler:function(){
+        var editor=this;
+        var $uploadBtn = editor.uploaderImg.$dialog.find(".img-upload-btn");
+        var $addBtn = editor.uploaderImg.$dialog.find(".img-add-btn");
+        var $insertBtn = editor.uploaderImg.$dialog.find(".ft-btn-insert");
+        var $closeBtn = editor.uploaderImg.$dialog.find(".ft-btn-cancel");
+        var $fileListUL = editor.uploaderImg.$dialog.find(".ckeditor-uploadfile-list");
+        var $saveInGallery=editor.uploaderImg.$dialog.find('input[name="saveingallery"]');
+        var $selGallery=editor.uploaderImg.$dialog.find(".ft-gallery-sel");
 
         $addBtn.attr("id", editor.name + "-img-add-btn");
-        editor.uploaderImg.$dialog=$dialog;
+       
 
 
         var uploader = new plupload.Uploader({
@@ -70,8 +108,7 @@
                 prevent_duplicates: true,
                 max_file_size: '1000mb',
                 mime_types: [
-                    { title: "Image files", extensions: "jpg,gif,png,psd" },
-                    { title: "Zip files", extensions: "zip" }
+                    { title: "Image files", extensions: "jpg,gif,png" }
                 ]
             }
         });
@@ -80,28 +117,38 @@
             layer.close(editor.uploaderImg.layerIndex);
         });
 
-        
+        $saveInGallery.on("change",function(){
+            var $this=$(this);
+            if($this.prop('checked')){
+                $selGallery.removeAttr('disabled');
+            }else{
+                $selGallery.attr('disabled','disabled');
+            }
+           
+        })
 
         $insertBtn.on("click", function() {
             $fileListUL.children("li").each(function(index, el) {
                 var $el = $(el);
                 var src = $el.attr("data-src");
                 var id = $el.attr("id");
-                $.each(uploader.files, function(index, file) {
-                    if (file.id == id) {
-                        uploader.removeFile(file);
-                    }
-                })
                 if (!!src) {
                     var img = editor.document.createElement('img');
                     img.setAttribute('src', src);
                     editor.insertElement(img);
-                    $el.remove();
-                    layer.close(editor.uploaderImg.layerIndex);
-
+                   uploader.removeFile(id);
+                   $el.remove();
+                    
                 }
+
+                
             });
+
+            layer.close(editor.uploaderImg.layerIndex);
+
         });
+
+
 
         uploader.bind("Init", function(uploader) {
             console.group("Init事件:当Plupload初始化完成后触发监听函数参数：(uploader)");
@@ -284,36 +331,88 @@
             console.group("OptionChanged事件")
         });
         uploader.init();
+    },
+    _uploadImgGalleryHandler:function(){
+        var editor=this;
+        var pitchImg=[];
+        var $gallayListUL=editor.uploaderImg.$dialog.find(".ckeditor-gallery-list");
+        var $insertBtn=editor.uploaderImg.$dialog.find(".ft-galleryall-insert");
+        var $cancelBtn=editor.uploaderImg.$dialog.find(".ft-galleryall-cancel");
+        var $sel=editor.uploaderImg.$dialog.find(".ft-galleryall-sel");
 
+        function getGalleryData(data){
+            $.ajax({
+                url:"./lazyload.php",
+                type:"post",
+                data:data,
+                dataType:"json",
+                beforeSend:function(){
 
+                },
+                success:function(data, textStatus){
+                    var strArr=[];
+                    $.each(data.list,function(index,src){
+                        strArr.push('<li data-src="'+src+'"><div class="pic"><img src="'+src+'" /></div><span class="status-check"></span></li>');
+                    });
+                   $gallayListUL.html(strArr.join(""));
+                   pitchImg=data.list;
+                },
+                complete:function(XMLHttpRequest, textStatus){
 
-        $dialog.find('.imgupload-tab-hd a').click(function(e) {
-            e.preventDefault();
-            $(this).editorTab('show');
+                }
+            })
+        }
+        $('a[href="#'+editor.name+'-tabbd-gallery-container"]').on('shown.bs.tab', function (e) {
+           getGalleryData({"galleryid":1});
+        }); 
+
+        $sel.on("change",function(){
+            var id=$(this).val();
+            getGalleryData({"galleryid":id})
+        })
+        
+        $gallayListUL.on("click","li",function(){
+            var $this=$(this);
+            if($this.hasClass('active')){
+                $this.removeClass('active');
+            }else{
+                $this.addClass('active');
+            }
         });
 
-        $('a[href="#'+editor.name+'-tabbd-gallery-container"]').on('shown.bs.tab', function (e) {
-            $.ajax({
-                url:"https://wnworld.com/Mine/MZUI/Demo/php/lazyload.php",
-            })
+        $insertBtn.on("click",function(event){
+            event.preventDefault();
+            var $el;
+                var img;
+                var src;
+            $gallayListUL.children('li').each(function(index, el) {
+                $el=$(el);
+                if($el.hasClass('active')){
+                    src=$el.attr("data-src");
+                    img = new CKEDITOR.dom.element( 'img' );
+                    img.setAttribute( 'src',src);
+                    editor.insertElement(img);
+                }
+            });
+            layer.close(editor.uploaderImg.layerIndex); 
+
         })
 
-
-
-
-
-
+        $cancelBtn.on("click",function(event){
+            event.preventDefault();
+            layer.close(editor.uploaderImg.layerIndex);
+        })
     },
 
 
     init: function(editor) {
         var that = this;
 
-        editor.ui.addButton('image', {
+        editor.ui.addButton('imagegallery', {
             // The text part of the button (if available) and the tooltip.
             label: '上传图片',
             // The command to execute on click.
-            command: 'image',
+            command: 'imagegallery',
             // The button placement in the toolbar (toolbar group name).
             toolbar: 'insert'
         });
@@ -379,48 +478,17 @@
 
 
 
-            // var imgW,imgH;
-
-            // if ( element.is( 'img' ) && !element.data( 'cke-realelement' ) && !element.isReadOnly() ){
-            //     imgW=element.$.clientWidth;
-            //     imgH=element.$.clientHeight;
-            //     imgAlt=element.$.alt;
-
-            //     editor.imgedit.layerIndex=layer.open({
-            //           type: 1,
-            //           shade: false,
-            //           title:"图片属性设置", //不显示标题
-            //           area: '350px',
-            //           content: $(".ckeditor-imgedit-dialog"), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-            //           success: function(layero, index){
-            //                 $(".ckeditor-imgedit-dialog").find('input[name="imgw"]').val(imgW);
-            //                 $(".ckeditor-imgedit-dialog").find('input[name="imgh"]').val(imgH);
-            //                 $(".ckeditor-imgedit-dialog").find('input[name="imginfo"]').val(imgAlt);
-            //           }
-            //     });
-
-            // }
-
-            // $(".ckeditor-imgedit-dialog .ft-btn-insert").off("click").on("click",function(){
-            //     element.setAttributes({
-            //         width:$(".ckeditor-imgedit-dialog").find('input[name="imgw"]').val(),
-            //         height:$(".ckeditor-imgedit-dialog").find('input[name="imgh"]').val(),
-            //     });
-            //     layer.close(editor.imgedit.layerIndex);
-            // });
-
-            //  $(".ckeditor-imgedit-dialog .ft-btn-cancel").off("click").on("click",function(){
-
-            //     layer.close(editor.imgedit.layerIndex);
-            // });
+            
         });
 
         //点击上传图片命令
-        editor.addCommand('image', {
+        editor.addCommand('imagegallery', {
             exec: function(editor) {
                 //判断页面是否纯在弹出框
                 if(!editor.uploaderImg.$dialog){
                     that._uploadImgRender.call(editor);
+                    that._uploadImgGalleryHandler.call(editor);
+                    that._uploadImgUpHandler.call(editor);
                 }
                 editor.uploaderImg.layerIndex = layer.open({
                     type: 1,
