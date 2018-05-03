@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>CKEditor Sample</title>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>
+    <script src="../ckeditor.js"></script>
+    <script type="text/javascript" src="./js/plupload/moxie.min.js"></script>
+    <script type="text/javascript" src="./js/plupload/plupload.dev.js"></script>
+    <script type="text/javascript" src="./js/layer/layer.js"></script>
+    <script type="text/javascript" src="./js/tab.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/base.css" />
+   <link rel="stylesheet" type="text/css" href="./css/upload.css">
+</head>
+
+<style type="text/css">
+.cke_toolbox .cke_toolbar:last-child>.cke_toolgroup>a:after{
+		display: none;
+}
+</style>
+
+<body style="padding: 150px 150px;">
+    <div id="editor"><img src="http://localhost/plupupload/src/uploads/qrcode_1.jpg" id="img1"><img src="http://localhost/plupupload/src/uploads/01.jpg" width="100" height="100" id="img2"></div>
+    <div class="ckeditor-imgupload-dialog" data-relateto="editor">
+        <ul class="imgupload-tab-hd">
+            <li class="active"><a href="#tabbd-localupload-container">本地上传</a></li>
+            <li><a href="#tabbd-gallery-container">相册图片</a></li>
+            <li class="move-seat"></li>
+        </ul>
+        <div class="ckeditor-localupload-container active" data-relateto="#tabbd-localupload-container">
+            <div class="ckeditor-uploadfile-container">
+                <div class="ckeditor-uploadfile-hd">
+                    <div class="img-upload-allprogress">
+                        <span class="txt"></span>
+                        <span class="percentage"></span>
+                    </div>
+                    <div class="img-upload-info"></div>
+                    <a href="javascript:void(0);" class="img-upload-btn disabled">开始上传</a>
+                    <div class="img-add-btn">添加文件</div>
+                </div>
+                <ul class="ckeditor-uploadfile-list">
+                </ul>
+                <div class="ckeditor-uploadfile-ft">
+                    <label class="ft-save-checkbox">
+                        <input type="checkbox" name="" />保存到相册</label>
+                    <select class="ft-gallery-sel" disabled>
+                        <option value="1">默认相册</option>
+                    </select>
+                    <a href="#" class="ft-btn-insert disabled">插入</a>
+                    <a href="#" class="ft-btn-cancel">关闭</a>
+                </div>
+            </div>
+        </div>
+        <div class="ckeditor-gallery-container" data-relateto="#tabbd-gallery-container">
+            <div class="ckeditor-gallery-nodata" style="display:none;">
+                您的相册目前还没有照片,<a href="#">立马去上传</a>
+            </div>
+            <div class="ckeditor-gallery-hasdata" style="display:block;">
+                <ul class="ckeditor-gallery-list">
+                    <li class="active">
+                        <div class="pic"><img src="../uploadDemo/01.jpg" /></div>
+                        <span class="status-check"></span>
+                    </li>
+                    <li>
+                        <div class="pic"><img src="../uploadDemo/01.jpg" /></div>
+                        <span class="status-check"></span>
+                    </li>
+                </ul>
+                <div class="ckeditor-gallery-ft">
+                    <select class="ft-galleryall-sel">
+                        <option value="1">默认相册</option>
+                        <option value="2">相册2</option>
+                    </select>
+                    <a href="#" class="ft-galleryall-insert">插入</a>
+                    <a href="#" class="ft-galleryall-cancel">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    
+
+    <button id="btn-get-content">获取内容</button>
+    <script>
+    var editor = CKEDITOR.replace('editor', {
+        
+        extraPlugins: 'simplebox,abbr,image',
+        allowedContent: true
+    });
+
+
+
+
+
+
+
+
+
+    // var tpl = new CKEDITOR.template( '<div class="{cls}">{label}</div>' );
+    // alert( tpl.output( { cls: 'cke-label', label: 'foo'} ) );
+
+
+
+
+
+
+
+    $(function() {
+        $("#btn-get-content").on("click", function() {
+            alert(editor.getSelection().getSelectedText())
+        })
+    })
+    </script>
+</body>
+
+</html>
