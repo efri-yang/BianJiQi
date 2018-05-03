@@ -44,7 +44,7 @@
 			} ) );
 
 			// Register the toolbar button.
-			editor.ui.addButton && editor.ui.addButton( 'Image', {
+			editor.ui.addButton && editor.ui.addButton( 'image', {
 				label: editor.lang.common.image,
 				command: pluginName,
 				toolbar: 'insert,10'

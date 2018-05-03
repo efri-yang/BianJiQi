@@ -64,7 +64,7 @@
 				var args = arguments;
 				var inlineStyleField = this.getContentElement( 'advanced', 'txtdlgGenStyle' );
 				inlineStyleField && inlineStyleField.commit.apply( inlineStyleField, args );
-
+				
 				this.foreach( function( widget ) {
 					if ( widget.commit && widget.id != 'txtdlgGenStyle' )
 						widget.commit.apply( widget, args );
@@ -84,7 +84,10 @@
 
 				var dialog = this.getDialog(),
 					element = dialog.imageElement;
+				console.dir("cccc");
+				console.dir(element);
 				if ( element ) {
+
 					// Commit this field and broadcast to target fields.
 					this.commit( IMAGE, element );
 

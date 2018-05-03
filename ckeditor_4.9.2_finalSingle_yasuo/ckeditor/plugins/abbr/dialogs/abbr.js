@@ -37,7 +37,9 @@ CKEDITOR.dialog.add( 'abbrDialog', function( editor ) {
 
 						// Called by the main setupContent method call on dialog initialization.
 						setup: function( element ) {
+
 							this.setValue( element.getText() );
+							
 						},
 
 						// Called by the main commitContent method call on dialog confirmation.

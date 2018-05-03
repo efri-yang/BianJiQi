@@ -1,6 +1,145 @@
 ﻿CKEDITOR.plugins.add('image', {
     icons: 'image',
+
+    _editImgInit: function() {
+        var editor = this;
+        editor.editImg = {};
+        editor.editImg.dialogId = editor.name + "-imgedit-dialog";
+    },
+
+    _editImgRender: function() {
+        var editor = this;
+        var htmlStr = '<div class="ckeditor-imgedit-dialog" id="' + editor.editImg.dialogId + '">' +
+            '<div class="item-cell">' +
+            '<label class="lab">宽：</label>' +
+            '<input type="text" size="10" name="imgw" class="ipt-text">' +
+            '</div>' +
+            '<div class="item-cell">' +
+            '<label class="lab">高：</label>' +
+            '<input type="text" size="10" name="imgh" class="ipt-text">' +
+            '</div>' +
+            '<div class="item-cell">' +
+            '<label class="lab">描述：</label>' +
+            '<input type="text" name="imgalt" class="ipt-text">' +
+            '</div>' +
+
+            '<div class="ckeditor-imgedit-ft">' +
+            '<a href="#" class="ft-btn-cancel">取消</a>' +
+            '<a href="#" class="ft-btn-insert ">确认</a>' +
+            '</div>' +
+            '</div>';
+        $(htmlStr).appendTo($("body"));
+
+        editor.editImg.$dialog = $("#" + editor.editImg.dialogId);
+        editor.editImg.$inputW = editor.editImg.$dialog.find('input[name="imgw"]');
+        editor.editImg.$inputH = editor.editImg.$dialog.find('input[name="imgh"]');
+        editor.editImg.$inputAlt = editor.editImg.$dialog.find('input[name="imgalt"]');
+        editor.editImg.$btnCancel = editor.editImg.$dialog.find('.ft-btn-cancel');
+        editor.editImg.$btnConfirm = editor.editImg.$dialog.find('.ft-btn-insert');
+    },
+
     init: function(editor) {
+        var that = this;
+        this._editImgInit.call(editor);
+        //绑定图片双击事件
+        editor.on('doubleclick', function(evt) {
+            
+            var element = evt.data.element,
+                imgW,
+                imgH,
+                imgAlt;
+            console.dir(element);
+            if (!editor.editImg.$dialog) {
+                that._editImgRender.call(editor);
+            }
+
+            if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
+                imgW = element.$.clientWidth;
+                imgH = element.$.clientHeight;
+                imgAlt = element.$.alt;
+                editor.editImg.layerIndex = layer.open({
+                    type: 1,
+                    shade: false,
+                    title: "图片属性", 
+                    area: '350px',
+                    content:editor.editImg.$dialog, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    success: function(layero, index) {
+                        editor.editImg.$inputW.val(imgW);
+                        editor.editImg.$inputH.val(imgH);
+                        editor.editImg.$inputAlt.val(imgAlt);
+                    }
+                });
+
+                editor.editImg.$btnCancel.off("click").on("click",function(event){
+                    event.preventDefault();
+                    layer.close(editor.editImg.layerIndex);
+                });
+                editor.editImg.$btnConfirm.off("click").on("click",function(event){
+                    event.preventDefault();
+                    element.setAttributes({
+                        width:editor.editImg.$inputW.val(),
+                        height:editor.editImg.$inputH.val(),
+                        alt:editor.editImg.$inputAlt.val()
+                    });
+                    // var span=new CKEDITOR.dom.element('span');
+                    // span.appendText(editor.editImg.$inputAlt.val());
+                    // span.insertAfter(elem);
+
+                    layer.close(editor.editImg.layerIndex);
+
+                })
+
+            }
+
+            
+
+
+
+
+            // var imgW,imgH;
+
+            // if ( element.is( 'img' ) && !element.data( 'cke-realelement' ) && !element.isReadOnly() ){
+            //     imgW=element.$.clientWidth;
+            //     imgH=element.$.clientHeight;
+            //     imgAlt=element.$.alt;
+
+            //     editor.imgedit.layerIndex=layer.open({
+            //           type: 1,
+            //           shade: false,
+            //           title:"图片属性设置", //不显示标题
+            //           area: '350px',
+            //           content: $(".ckeditor-imgedit-dialog"), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            //           success: function(layero, index){
+            //                 $(".ckeditor-imgedit-dialog").find('input[name="imgw"]').val(imgW);
+            //                 $(".ckeditor-imgedit-dialog").find('input[name="imgh"]').val(imgH);
+            //                 $(".ckeditor-imgedit-dialog").find('input[name="imginfo"]').val(imgAlt);
+            //           }
+            //     });
+
+            // }
+
+            // $(".ckeditor-imgedit-dialog .ft-btn-insert").off("click").on("click",function(){
+            //     element.setAttributes({
+            //         width:$(".ckeditor-imgedit-dialog").find('input[name="imgw"]').val(),
+            //         height:$(".ckeditor-imgedit-dialog").find('input[name="imgh"]').val(),
+            //     });
+            //     layer.close(editor.imgedit.layerIndex);
+            // });
+
+            //  $(".ckeditor-imgedit-dialog .ft-btn-cancel").off("click").on("click",function(){
+
+            //     layer.close(editor.imgedit.layerIndex);
+            // });
+
+        });
+
+
+
+
+
+
+
+
 
         editor.ui.addButton('image', {
 
@@ -15,22 +154,62 @@
         });
 
         // ******************************
-        // 
-        editor.on( 'doubleclick', function( evt ) {
-			var element = evt.data.element;
-			console.dir(element);
-			if ( element.is( 'img' ) && !element.data( 'cke-realelement' ) && !element.isReadOnly() ){
-
-				
-			}
-				
-		} );
-	
-        var element = new CKEDITOR.dom.element( 'img' );
-	    
 
 
-        editor.layerIndex = "";
+        //       editor.imgedit={};
+        //       editor.on('doubleclick', function( evt ) {
+
+        //  var element = evt.data.element;
+        //           console.dir(element);
+        //  var imgW,imgH;
+
+        //  if ( element.is( 'img' ) && !element.data( 'cke-realelement' ) && !element.isReadOnly() ){
+        //               imgW=element.$.clientWidth;
+        //               imgH=element.$.clientHeight;
+        //               imgAlt=element.$.alt;
+
+        //               editor.imgedit.layerIndex=layer.open({
+        //                     type: 1,
+        //                     shade: false,
+        //                     title:"图片属性设置", //不显示标题
+        //                     area: '350px',
+        //                     content: $(".ckeditor-imgedit-dialog"), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+        //                     success: function(layero, index){
+        //                           $(".ckeditor-imgedit-dialog").find('input[name="imgw"]').val(imgW);
+        //                           $(".ckeditor-imgedit-dialog").find('input[name="imgh"]').val(imgH);
+        //                           $(".ckeditor-imgedit-dialog").find('input[name="imginfo"]').val(imgAlt);
+        //                     }
+        //               });
+
+        //  }
+
+        //           $(".ckeditor-imgedit-dialog .ft-btn-insert").off("click").on("click",function(){
+        //               element.setAttributes({
+        //                   width:$(".ckeditor-imgedit-dialog").find('input[name="imgw"]').val(),
+        //                   height:$(".ckeditor-imgedit-dialog").find('input[name="imgh"]').val(),
+        //               });
+        //               layer.close(editor.imgedit.layerIndex);
+        //           });
+
+        //            $(".ckeditor-imgedit-dialog .ft-btn-cancel").off("click").on("click",function(){
+
+        //               layer.close(editor.imgedit.layerIndex);
+        //           });
+
+        // } );
+
+
+
+
+
+
+        //
+
+
+
+
+
+
         $('[data-relateto="' + editor.name + '"]').attr("id", editor.name + "-imgupload-dialog");
         var $container = $("#" + editor.name + "-imgupload-dialog");
         $container.find(".img-add-btn").attr("id", editor.name + "-img-add-btn");
@@ -53,7 +232,7 @@
         });
 
         editor.uploader.$container = $container;
-
+        editor.uploader.layerIndex = "";
         //设置id
 
 
@@ -71,7 +250,7 @@
 
 
         $closeBtn.on("click", function() {
-            layer.close(editor.layerIndex);
+            layer.close(editor.uploader.layerIndex);
         });
 
         editor.uploader.$container.find('.imgupload-tab-hd a').click(function(e) {
@@ -94,7 +273,7 @@
                     img.setAttribute('src', src);
                     editor.insertElement(img);
                     $el.remove();
-                    layer.close(editor.layerIndex);
+                    layer.close(editor.uploader.layerIndex);
 
                 }
             });
@@ -150,7 +329,7 @@
         }
         editor.uploader.bind('FilesAdded', function(up, files) {
             console.group("FilesAdded事件");
-            
+
             $uploadBtn.removeClass("disabled");
 
             var str = "";
@@ -291,7 +470,7 @@
         editor.addCommand('image', {
             exec: function(editor) {
 
-                editor.layerIndex = layer.open({
+                editor.uploader.layerIndex = layer.open({
                     type: 1,
                     shade: false,
                     move: ".move-seat",
@@ -313,6 +492,7 @@
 
             }
         });
-    }
+    },
+
 
 });
