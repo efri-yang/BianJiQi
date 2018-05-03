@@ -20,7 +20,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 
 <body style="padding: 150px 150px;">
     <div id="editor"></div>
-    <div class="ckeditor-imgupload-dialog" data-relateto="J_xy-editor-textarea">
+    <div class="ckeditor-imgupload-dialog" data-relateto="editor">
         <ul class="imgupload-tab-hd">
             <li class="active"><a href="#tabbd-localupload-container">本地上传</a></li>
             <li><a href="#tabbd-gallery-container">相册图片</a></li>
@@ -35,7 +35,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
                     </div>
                     <div class="img-upload-info"></div>
                     <a href="javascript:void(0);" class="img-upload-btn disabled">开始上传</a>
-                    <div class="img-add-btn" id="img-add-btn-1">添加文件</div>
+                    <div class="img-add-btn">添加文件</div>
                 </div>
                 <ul class="ckeditor-uploadfile-list">
                 </ul>
@@ -76,6 +76,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
             </div>
         </div>
     </div>
+
     <button id="btn-get-content">获取内容</button>
     <script>
     var editor = CKEDITOR.replace('editor', {

@@ -11,6 +11,7 @@
     position:relative; 
     height: 42px;
     line-height: 42px;
+
     border-bottom: 1px solid #eee; }
     .ckeditor-imgupload-dialog .imgupload-tab-hd li {
       float: left; }
@@ -292,6 +293,7 @@
 
 .ckeditor-gallery-list {
   height: 315px;
+  clear:both; 
   padding: 15px 10px;
   overflow-x: hidden;
   overflow-y: auto;
