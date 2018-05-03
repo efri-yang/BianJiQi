@@ -14,6 +14,21 @@
             toolbar: 'insert'
         });
 
+        // ******************************
+        // 
+        editor.on( 'doubleclick', function( evt ) {
+			var element = evt.data.element;
+			console.dir(element);
+			if ( element.is( 'img' ) && !element.data( 'cke-realelement' ) && !element.isReadOnly() ){
+
+				
+			}
+				
+		} );
+	
+        var element = new CKEDITOR.dom.element( 'img' );
+	    
+
 
         editor.layerIndex = "";
         $('[data-relateto="' + editor.name + '"]').attr("id", editor.name + "-imgupload-dialog");
@@ -91,7 +106,7 @@
 
         editor.uploader.bind("PostInit", function() {
             console.group("PostInit事件:当Init事件发生后触发监听函数参数：(uploader)");
-            $(".img-upload-btn").on("click", function() {
+            $uploadBtn.on("click", function() {
                 editor.uploader.start();
             });
         });
@@ -135,8 +150,8 @@
         }
         editor.uploader.bind('FilesAdded', function(up, files) {
             console.group("FilesAdded事件");
-            console.dir(files);
-            $(".img-upload-btn").removeClass("disabled");
+            
+            $uploadBtn.removeClass("disabled");
 
             var str = "";
             var $beforePreview;
@@ -190,7 +205,9 @@
         });
         editor.uploader.bind('Refresh', function(up) {
             console.group("Refresh事件");
-            if (!up.total.queued) {
+            console.dir(up.total);
+
+            if (!up.total.uploaded) {
                 $insertBtn.addClass("disabled");
             } else {
                 $insertBtn.removeClass("disabled");
@@ -219,6 +236,7 @@
             $li.find(".img-success").show();
             $li.attr("data-src", info.response);
             $li.find(".img-del-btn").show();
+            $insertBtn.removeClass("disabled");
         });
 
         editor.uploader.bind('StateChanged', function(up) {

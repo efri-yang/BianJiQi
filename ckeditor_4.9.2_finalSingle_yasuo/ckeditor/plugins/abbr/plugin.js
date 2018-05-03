@@ -47,7 +47,7 @@ CKEDITOR.plugins.add( 'abbr', {
 		});
 
 		if ( editor.contextMenu ) {
-			
+			alert("asdfasdfasdf");
 			// Add a context menu group with the Edit Abbreviation item.
 			editor.addMenuGroup( 'abbrGroup' );
 			editor.addMenuItem( 'abbrItem', {
