@@ -23,8 +23,7 @@
 		editor.addCommand( 'image', {
 		    exec: function( editor ) {
 		       	
-
-
+		    	
 
 		    }
 		} );

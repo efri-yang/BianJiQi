@@ -21,7 +21,6 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-
 /*
 // Support CORS
 header("Access-Control-Allow-Origin: *");
@@ -39,7 +38,7 @@ exit; // finish preflight CORS requests here
 
 // Settings
 // $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-$targetDir = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "wangEditor-2.1.23" . DIRECTORY_SEPARATOR . "plupload" . DIRECTORY_SEPARATOR . "uploads";
+$targetDir = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "plupupload" . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . "uploads";
 //$targetDir = 'uploads';
 $cleanupTargetDir = true; // Remove old files
 $maxFileAge = 5 * 3600; // Temp file age in seconds
@@ -57,7 +56,6 @@ if (isset($_REQUEST["name"])) {
 } else {
     $fileName = uniqid("file_");
 }
-
 
 $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
