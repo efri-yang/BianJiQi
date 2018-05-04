@@ -125,4 +125,8 @@ if (!$chunks || $chunk == $chunks - 1) {
 
 // Return Success JSON-RPC response
 
-echo "http://localhost/BianJiQi/ckeditor_4.9.2_finalSingle_yasuo/ckeditor/samples/plupload/".$fileName;
+
+
+
+$url=dirname('http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"]);
+echo $url."/plupload/".$fileName;
