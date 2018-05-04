@@ -128,14 +128,19 @@
         })
 
         $insertBtn.on("click", function() {
+            var str="";
             $fileListUL.children("li").each(function(index, el) {
                 var $el = $(el);
                 var src = $el.attr("data-src");
                 var id = $el.attr("id");
+
                 if (!!src) {
-                    var img = editor.document.createElement('img');
-                    img.setAttribute('src', src);
-                    editor.insertElement(img);
+                    str='<div class="simplebox"><p><img src="'+src+'" /></p><div class="simplebox-content"><p>Content...</p></div></div>';
+                    // var img = editor.document.createElement('img');
+                    // img.setAttribute('src', src);
+                    // editor.insertElement(img);
+                    // editor.insertElement(img);
+                    editor.insertHtml(str);
                    uploader.removeFile(id);
                    $el.remove();
                     
@@ -434,8 +439,8 @@
             if (!editor.editImg.$dialog) {
                 that._editImgRender.call(editor);
             }
-
-            if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
+            // if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
+            if (element.is('img') && !element.data('cke-realelement')) {
                 imgW = element.$.clientWidth;
                 imgH = element.$.clientHeight;
                 imgAlt = element.$.alt;
