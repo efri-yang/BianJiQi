@@ -101,7 +101,7 @@
         var uploader = new plupload.Uploader({
             runtimes: 'html5,flash,silverlight,html4',
             browse_button: editor.name + "-img-add-btn", // you can pass an id...
-            url: 'upload2.php',
+            url: 'upload.php',
             flash_swf_url: '../js/Moxie.swf',
             silverlight_xap_url: '../js/Moxie.xap',
             filters: {
@@ -135,11 +135,10 @@
                 var id = $el.attr("id");
 
                 if (!!src) {
-                    str='<div class="simplebox"><p><img src="'+src+'" /></p><div class="simplebox-content"><p>Content...</p></div></div>';
-                    // var img = editor.document.createElement('img');
-                    // img.setAttribute('src', src);
-                    // editor.insertElement(img);
-                    // editor.insertElement(img);
+                    // str='<div class="simplebox"><p><img src="'+src+'" /></p><div class="simplebox-content"><p>Content...</p></div></div>';
+                    var img = editor.document.createElement('img');
+                    img.setAttribute('src', src);
+                    editor.insertElement(img);
                     editor.insertHtml(str);
                    uploader.removeFile(id);
                    $el.remove();
@@ -436,11 +435,12 @@
                 imgH,
                 imgAlt;
             console.dir(element);
-            if (!editor.editImg.$dialog) {
-                that._editImgRender.call(editor);
-            }
+            
             // if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
-            if (element.is('img') && !element.data('cke-realelement')) {
+            if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
+                if (!editor.editImg.$dialog) {
+                    that._editImgRender.call(editor);
+                }
                 imgW = element.$.clientWidth;
                 imgH = element.$.clientHeight;
                 imgAlt = element.$.alt;

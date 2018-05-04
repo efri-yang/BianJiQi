@@ -30,7 +30,6 @@ CKEDITOR.dialog.add( 'simplebox', function( editor ) {
 						// When setting up this field, set its value to the "align" value from widget data.
 						// Note: Align values used in the widget need to be the same as those defined in the "items" array above.
 						setup: function( widget ) {
-							
 							this.setValue( widget.data.align );
 						},
 						// When committing (saving) this field, set its value to the widget data.

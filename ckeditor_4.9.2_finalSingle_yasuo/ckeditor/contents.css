@@ -210,8 +210,26 @@ a > img {
 
 
 
+.iframebox-wrap{
+	display:inline-block;
+	position:relative;  
+}
 
-.iframe-box{
-    border:none;
-    background:none; 
+.iframebox-wrap:before{
+	display: block;
+    content: attr(data-content);
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 40px;
+    line-height: 40px;
+    width: 40px;
+    overflow: hidden;
+    color: #000;
+    color:#fff;
+    cursor:pointer;  
+    background-color:green;
+   text-align: center;
+
 }

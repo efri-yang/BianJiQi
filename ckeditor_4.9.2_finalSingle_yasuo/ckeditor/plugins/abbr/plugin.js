@@ -18,20 +18,7 @@ CKEDITOR.plugins.add( 'abbr', {
 	init: function( editor ) {
 
 		// Define an editor command that opens our dialog window.
-		editor.addCommand( 'abbr', new CKEDITOR.dialogCommand( 'abbrDialog', {
-
-			// Allow the abbr tag with an optional title attribute.
-			allowedContent: 'abbr[title,id]',
-
-			// Require the abbr tag to be allowed for the feature to work.
-			requiredContent: 'abbr',
-
-			// Prefer abbr over acronym. Transform acronym elements into abbr elements.
-			contentForms: [
-				'abbr',
-				'acronym'
-			]
-		} ) );
+		editor.addCommand( 'abbr', new CKEDITOR.dialogCommand( 'abbrDialog' ) );
 
 		// Create a toolbar button that executes the above command.
 		editor.ui.addButton( 'Abbr', {
@@ -45,24 +32,6 @@ CKEDITOR.plugins.add( 'abbr', {
 			// The button placement in the toolbar (toolbar group name).
 			toolbar: 'insert'
 		});
-
-		if ( editor.contextMenu ) {
-			alert("asdfasdfasdf");
-			// Add a context menu group with the Edit Abbreviation item.
-			editor.addMenuGroup( 'abbrGroup' );
-			editor.addMenuItem( 'abbrItem', {
-				label: 'Edit Abbreviation',
-				icon: this.path + 'icons/abbr.png',
-				command: 'abbr',
-				group: 'abbrGroup'
-			});
-
-			editor.contextMenu.addListener( function( element ) {
-				if ( element.getAscendant( 'abbr', true ) ) {
-					return { abbrItem: CKEDITOR.TRISTATE_OFF };
-				}
-			});
-		}
 
 		// Register our dialog file -- this.path is the plugin folder path.
 		CKEDITOR.dialog.add( 'abbrDialog', this.path + 'dialogs/abbr.js' );

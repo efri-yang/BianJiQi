@@ -30,9 +30,9 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
     <div id="editor">
         <!-- <img src="http://localhost/plupupload/src/uploads/qrcode_1.jpg" id="img1"><img src="http://localhost/plupupload/src/uploads/01.jpg" width="100" height="100" id="img2"> -->
   
-<iframe class="iframe-box" frameborder="none" width="500" height="300" src="http://www.xiaoyu.com/enroll?app_id=2559"></iframe>
+<iframe  id="iframe1" class="iframe-box" frameborder="none" width="500" height="150" src="http://www.xiaoyu.com/enroll?app_id=2559"></iframe>
 
-      <div>div</div>
+      <div id="div1">啥地方哈师大发生地方阿斯蒂芬阿萨德</div>
 
     </div>
 
@@ -44,12 +44,15 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
     
 
     <button id="btn-get-content">获取内容</button>
+
+    <button id="btn-get-selectcontent">获取选中内容</button>
     <script>
     var editor = CKEDITOR.replace('editor', {
         height:500,
-        extraPlugins: 'simplebox,abbr,imagegallery,iframebox',
+        extraPlugins: 'imagegallery,iframebox',
         allowedContent: true
     });
+
 
 
 
@@ -70,7 +73,12 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 
     $(function() {
         $("#btn-get-content").on("click", function() {
-            alert(editor.getSelection().getSelectedText())
+            alert(editor.getData())
+            // alert(editor.getSelection().getSelectedText())
+        });
+
+        $("#btn-get-selectcontent").on("click",function(){
+            console.dir(editor.getSelection())
         })
     })
     </script>
