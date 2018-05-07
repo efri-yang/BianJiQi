@@ -131,8 +131,6 @@ editor.on("doubleclick",function(evt){
 
 		$confirmBtn.on("click",function(){
 			var iframebox='<span class="iframebox-wrap" data-content="编辑"><iframe frameborder="none" src="'+$formUrl.val()+'" width="'+$formW.val()+'"  height="'+$formH.val()+'"></iframe></span>';
-
-			
 			editor.insertHtml(iframebox);
 			layer.close(editor.iframeBox.layerIndex);
 		});

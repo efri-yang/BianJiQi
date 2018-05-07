@@ -233,3 +233,16 @@ a > img {
    text-align: center;
 
 }
+
+.ck-table{
+	border-color:#e5e5e5; 
+	
+border-collapse: collapse;
+border-spacing: 0;
+table-layout: fixed;
+}
+
+.ck-table td{
+	border-color:#e5e5e5;
+	border-style: solid;
+}
