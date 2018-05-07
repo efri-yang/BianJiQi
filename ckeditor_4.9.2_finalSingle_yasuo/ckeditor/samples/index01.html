@@ -15,8 +15,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
     <script type="text/javascript" src="./js/layer/layer.js"></script>
     <script type="text/javascript" src="./js/tab.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/base.css" />
-    <link rel="stylesheet" type="text/css" href="./css/upload.css">
-    <link rel="stylesheet" type="text/css" href="./css/iframebox.css">
+    <link rel="stylesheet" type="text/css" href="css/plugin.css">
 </head>
 
 <style type="text/css">
@@ -54,7 +53,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
     <script>
     var editor = CKEDITOR.replace('editor', {
         height:500,
-        extraPlugins: 'imagegallery,iframebox',
+        extraPlugins: 'imagegallery,iframebox,tablebox',
         allowedContent: true,
         test:function(){
             alert(this.name);
