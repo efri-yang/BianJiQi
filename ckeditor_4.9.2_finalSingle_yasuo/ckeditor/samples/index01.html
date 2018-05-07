@@ -55,8 +55,28 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
     var editor = CKEDITOR.replace('editor', {
         height:500,
         extraPlugins: 'imagegallery,iframebox',
-        allowedContent: true
+        allowedContent: true,
+        test:function(){
+            alert(this.name);
+        },
+        imageGallery:{
+            //上传文件配置
+            plupload:{
+                
+                url: 'upload.php',
+                multipart_params:{},//用户id和帖子id 等额外参数
+                filters: {
+                    prevent_duplicates: true,
+                    max_file_size: '1000mb',
+                    mime_types: [
+                        { title: "Image files", extensions: "jpg,gif,png" }
+                    ]
+                }
+            }
+        }
     });
+
+
 
 
 

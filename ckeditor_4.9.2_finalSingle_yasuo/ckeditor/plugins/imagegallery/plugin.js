@@ -96,9 +96,7 @@
 
         $addBtn.attr("id", editor.name + "-img-add-btn");
        
-
-
-        var uploader = new plupload.Uploader({
+        var default={
             runtimes: 'html5,flash,silverlight,html4',
             browse_button: editor.name + "-img-add-btn", // you can pass an id...
             url: 'upload.php',
@@ -111,6 +109,11 @@
                     { title: "Image files", extensions: "jpg,gif,png" }
                 ]
             }
+        }
+        var opts=$.extend(true, target object, object1);
+        
+        var uploader = new plupload.Uploader({
+            
         });
 
         $closeBtn.on("click", function() {
