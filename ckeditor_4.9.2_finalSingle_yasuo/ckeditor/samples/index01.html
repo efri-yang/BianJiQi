@@ -61,20 +61,25 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
         },
         imageGallery:{
             //上传文件配置
-            plupload:{
-                
+            plupload:{ 
                 url: 'upload.php',
                 multipart_params:{},//用户id和帖子id 等额外参数
                 filters: {
                     prevent_duplicates: true,
                     max_file_size: '1000mb',
                     mime_types: [
-                        { title: "Image files", extensions: "jpg,gif,png" }
+                        { title: "Image files", extensions: "jpg,jpeg,gif,png" }
                     ]
                 }
-            }
+            },
+            //相册类型的url
+            gallerytypeUrl:"./gallerytype.php",
+            //相册列表
+            getGalleryListUrl:"./lazyload.php"
         }
     });
+
+
 
 
 

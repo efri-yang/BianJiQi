@@ -52,7 +52,7 @@
          editor.uploaderImg.$dialog=$dialog;
 
         $.ajax({
-                url:"./gallerytype.php",
+                url:editor.config.imageGallery.gallerytypeUrl,
                 type:"post",
                 data:"",//用户id
                 dataType:"json",
@@ -96,25 +96,29 @@
 
         $addBtn.attr("id", editor.name + "-img-add-btn");
        
-        var default={
-            runtimes: 'html5,flash,silverlight,html4',
-            browse_button: editor.name + "-img-add-btn", // you can pass an id...
-            url: 'upload.php',
-            flash_swf_url: '../js/Moxie.swf',
-            silverlight_xap_url: '../js/Moxie.xap',
-            filters: {
-                prevent_duplicates: true,
-                max_file_size: '1000mb',
-                mime_types: [
-                    { title: "Image files", extensions: "jpg,gif,png" }
-                ]
+        var defaultConfig={
+            plupload:{
+                runtimes: 'html5,flash,silverlight,html4',
+                browse_button: editor.name + "-img-add-btn", // you can pass an id...
+                url: 'upload.php',
+                flash_swf_url: '../js/Moxie.swf',
+                silverlight_xap_url: '../js/Moxie.xap',
+                filters: {
+                    prevent_duplicates: true,
+                    max_file_size: '1000mb',
+                    mime_types: [
+                        { title: "Image files", extensions: "jpg,gif,png" }
+                    ]
+                }
             }
-        }
-        var opts=$.extend(true, target object, object1);
-        
-        var uploader = new plupload.Uploader({
             
-        });
+        }
+
+
+        var opts=$.extend(true,defaultConfig,editor.config.imageGallery);
+       
+        
+        var uploader = new plupload.Uploader(opts.plupload);
 
         $closeBtn.on("click", function() {
             layer.close(editor.uploaderImg.layerIndex);
@@ -349,7 +353,7 @@
 
         function getGalleryData(data){
             $.ajax({
-                url:"./lazyload.php",
+                url:editor.config.imageGallery.getGalleryListUrl,
                 type:"post",
                 data:data,
                 dataType:"json",
