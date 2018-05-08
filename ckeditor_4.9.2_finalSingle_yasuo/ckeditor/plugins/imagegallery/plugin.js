@@ -606,7 +606,7 @@
                 imgW,
                 imgH,
                 imgAlt;
-            console.dir(element);
+         
 
             // if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
             if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
