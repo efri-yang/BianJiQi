@@ -105,6 +105,7 @@
 
         var defaultConfig = {
             plupload: {
+                // runtimes: 'html5,flash,silverlight,html4',
                 runtimes: 'html5,flash,silverlight,html4',
                 browse_button: editor.name + "-img-add-btn", // you can pass an id...
                 url: 'upload.php',
@@ -132,6 +133,9 @@
         plupload.extend(uploader.getOption('filters'), {
             max_imgfile_count: uploader.settings.max_imgfile_count
         });
+
+
+
 
 
         plupload.addFileFilter('max_imgfile_count', function(maxCount, file, cb) {
@@ -466,12 +470,14 @@
 
         uploader.bind('Error', function(up, err) {
             var details = "";
+            console.dir(err);
             switch (err.code) {
                 case plupload.FILE_EXTENSION_ERROR:
                     details = err.file.name + "文件不符合格式要求！";
                     break;
 
                 case plupload.FILE_SIZE_ERROR:
+                    alert(err.file.size);
                     details = "单个文件大小不能超过" + plupload.formatSize(plupload.parseSize(up.getOption('filters').max_file_size)) + ",文件(" + err.file.name + ")大小为：" + plupload.formatSize(err.file.size);
                     break;
 
@@ -584,7 +590,7 @@
             // The command to execute on click.
             command: 'imagegallery',
             // The button placement in the toolbar (toolbar group name).
-            toolbar: 'insert,1'
+            toolbar: 'insert,2'
         });
 
         this._editImgInit.call(editor);

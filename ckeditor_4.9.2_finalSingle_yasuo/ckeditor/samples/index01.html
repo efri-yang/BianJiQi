@@ -9,6 +9,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
     <meta charset="utf-8">
     <title>CKEditor Sample</title>
     <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>
+
     <script src="../ckeditor.js"></script>
     <script type="text/javascript" src="./js/plupload/moxie.min.js"></script>
     <script type="text/javascript" src="./js/plupload/plupload.dev.js"></script>
@@ -20,7 +21,6 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 .cke_toolbox .cke_toolbar:last-child>.cke_toolgroup>a:after{
         display: none;
 }
-
 </style>
 </head>
 
@@ -33,11 +33,9 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
         <p>3、整合常用的功能</p>
     </div>
     <div id="editor">
-        <!-- <img src="http://localhost/plupupload/src/uploads/qrcode_1.jpg" id="img1"><img src="http://localhost/plupupload/src/uploads/01.jpg" width="100" height="100" id="img2"> -->
-  
-<!-- <iframe  id="iframe1" class="iframe-box" frameborder="none" width="500" height="150" src="http://www.xiaoyu.com/enroll?app_id=2559"></iframe>
-
-      <div id="div1">啥地方哈师大发生地方阿斯蒂芬阿萨德</div> -->
+        <a href="http://www.baidu.com">百度</a>
+        <a href="javascript:void(0);">javascript</a>
+        <a href=mailto:sample@163.com>send email</a>
 
     </div>
 
@@ -67,7 +65,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
                 filters: {
                     max_imgfile_count: 3,
                     prevent_duplicates: true,
-                    max_file_size: '5mb',
+                    max_file_size: '50mb',
                     mime_types: [
                         { title: "Image files", extensions: "jpg,jpeg,gif,png" }
                     ]
@@ -77,6 +75,20 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
             gallerytypeUrl:"./gallerytype.php",
             //相册列表
             getGalleryListUrl:"./lazyload.php"
+        },
+        imageSingle:{
+            plupload:{ 
+                url: 'upload.php',
+                multipart_params:{},//用户id和帖子id 等额外参数
+                filters: {
+                    max_imgfile_count: 3,
+                    prevent_duplicates: true,
+                    max_file_size: '50kb',
+                    mime_types: [
+                        { title: "Image files", extensions: "jpg,jpeg,gif,png" }
+                    ]
+                }
+            }
         }
     });
 

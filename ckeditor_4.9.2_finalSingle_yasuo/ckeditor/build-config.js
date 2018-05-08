@@ -61,7 +61,7 @@ var CKBUILDER_CONFIG = {
 		'format' : 1,
 		'indentlist' : 1,
 		'justify' : 1,
-		'link' : 1,
+		// 'link' : 1,
 		'list' : 1,
 		'maximize' : 1,
 		'smiley' : 1,
