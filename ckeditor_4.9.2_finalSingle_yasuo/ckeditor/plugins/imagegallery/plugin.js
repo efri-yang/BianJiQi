@@ -46,30 +46,30 @@
     _uploadImgRender: function() {
         var editor = this;
 
-        var htmlStr = '<div class="ckeditor-imgupload-dialog" id="' + editor.uploaderImg.dialogId + '"><ul class="imgupload-tab-hd"><li class="active"><a href="#'+editor.name+'-tabbd-localupload-container">本地上传</a></li><li><a href="#'+editor.name+'-tabbd-gallery-container">相册图片</a></li><li class="move-seat"></li></ul><div class="ckeditor-localupload-container active" id="'+editor.name+'-tabbd-localupload-container"><div class="ckeditor-uploadfile-container"><div class="ckeditor-uploadfile-hd"><div class="img-upload-allprogress"><span class="txt"></span><span class="percentage"></span></div><div class="img-upload-info"></div><a href="javascript:void(0);" class="img-upload-btn disabled">开始上传</a><div class="img-add-btn">添加文件</div></div><ul class="ckeditor-uploadfile-list"></ul><div class="ckeditor-uploadfile-ft"><label class="ft-save-checkbox"><input type="checkbox" name="saveingallery" />保存到相册</label><select class="ft-gallery-sel" disabled></select><a href="#" class="ft-btn-insert disabled">插入</a><a href="#" class="ft-btn-cancel">关闭</a></div></div></div><div class="ckeditor-gallery-container" id="'+editor.name+'-tabbd-gallery-container"><div class="ckeditor-gallery-nodata" style="display:none;">您的相册目前还没有照片,<a href="#">立马去上传</a></div><div class="ckeditor-gallery-hasdata" style="display:block;"><ul class="ckeditor-gallery-list"></ul><div class="ckeditor-gallery-ft"><select class="ft-galleryall-sel"></select><a href="#" class="ft-galleryall-insert">插入</a><a href="#" class="ft-galleryall-cancel">取消</a></div></div></div></div>';
+        var htmlStr = '<div class="ckeditor-imgupload-dialog" id="' + editor.uploaderImg.dialogId + '"><ul class="imgupload-tab-hd"><li class="active"><a href="#' + editor.name + '-tabbd-localupload-container">本地上传</a></li><li><a href="#' + editor.name + '-tabbd-gallery-container">相册图片</a></li><li class="move-seat"></li></ul><div class="ckeditor-localupload-container active" id="' + editor.name + '-tabbd-localupload-container"><div class="ckeditor-uploadfile-container"><div class="ckeditor-uploadfile-hd"><div class="img-upload-allprogress"><span class="txt"></span><span class="percentage"></span></div><div class="img-upload-info"></div><a href="javascript:void(0);" class="img-upload-btn disabled">开始上传</a><div class="img-add-btn">添加文件</div><a href="javascript:void(0);" class="img-pause-btn">暂停上传</a></div><ul class="ckeditor-uploadfile-list"></ul><div class="ckeditor-uploadfile-ft"><label class="ft-save-checkbox"><input type="checkbox" name="saveingallery" />保存到相册</label><select class="ft-gallery-sel" disabled></select><a href="#" class="ft-btn-insert disabled">插入</a><a href="#" class="ft-btn-cancel">关闭</a></div><div class="ckeditor-uploadfile-errortip"><i class="close"></i><div class="txt"></div></div></div></div><div class="ckeditor-gallery-container" id="' + editor.name + '-tabbd-gallery-container"><div class="ckeditor-gallery-nodata" style="display:none;">您的相册目前还没有照片,<a href="#">立马去上传</a></div><div class="ckeditor-gallery-hasdata" style="display:block;"><ul class="ckeditor-gallery-list"></ul><div class="ckeditor-gallery-ft"><select class="ft-galleryall-sel"></select><a href="#" class="ft-galleryall-insert">插入</a><a href="#" class="ft-galleryall-cancel">取消</a></div></div></div></div>';
         $(htmlStr).appendTo($("body"));
         var $dialog = $("#" + editor.uploaderImg.dialogId);
-         editor.uploaderImg.$dialog=$dialog;
+        editor.uploaderImg.$dialog = $dialog;
 
         $.ajax({
-                url:editor.config.imageGallery.gallerytypeUrl,
-                type:"post",
-                data:"",//用户id
-                dataType:"json",
-                beforeSend:function(){
+            url: editor.config.imageGallery.gallerytypeUrl,
+            type: "post",
+            data: "", //用户id
+            dataType: "json",
+            beforeSend: function() {
 
-                },
-                success:function(data, textStatus){
-                    var strArr=[];
-                    $.each(data.list,function(index,obj){
-                        strArr.push('<option value="'+obj.id+'">'+obj.text+'</option>');
-                    });
-                   $dialog.find(".ft-galleryall-sel,.ft-gallery-sel").html(strArr.join(""));
-                   
-                },
-                complete:function(XMLHttpRequest, textStatus){
+            },
+            success: function(data, textStatus) {
+                var strArr = [];
+                $.each(data.list, function(index, obj) {
+                    strArr.push('<option value="' + obj.id + '">' + obj.text + '</option>');
+                });
+                $dialog.find(".ft-galleryall-sel,.ft-gallery-sel").html(strArr.join(""));
 
-                }
+            },
+            complete: function(XMLHttpRequest, textStatus) {
+
+            }
         })
         //tab 选项卡
         $dialog.find('.imgupload-tab-hd a').click(function(e) {
@@ -77,65 +77,133 @@
             $(this).editorTab('show');
         });
 
-        
 
-        
-       
 
-       
+
+
+
+
     },
-    _uploadImgUpHandler:function(){
-        var editor=this;
+    _uploadImgUpHandler: function() {
+        var editor = this;
         var $uploadBtn = editor.uploaderImg.$dialog.find(".img-upload-btn");
         var $addBtn = editor.uploaderImg.$dialog.find(".img-add-btn");
         var $insertBtn = editor.uploaderImg.$dialog.find(".ft-btn-insert");
         var $closeBtn = editor.uploaderImg.$dialog.find(".ft-btn-cancel");
         var $fileListUL = editor.uploaderImg.$dialog.find(".ckeditor-uploadfile-list");
-        var $saveInGallery=editor.uploaderImg.$dialog.find('input[name="saveingallery"]');
-        var $selGallery=editor.uploaderImg.$dialog.find(".ft-gallery-sel");
+        var $saveInGallery = editor.uploaderImg.$dialog.find('input[name="saveingallery"]');
+        var $selGallery = editor.uploaderImg.$dialog.find(".ft-gallery-sel");
+        var $errorTip = editor.uploaderImg.$dialog.find(".ckeditor-uploadfile-errortip");
+        var $uploadInfo = editor.uploaderImg.$dialog.find(".img-upload-info");
+        var $pauseBtn = editor.uploaderImg.$dialog.find(".img-pause-btn");
+        var $uploadProgress = editor.uploaderImg.$dialog.find(".img-upload-allprogress");
+
+        var stating = "STOPPED";
+        var fileSize = 0;
 
         $addBtn.attr("id", editor.name + "-img-add-btn");
-       
-        var defaultConfig={
-            plupload:{
+
+        var defaultConfig = {
+            plupload: {
                 runtimes: 'html5,flash,silverlight,html4',
                 browse_button: editor.name + "-img-add-btn", // you can pass an id...
                 url: 'upload.php',
                 flash_swf_url: '../js/Moxie.swf',
                 silverlight_xap_url: '../js/Moxie.xap',
                 filters: {
+                    max_imgfile_count: 3,
                     prevent_duplicates: true,
-                    max_file_size: '1000mb',
+                    max_file_size: '5mb',
                     mime_types: [
                         { title: "Image files", extensions: "jpg,gif,png" }
                     ]
-                }
+                },
+                FILE_COUNT_ERROR: -9001
             }
-            
+
         }
 
 
-        var opts=$.extend(true,defaultConfig,editor.config.imageGallery);
-       
-        
+        var opts = $.extend(true, defaultConfig, editor.config.imageGallery);
+
+
         var uploader = new plupload.Uploader(opts.plupload);
+
+        plupload.extend(uploader.getOption('filters'), {
+            max_imgfile_count: uploader.settings.max_imgfile_count
+        });
+
+
+        plupload.addFileFilter('max_imgfile_count', function(maxCount, file, cb) {
+            if (maxCount <= uploader.files.length - (uploader.total.uploaded + uploader.total.failed)) {
+                //抛出上传个数限制
+                uploader.trigger('error', {
+                    code: -9001,
+                    file: file
+                })
+                cb(false);
+            } else {
+                cb(true);
+            }
+        });
+
+        function updateTotalText() {
+            var text = '';
+            if (stating === 'FilesAdded') {
+                text = '选中' + uploader.files.length + '张图片，共' + plupload.formatSize(fileSize) + '。';
+            } else if (stating === 'UploadComplete') {
+                text = '共' + uploader.files.length + '张（' + plupload.formatSize(fileSize) + '），已上传' + uploader.total.uploaded + '张';
+                if (uploader.total.failed) {
+                    text += '，失败' + uploader.total.failed + '张,<a class="retry" href="#">重新上传</a>失败图片或<a class="ignore" href="#">忽略</a>';
+                }
+            } else if (stating === 'Del') {
+                text = '选中' + uploader.files.length + '张图片';
+                if (uploader.total.uploaded) {
+                    text += ',已上传' + uploader.total.uploaded + '张';
+                }
+            }
+            $uploadInfo.html(text);
+        }
+
+        function _handleState() {
+            var filesPending = uploader.files.length - (uploader.total.uploaded + uploader.total.failed);
+            var maxCount = uploader.getOption('filters').max_imgfile_count || 0;
+            if (plupload.STARTED === uploader.state) {
+                //此时表示正在上传
+                $pauseBtn.show();
+            } else if (plupload.STOPPED === uploader.state) {
+                //停止上传
+                $pauseBtn.hide();
+
+            }
+        }
+
+        function updateTotalProgress() {
+            $uploadProgress.find(".txt").text(uploader.total.percent + "%");
+            $uploadProgress.find(".percentage").width(uploader.total.percent + "%");
+        }
+
 
         $closeBtn.on("click", function() {
             layer.close(editor.uploaderImg.layerIndex);
         });
 
-        $saveInGallery.on("change",function(){
-            var $this=$(this);
-            if($this.prop('checked')){
+        $errorTip.find(".close").on("click", function() {
+            $errorTip.hide();
+        })
+
+        $saveInGallery.on("change", function() {
+            var $this = $(this);
+            if ($this.prop('checked')) {
                 $selGallery.removeAttr('disabled');
-            }else{
-                $selGallery.attr('disabled','disabled');
+            } else {
+                $selGallery.attr('disabled', 'disabled');
             }
-           
+
         })
 
         $insertBtn.on("click", function() {
-            var str="";
+            var str = "";
             $fileListUL.children("li").each(function(index, el) {
                 var $el = $(el);
                 var src = $el.attr("data-src");
@@ -147,12 +215,12 @@
                     img.setAttribute('src', src);
                     editor.insertElement(img);
                     editor.insertHtml(str);
-                   uploader.removeFile(id);
-                   $el.remove();
-                    
+                    uploader.removeFile(id);
+                    $el.remove();
+
                 }
 
-                
+
             });
 
             layer.close(editor.uploaderImg.layerIndex);
@@ -160,23 +228,48 @@
         });
 
 
+        editor.uploaderImg.$dialog.on("click", ".retry", function() {
+            var len = uploader.files.length;
+            for (var i = len - 1; i >= 0; i--) {
+                if (uploader.files[i].status == 4) {
+                    uploader.files[i].status = 1;
+                }
+            }
+            uploader.start();
+        })
+
+        editor.uploaderImg.$dialog.on("click", ".ignore", function() {
+            var len = uploader.files.length;
+            for (var i = len - 1; i >= 0; i--) {
+                uploader.removeFile(uploader.files[i]);
+            }
+
+
+        })
+
+
 
         uploader.bind("Init", function(uploader) {
-            console.group("Init事件:当Plupload初始化完成后触发监听函数参数：(uploader)");
+            // console.group("Init事件:当Plupload初始化完成后触发监听函数参数：(uploader)");
         });
 
         uploader.bind("PostInit", function() {
-            console.group("PostInit事件:当Init事件发生后触发监听函数参数：(uploader)");
+            // console.group("PostInit事件:当Init事件发生后触发监听函数参数：(uploader)");
             $uploadBtn.on("click", function() {
-               uploader.start();
+                uploader.start();
+            });
+
+            $pauseBtn.click(function(e) {
+                uploader.stop();
+                e.preventDefault();
             });
         });
 
         uploader.bind("Browse", function(up) {
-            console.group("Browse事件")
+            // console.group("Browse事件")
         });
         uploader.bind('FileFiltered', function(up, file) {
-            console.group("FileFiltered事件")
+            // console.group("FileFiltered事件")
         });
 
         function preloadThumb(file, cb) {
@@ -210,7 +303,7 @@
             img.load(file.getSource());
         }
         uploader.bind('FilesAdded', function(up, files) {
-            console.group("FilesAdded事件");
+            // console.group("FilesAdded事件");
 
             $uploadBtn.removeClass("disabled");
 
@@ -237,11 +330,16 @@
                 $beforePreview = $str.find('.img-before-preview');
                 $afterPreview = $str.find(".img-after-preview");
                 $del = $str.find(".img-del-btn");
-
+                fileSize += file.size;
                 $del.show();
+
                 $del.on("click", function() {
                     uploader.removeFile(file);
-                    console.dir(uploader.files);
+                    stating = 'Del';
+                    updateTotalText();
+                    if (!uploader.total.loaded) {
+                        $insertBtn.addClass("disabled");
+                    }
 
 
 
@@ -260,13 +358,16 @@
 
                 })
             });
+            stating = "FilesAdded";
+            updateTotalText();
         });
         uploader.bind('QueueChanged', function(up) {
-            console.group("QueueChanged事件");
+            // console.group("QueueChanged事件");
+            _handleState();
         });
         uploader.bind('Refresh', function(up) {
-            console.group("Refresh事件");
-            console.dir(up.total);
+            // console.group("Refresh事件");
+            // console.dir(up.total);
 
             if (!up.total.uploaded) {
                 $insertBtn.addClass("disabled");
@@ -275,23 +376,27 @@
             }
         });
         uploader.bind('BeforeUpload', function(up, file) {
-            console.group("BeforeUpload事件");
-            console.dir(file);
+            // console.group("BeforeUpload事件");
+            // console.dir(file);
             var $li = $("#" + file.id);
             var $propress = $li.find(".img-progress").show();
             $li.find(".img-del-btn").hide();
         });
         uploader.bind('UploadProgress', function(up, file) {
-            console.group("UploadProgress事件");
-            console.dir(file);
+            // console.group("UploadProgress事件");
+            // console.dir(file);
             var $li = $("#" + file.id);
             var $propress = $li.find(".img-progress").show();
             $propress.children('span').css("width", file.percent + "%");
+            $uploadProgress.show();
+            $uploadInfo.hide();
+            stating = "UploadProgress";
+            updateTotalProgress();
 
         });
         uploader.bind('FileUploaded', function(up, file, info) {
-            console.dir(info);
-            console.group("FileUploaded事件");
+            // console.dir(info);
+            // console.group("FileUploaded事件");
             var $li = $("#" + file.id);
             var $propress = $li.find(".img-progress").hide();
             $li.find(".img-success").show();
@@ -302,20 +407,31 @@
 
         uploader.bind('StateChanged', function(up) {
             //当前的上传状态，可能的值为plupload.STARTED或plupload.STOPPED，该值由Plupload实例的stop()或statr()方法控制。默认为plupload.STOPPED
-            console.group("StateChanged事件");
-            console.dir(up.state);
+            // console.group("StateChanged事件");
+            // console.dir(up.state);
+            if (!uploader.total.uploaded) {
+                $insertBtn.addClass("disabled");
+            } else {
+                $insertBtn.removeClass("disabled");
+            }
+            _handleState();
         });
 
         uploader.bind('UploadComplete', function(up, files) {
-            console.group("UploadComplete事件");
+            // console.group("UploadComplete事件");
+             $uploadProgress.hide();
+            $uploadInfo.show();
+            stating = "UploadComplete";
+            updateTotalText();
 
         });
         uploader.bind('FilesRemoved', function(up, files) {
-            console.group("FilesRemoved事件");
+            // console.group("FilesRemoved事件");
 
             $.each(files, function(index, file) {
 
                 $("#" + file.id).remove();
+                fileSize -= file.size;
 
             });
 
@@ -331,85 +447,123 @@
         });
 
         uploader.bind('ChunkUploaded', function(up, file, info) {
-            console.group("ChunkUploaded事件")
+            // console.group("ChunkUploaded事件")
         });
 
         uploader.bind('Destroy', function() {
-            console.group("Destroy事件")
+            // console.group("Destroy事件")
         });
 
         uploader.bind('OptionChanged', function(up, name, value, oldValue) {
-            console.group("OptionChanged事件")
+            // console.group("OptionChanged事件")
         });
+
+
+        uploader.bind('Error', function(up, err) {
+            var details = "";
+            switch (err.code) {
+                case plupload.FILE_EXTENSION_ERROR:
+                    details = err.file.name + "文件不符合格式要求！";
+                    break;
+
+                case plupload.FILE_SIZE_ERROR:
+                    details = "单个文件大小不能超过" + plupload.formatSize(plupload.parseSize(up.getOption('filters').max_file_size)) + ",文件(" + err.file.name + ")大小为：" + plupload.formatSize(err.file.size);
+                    break;
+
+                case plupload.FILE_DUPLICATE_ERROR:
+                    details = err.file.name + "上传已经在队列中了！";
+                    break;
+
+                case uploader.settings.FILE_COUNT_ERROR:
+                    details = "每次上传文件总数不能超过" + up.getOption('filters').max_imgfile_count + "个,多出的文件将不被上传！";
+                    break;
+
+                case plupload.IMAGE_FORMAT_ERROR:
+                    details = _("Image format either wrong or not supported.");
+                    break;
+
+                case plupload.IMAGE_MEMORY_ERROR:
+                    details = _("Runtime ran out of available memory.");
+                    break;
+                case plupload.HTTP_ERROR:
+                    details = "上传的URL出现错误或着文件不存在！";
+                    break;
+            }
+            $errorTip.show().find(".txt").html(details);
+        });
+
+
+
+
         uploader.init();
     },
-    _uploadImgGalleryHandler:function(){
-        var editor=this;
-        var pitchImg=[];
-        var $gallayListUL=editor.uploaderImg.$dialog.find(".ckeditor-gallery-list");
-        var $insertBtn=editor.uploaderImg.$dialog.find(".ft-galleryall-insert");
-        var $cancelBtn=editor.uploaderImg.$dialog.find(".ft-galleryall-cancel");
-        var $sel=editor.uploaderImg.$dialog.find(".ft-galleryall-sel");
+    _uploadImgGalleryHandler: function() {
+        var editor = this;
+        var pitchImg = [];
+        var $gallayListUL = editor.uploaderImg.$dialog.find(".ckeditor-gallery-list");
+        var $insertBtn = editor.uploaderImg.$dialog.find(".ft-galleryall-insert");
+        var $cancelBtn = editor.uploaderImg.$dialog.find(".ft-galleryall-cancel");
+        var $sel = editor.uploaderImg.$dialog.find(".ft-galleryall-sel");
 
-        function getGalleryData(data){
+        function getGalleryData(data) {
             $.ajax({
-                url:editor.config.imageGallery.getGalleryListUrl,
-                type:"post",
-                data:data,
-                dataType:"json",
-                beforeSend:function(){
+                url: editor.config.imageGallery.getGalleryListUrl,
+                type: "post",
+                data: data,
+                dataType: "json",
+                beforeSend: function() {
 
                 },
-                success:function(data, textStatus){
-                    var strArr=[];
-                    $.each(data.list,function(index,src){
-                        strArr.push('<li data-src="'+src+'"><div class="pic"><img src="'+src+'" /></div><span class="status-check"></span></li>');
+                success: function(data, textStatus) {
+                    var strArr = [];
+                    $.each(data.list, function(index, src) {
+                        strArr.push('<li data-src="' + src + '"><div class="pic"><img src="' + src + '" /></div><span class="status-check"></span></li>');
                     });
-                   $gallayListUL.html(strArr.join(""));
-                   pitchImg=data.list;
+                    $gallayListUL.html(strArr.join(""));
+                    pitchImg = data.list;
                 },
-                complete:function(XMLHttpRequest, textStatus){
+                complete: function(XMLHttpRequest, textStatus) {
 
                 }
             })
         }
-        $('a[href="#'+editor.name+'-tabbd-gallery-container"]').on('shown.bs.tab', function (e) {
-           getGalleryData({"galleryid":1});
-        }); 
+        $('a[href="#' + editor.name + '-tabbd-gallery-container"]').on('shown.bs.tab', function(e) {
+            getGalleryData({ "galleryid": 1 });
+        });
 
-        $sel.on("change",function(){
-            var id=$(this).val();
-            getGalleryData({"galleryid":id})
+        $sel.on("change", function() {
+            var id = $(this).val();
+            getGalleryData({ "galleryid": id })
         })
-        
-        $gallayListUL.on("click","li",function(){
-            var $this=$(this);
-            if($this.hasClass('active')){
+
+        $gallayListUL.on("click", "li", function() {
+            var $this = $(this);
+            if ($this.hasClass('active')) {
                 $this.removeClass('active');
-            }else{
+            } else {
                 $this.addClass('active');
             }
         });
 
-        $insertBtn.on("click",function(event){
+        $insertBtn.on("click", function(event) {
             event.preventDefault();
             var $el;
-                var img;
-                var src;
+            var img;
+            var src;
             $gallayListUL.children('li').each(function(index, el) {
-                $el=$(el);
-                if($el.hasClass('active')){
-                    src=$el.attr("data-src");
-                    img = new CKEDITOR.dom.element( 'img' );
-                    img.setAttribute( 'src',src);
+                $el = $(el);
+                if ($el.hasClass('active')) {
+                    src = $el.attr("data-src");
+                    img = new CKEDITOR.dom.element('img');
+                    img.setAttribute('src', src);
                     editor.insertElement(img);
                 }
             });
-            layer.close(editor.uploaderImg.layerIndex); 
+            layer.close(editor.uploaderImg.layerIndex);
 
         })
 
-        $cancelBtn.on("click",function(event){
+        $cancelBtn.on("click", function(event) {
             event.preventDefault();
             layer.close(editor.uploaderImg.layerIndex);
         })
@@ -432,7 +586,7 @@
         this._uploadImgInit.call(editor);
 
 
-        
+
 
         //绑定图片双击事件
         editor.on('doubleclick', function(evt) {
@@ -442,7 +596,7 @@
                 imgH,
                 imgAlt;
             console.dir(element);
-            
+
             // if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
             if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
                 if (!editor.editImg.$dialog) {
@@ -490,14 +644,14 @@
 
 
 
-            
+
         });
 
         //点击上传图片命令
         editor.addCommand('imagegallery', {
             exec: function(editor) {
                 //判断页面是否纯在弹出框
-                if(!editor.uploaderImg.$dialog){
+                if (!editor.uploaderImg.$dialog) {
                     that._uploadImgRender.call(editor);
                     that._uploadImgGalleryHandler.call(editor);
                     that._uploadImgUpHandler.call(editor);

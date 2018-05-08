@@ -64,8 +64,9 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
                 url: 'upload.php',
                 multipart_params:{},//用户id和帖子id 等额外参数
                 filters: {
+                    max_imgfile_count: 3,
                     prevent_duplicates: true,
-                    max_file_size: '1000mb',
+                    max_file_size: '5mb',
                     mime_types: [
                         { title: "Image files", extensions: "jpg,jpeg,gif,png" }
                     ]
