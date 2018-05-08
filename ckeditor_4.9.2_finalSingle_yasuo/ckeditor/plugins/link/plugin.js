@@ -29,39 +29,8 @@
 
 			editor.addCommand('link', {
                 exec: function(editor) {
-                    
-                		var getSelectedLink=function( editor, returnMultiple ) {
-							var selection = editor.getSelection(),
-								selectedElement = selection.getSelectedElement(),
-								ranges = selection.getRanges(),
-								links = [],
-								link,
-								range,
-								i;
-						console.dir(selectedElement);
-							if ( !returnMultiple && selectedElement && selectedElement.is( 'a' ) ) {
-								return selectedElement;
-							}
-
-							for ( i = 0; i < ranges.length; i++ ) {
-								range = selection.getRanges()[ i ];
-
-								// Skip bogus to cover cases of multiple selection inside tables (#tp2245).
-								// Shrink to element to prevent losing anchor (#859).
-								range.shrink( CKEDITOR.SHRINK_ELEMENT, true, { skipBogus: true } );
-								link = editor.elementPath( range.getCommonAncestor() ).contains( 'a', 1 );
-
-								if ( link && returnMultiple ) {
-									links.push( link );
-								} else if ( link ) {
-									return link;
-								}
-							}
-
-							return returnMultiple ? links : null;
-						};
-
-						getSelectedLink(editor);
+                    	alert(editor.activeEnterMode );
+						
 
 
 
