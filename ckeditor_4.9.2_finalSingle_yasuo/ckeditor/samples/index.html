@@ -7,7 +7,17 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 <head>
 	<meta charset="utf-8">
 	<title>CKEditor Sample</title>
-	<script src="../ckeditor.js"></script>
+	<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>
+    <script src="../ckeditor.js"></script>
+    <script type="text/javascript" src="./js/plupload/moxie.min.js"></script>
+    <script type="text/javascript" src="./js/plupload/plupload.dev.js"></script>
+    <script type="text/javascript" src="./js/layer/layer.js"></script>
+    <script type="text/javascript" src="./js/tab.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/plugin.css">
+
+
+    
 	<script src="js/sample.js"></script>
 	<link rel="stylesheet" href="css/samples.css">
 	<link rel="stylesheet" href="toolbarconfigurator/lib/codemirror/neo.css">
@@ -120,9 +130,68 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 		</p>
 	</div>
 </footer>
-<script>
-	initSample();
-</script>
+ <script>
+    var editor = CKEDITOR.replace('editor', {
+        height:500,
+        extraPlugins: 'imagesingle,imagegallery,iframebox,tablebox',
+        allowedContent: true,
+        test:function(){
+            alert(this.name);
+        },
+        imageGallery:{
+            //上传文件配置
+            plupload:{ 
+                url: 'upload.php',
+                multipart_params:{},//用户id和帖子id 等额外参数
+                filters: {
+                    max_imgfile_count: 3,
+                    prevent_duplicates: true,
+                    max_file_size: '5mb',
+                    mime_types: [
+                        { title: "Image files", extensions: "jpg,jpeg,gif,png" }
+                    ]
+                }
+            },
+            //相册类型的url
+            gallerytypeUrl:"./gallerytype.php",
+            //相册列表
+            getGalleryListUrl:"./lazyload.php"
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // var tpl = new CKEDITOR.template( '<div class="{cls}">{label}</div>' );
+    // alert( tpl.output( { cls: 'cke-label', label: 'foo'} ) );
+
+
+
+
+
+
+
+    $(function() {
+        $("#btn-get-content").on("click", function() {
+            alert(editor.getData())
+            // alert(editor.getSelection().getSelectedText())
+        });
+
+        $("#btn-get-selectcontent").on("click",function(){
+            console.dir(editor.getSelection())
+        })
+    })
+    </script>
 
 </body>
 </html>

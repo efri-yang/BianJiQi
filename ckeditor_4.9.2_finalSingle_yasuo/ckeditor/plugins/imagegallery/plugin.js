@@ -202,7 +202,8 @@
 
         })
 
-        $insertBtn.on("click", function() {
+        $insertBtn.on("click", function(event) {
+            event.preventDefault();
             var str = "";
             $fileListUL.children("li").each(function(index, el) {
                 var $el = $(el);
@@ -270,6 +271,10 @@
         });
         uploader.bind('FileFiltered', function(up, file) {
             // console.group("FileFiltered事件")
+            if (uploader.settings.filters.max_imgfile_count <= uploader.files.length - (uploader.total.uploaded + uploader.total.failed)) {
+                $addBtn.addClass('disabled');
+                uploader.disableBrowse(true);
+             }
         });
 
         function preloadThumb(file, cb) {
@@ -579,7 +584,7 @@
             // The command to execute on click.
             command: 'imagegallery',
             // The button placement in the toolbar (toolbar group name).
-            toolbar: 'insert'
+            toolbar: 'insert,1'
         });
 
         this._editImgInit.call(editor);
