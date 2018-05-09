@@ -9,9 +9,10 @@
     CKEDITOR.plugins.add('link', {
         icons: 'link,unlink', // %REMOVE_LINE_CORE%
         hidpi: true, // %REMOVE_LINE_CORE%
-        beforeInit:function(editor){
-        	editor.link={};
-        	editor.link.dialogId=editor.name+"-link-dialog";
+        beforeInit: function(editor) {
+            editor.link = {};
+            editor.link.dialogId = editor.name + "-link-dialog";
+            editor.link.initialLinkText="";
         },
         onLoad: function() {
             // Add the CSS styles for anchor placeholders.
@@ -33,20 +34,24 @@
                 toolbar: 'links,20'
             });
 
-            
+
 
 
 
 
             editor.addCommand('link', {
                 exec: function(editor) {
-                	if(!editor.link.$dialog){
-                		renderDialogHtml(editor);
-                	}
+                    if (!editor.link.$dialog) {
+                        renderDialogHtml(editor);
+                    }
                     var selection = editor.getSelection();
                     var elements = CKEDITOR.plugins.link.getSelectedLink(editor, true); //判断是或否是a链接
                     var firstLink = elements[0] || null;
-                 
+
+                    var selectedText = selection.getSelectedText();
+
+
+
 
                     if (firstLink && firstLink.hasAttribute('href')) {
                         if (!selection.getSelectedElement() && !selection.isInTable()) {
@@ -54,48 +59,39 @@
                         }
                     }
 
-                    var data = CKEDITOR.plugins.link.parseLinkAttributes(editor, firstLink);
-
-                    console.dir(elements);
-                    console.dir(selection);
+                    var data=editor.link.data = CKEDITOR.plugins.link.parseLinkAttributes(editor, firstLink);
+                    var xySelectedIndex, targetSelectedIndex;
                     console.dir(data);
-                 
+                    if (!!elements.length) {
+                        //当前点击的是一个链接,编辑链接//editor.getSelection().getSelectedText() 就是可以获取文本
+                        editLinksInSelection(editor, elements, data);
+                        xySelectedIndex = (data.url.protocol == "http://") ? 0 : 1;
+                        targetSelectedIndex = (data.target.type == "_self") ? 0 : 1;
 
+                        editor.link.$text.val(editor.getSelection().getSelectedText());
+                        editor.link.$xy.get(0).selectedIndex = xySelectedIndex;
+                        editor.link.$url.val(data.url.url);
+                        editor.link.$target.get(0).selectedIndex = targetSelectedIndex;
+                        openDialog(editor);
+                    } else {
+                        //当前点击不是一个链接，判断是否又文本存在，
+                        //如果没有文本表示在光标定位地方插入一个链接，
+                        //如果有文本表示给当前文本添加一个链接
+                        if (!!selectedText) {
+                            editor.link.$text.val(selectedText);
+                            editor.link.$xy.get(0).selectedIndex = 0;
+                            editor.link.$url.val("");
+                            editor.link.$target.get(0).selectedIndex = 0;
+                            openDialog(editor);
+                        } else {
+                            editor.link.$text.val("");
+                            editor.link.$xy.get(0).selectedIndex = 0;
+                            editor.link.$url.val("");
+                            editor.link.$target.get(0).selectedIndex = 0;
+                            openDialog(editor);
+                        }
 
-                    if(!!elements.length){
-                    	//当前点击的是一个链接
-                    	editLinksInSelection( editor, elements, data );
-                    	console.dir(data);
-                    	//editor.getSelection().getSelectedText() 就是可以获取文本
-                    	layer.open({
-                    		type: 1,
-			                shade: false,
-			                title:"连接设置", //不显示标题
-			                area:"420px",
-			                content:editor.link.$dialog, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-				            success: function(layero, index){
-				               editor.link.$text.val(editor.getSelection().getSelectedText());
-				               editor.link.$url.val(data.url.url);
-				               alert(editor.link.$xy.length)
-				               console.dir(editor.link.$xy.get(0));
-				            },
-				            cancel: function(index, layero){ 
-				                
-				            }
-                    	})
-                    	
-                    }else{
-                    	//当前点击不是一个链接，判断是否又文本存在，
-                    	//如果没有文本表示在光标定位地方插入一个链接，
-                    	//如果有文本表示给当前文本添加一个链接
-                    	
                     }
-
-
-
-                    
-                    
-
                 }
             });
 
@@ -103,45 +99,85 @@
         }
     });
 
+    function openDialog(editor,callback) {
+        editor.link.layerIndex=layer.open({
+            type: 1,
+            shade: false,
+            title: "连接设置", //不显示标题
+            area: "420px",
+            content: editor.link.$dialog, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            success: function(layero, index) {
+                !!callback && callback();
+            },
+            cancel: function(index, layero) {
+
+            }
+        })
+    }
+
+    function renderDialogHtml(editor) {
+
+        var str = '<div class="ckeditor-link-dialog" id="' + editor.link.dialogId + '">' +
+            '<div class="item-cell">' +
+            '<label class="lab">显示文本</label>' +
+            '<input type="text" name="linktext" size="38" class="ckeditor-coms-formtext">' +
+            '</div>' +
+
+            '<div class="item-cell item-xyurl">' +
+            '<label class="lab">URL</label>' +
+            '<select class="sel J_sel-xy" name="linkxy">' +
+            '<option value="http://">http://</option>' +
+            '<option value="https://">https://</option>' +
+            '</select>' +
+            '<input type="text" name="linkurl"  class="ckeditor-coms-formtext" size="24">' +
+            '</div>' +
+            '<div class="item-cell">' +
+            '<label class="lab">目标窗口</label>' +
+            '<select class="sel J_sel-url" name="linktarget">' +
+            '<option value="_blank">新窗口</option>' +
+            '<option value="_self">当前窗口</option>' +
+            '</select>' +
+
+            '</div>' +
+            '<div class="ckeditor-link-ft">' +
+            '<a href="#" class="ckeditor-btn-default J_close-btn">关闭</a>' +
+            '<a href="#" class="ckeditor-btn-primary J_confirm-btn">确认</a>' +
+            '</div>' +
+            '</div>';
+        $(str).appendTo($("body"));
+        editor.link.$dialog = $("#" + editor.link.dialogId);
 
 
-    function renderDialogHtml(editor){
+        editor.link.$text = editor.link.$dialog.find('input[name="linktext"]');
+        editor.link.$xy = editor.link.$dialog.find('select[name="linkxy"]');
+        editor.link.$url = editor.link.$dialog.find('input[name="linkurl"]');
+        editor.link.$target = editor.link.$dialog.find('select[name="linktarget"]');
 
-    		var str='<div class="ckeditor-link-dialog" id="'+editor.link.dialogId+'">'+
-				        '<div class="item-cell">'+
-				            '<label class="lab">显示文本</label>'+
-				            '<input type="text" name="linktext" size="38" class="ckeditor-coms-formtext">'+
-				        '</div>'+
+        editor.link.$dialog.find(".J_close-btn").on("click",function(){
+        	layer.close(editor.link.layerIndex);
+        });
 
-				        '<div class="item-cell item-xyurl">'+
-				            '<label class="lab">URL</label>'+
-				            '<select class="sel J_sel-xy" name="linkxy">'+
-				                '<option value="1">http://</option>'+
-				                '<option value="2">https://</option>'+
-				            '</select>'+
-				            '<input type="text" name="linkurl"  class="ckeditor-coms-formtext" size="24">'+
-				        '</div>'+
-				        '<div class="item-cell">'+
-				            '<label class="lab">目标窗口</label>'+
-				            '<select class="sel J_sel-url" name="linktarget">'+
-				                '<option value="1">新窗口</option>'+
-				                '<option value="2">当前窗口</option>'+
-				            '</select>'+
-				            
-				        '</div>'+
-				        '<div class="ckeditor-link-ft">'+
-				            '<a href="#" class="ckeditor-btn-default">关闭</a>'+
-				            '<a href="#" class="ckeditor-btn-primary">确认</a>'+
-				        '</div>'+
-				    '</div>';
-			$(str).appendTo($("body"));
-			editor.link.$dialog=$("#"+editor.link.dialogId);
+        editor.link.$dialog.find(".J_confirm-btn").on("click",function(){
+        	var data=editor.link.data;
+        	if(!data) data={};
+        	if(!data.advanced) data.advanced={};
+        	if(!data.target) data.target={};
+        	if(!data.url) data.url={};
+
+        	data.type="url";
+        	alert(editor.link.$target.val());
+        	data.target.type=editor.link.$target.val();
+        	data.url.protocol=editor.link.$xy.val();
+        	data.url.url=editor.link.$url.val();
+        	data.linkText=editor.link.$text.val();
+        	insertLinksIntoSelection(editor,editor.link.data);
+        	layer.close(editor.link.layerIndex);
+        })
 
 
-			editor.link.$text=editor.link.$dialog.find('input[name=linktext]');
-			editor.link.$xy=editor.link.$dialog.find('input[name="linkxy"]');
-			editor.link.$url=editor.link.$dialog.find('input[name="linkurl"]');
-			editor.link.$target=editor.link.$dialog.find('input[name="linktarget"]');
+
+
+
 
     }
 
@@ -174,53 +210,111 @@
         rel: 'advRel'
     };
 
-    function createRangeForLink( editor, link ) {
-			var range = editor.createRange();
-
-			range.setStartBefore( link );
-			range.setEndAfter( link );
-
-			return range;
-		}
-
-    function editLinksInSelection( editor, selectedElements, data ) {
-			var attributes = plugin.getLinkAttributes( editor, data ),
-				ranges = [],
-				element,
-				href,
-				textView,
-				newText,
-				i;
-
-			for ( i = 0; i < selectedElements.length; i++ ) {
-				// We're only editing an existing link, so just overwrite the attributes.
-				element = selectedElements[ i ];
-				href = element.data( 'cke-saved-href' );
-				textView = element.getHtml();
-
-				element.setAttributes( attributes.set );
-				element.removeAttributes( attributes.removed );
 
 
-				if ( data.linkText && initialLinkText != data.linkText ) {
-					// Display text has been changed.
-					newText = data.linkText;
-				} else if ( href == textView || data.type == 'email' && textView.indexOf( '@' ) != -1 ) {
-					// Update text view when user changes protocol (https://dev.ckeditor.com/ticket/4612).
-					// Short mailto link text view (https://dev.ckeditor.com/ticket/5736).
-					newText = data.type == 'email' ? data.email.address : attributes.set[ 'data-cke-saved-href' ];
-				}
+    function createRangeForLink(editor, link) {
+        var range = editor.createRange();
 
-				if ( newText ) {
-					element.setText( newText );
-				}
+        range.setStartBefore(link);
+        range.setEndAfter(link);
 
-				ranges.push( createRangeForLink( editor, element ) );
-			}
+        return range;
+    }
 
-			// We changed the content, so need to select it again.
-			editor.getSelection().selectRanges( ranges );
-		}
+    function editLinksInSelection(editor, selectedElements, data) {
+        var attributes = plugin.getLinkAttributes(editor, data),
+            ranges = [],
+            element,
+            href,
+            textView,
+            newText,
+            i;
+
+        for (i = 0; i < selectedElements.length; i++) {
+            // We're only editing an existing link, so just overwrite the attributes.
+            element = selectedElements[i];
+            href = element.data('cke-saved-href');
+            textView = element.getHtml();
+
+            element.setAttributes(attributes.set);
+            element.removeAttributes(attributes.removed);
+
+
+            if (data.linkText && editor.link.initialLinkText != data.linkText) {
+                // Display text has been changed.
+                newText = data.linkText;
+            } else if (href == textView || data.type == 'email' && textView.indexOf('@') != -1) {
+                // Update text view when user changes protocol (https://dev.ckeditor.com/ticket/4612).
+                // Short mailto link text view (https://dev.ckeditor.com/ticket/5736).
+                newText = data.type == 'email' ? data.email.address : attributes.set['data-cke-saved-href'];
+            }
+
+            if (newText) {
+                element.setText(newText);
+            }
+
+            ranges.push(createRangeForLink(editor, element));
+        }
+
+        // We changed the content, so need to select it again.
+        editor.getSelection().selectRanges(ranges);
+    }
+
+    function insertLinksIntoSelection(editor, data) {
+        var attributes = plugin.getLinkAttributes(editor, data),
+            ranges = editor.getSelection().getRanges(),
+            style = new CKEDITOR.style({
+                element: 'a',
+                attributes: attributes.set
+            }),
+            rangesToSelect = [],
+            range,
+            text,
+            nestedLinks,
+            i,
+            j;
+
+        style.type = CKEDITOR.STYLE_INLINE; // need to override... dunno why.
+
+        for (i = 0; i < ranges.length; i++) {
+            range = ranges[i];
+
+            // Use link URL as text with a collapsed cursor.
+            if (range.collapsed) {
+                // Short mailto link text view (https://dev.ckeditor.com/ticket/5736).
+                text = new CKEDITOR.dom.text(data.linkText || (data.type == 'email' ?
+                    data.email.address : attributes.set['data-cke-saved-href']), editor.document);
+                range.insertNode(text);
+                range.selectNodeContents(text);
+            } else if (editor.link.initialLinkText !== data.linkText) {
+                text = new CKEDITOR.dom.text(data.linkText, editor.document);
+
+                // Shrink range to preserve block element.
+                range.shrink(CKEDITOR.SHRINK_TEXT);
+
+                // Use extractHtmlFromRange to remove markup within the selection. Also this method is a little
+                // smarter than range#deleteContents as it plays better e.g. with table cells.
+                editor.editable().extractHtmlFromRange(range);
+
+                range.insertNode(text);
+            }
+
+            // Editable links nested within current range should be removed, so that the link is applied to whole selection.
+            nestedLinks = range._find('a');
+
+            for (j = 0; j < nestedLinks.length; j++) {
+                nestedLinks[j].remove(true);
+            }
+
+
+            // Apply style.
+            style.applyToRange(range, editor);
+
+            rangesToSelect.push(range);
+        }
+
+        editor.getSelection().selectRanges(rangesToSelect);
+    }
 
     function unescapeSingleQuote(str) {
         return str.replace(/\\'/g, '\'');
@@ -287,7 +381,7 @@
      * @class
      * @singleton
      */
-    var plugin=CKEDITOR.plugins.link = {
+    var plugin = CKEDITOR.plugins.link = {
         /**
          * Get the surrounding link element of the current selection.
          *
