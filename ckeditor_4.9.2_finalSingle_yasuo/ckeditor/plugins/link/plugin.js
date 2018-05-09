@@ -9,13 +9,16 @@
     CKEDITOR.plugins.add('link', {
         icons: 'link,unlink', // %REMOVE_LINE_CORE%
         hidpi: true, // %REMOVE_LINE_CORE%
+        beforeInit:function(editor){
+        	editor.link={};
+        	editor.link.dialogId=editor.name+"-link-dialog";
+        },
         onLoad: function() {
             // Add the CSS styles for anchor placeholders.
 
         },
 
         init: function(editor) {
-
 
 
 
@@ -30,41 +33,56 @@
                 toolbar: 'links,20'
             });
 
+            
+
 
 
 
             editor.addCommand('link', {
                 exec: function(editor) {
+                	if(!editor.link.$dialog){
+                		renderDialogHtml(editor);
+                	}
                     var selection = editor.getSelection();
                     var elements = CKEDITOR.plugins.link.getSelectedLink(editor, true); //判断是或否是a链接
                     var firstLink = elements[0] || null;
-                    var text=selection.getSelectedText();
-
-                    var data = CKEDITOR.plugins.link.parseLinkAttributes(editor, firstLink);
-
-
-
-                    
-
+                 
 
                     if (firstLink && firstLink.hasAttribute('href')) {
-                        // Don't change selection if some element is already selected.
-                        // For example - don't destroy fake selection.
                         if (!selection.getSelectedElement() && !selection.isInTable()) {
                             selection.selectElement(firstLink);
                         }
                     }
 
+                    var data = CKEDITOR.plugins.link.parseLinkAttributes(editor, firstLink);
+
                     console.dir(elements);
                     console.dir(selection);
                     console.dir(data);
-                    console.dir(text);
+                 
 
 
                     if(!!elements.length){
                     	//当前点击的是一个链接
                     	editLinksInSelection( editor, elements, data );
+                    	console.dir(data);
                     	//editor.getSelection().getSelectedText() 就是可以获取文本
+                    	layer.open({
+                    		type: 1,
+			                shade: false,
+			                title:"连接设置", //不显示标题
+			                area:"420px",
+			                content:editor.link.$dialog, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+				            success: function(layero, index){
+				               editor.link.$text.val(editor.getSelection().getSelectedText());
+				               editor.link.$url.val(data.url.url);
+				               alert(editor.link.$xy.length)
+				               console.dir(editor.link.$xy.get(0));
+				            },
+				            cancel: function(index, layero){ 
+				                
+				            }
+                    	})
                     	
                     }else{
                     	//当前点击不是一个链接，判断是否又文本存在，
@@ -85,6 +103,47 @@
         }
     });
 
+
+
+    function renderDialogHtml(editor){
+
+    		var str='<div class="ckeditor-link-dialog" id="'+editor.link.dialogId+'">'+
+				        '<div class="item-cell">'+
+				            '<label class="lab">显示文本</label>'+
+				            '<input type="text" name="linktext" size="38" class="ckeditor-coms-formtext">'+
+				        '</div>'+
+
+				        '<div class="item-cell item-xyurl">'+
+				            '<label class="lab">URL</label>'+
+				            '<select class="sel J_sel-xy" name="linkxy">'+
+				                '<option value="1">http://</option>'+
+				                '<option value="2">https://</option>'+
+				            '</select>'+
+				            '<input type="text" name="linkurl"  class="ckeditor-coms-formtext" size="24">'+
+				        '</div>'+
+				        '<div class="item-cell">'+
+				            '<label class="lab">目标窗口</label>'+
+				            '<select class="sel J_sel-url" name="linktarget">'+
+				                '<option value="1">新窗口</option>'+
+				                '<option value="2">当前窗口</option>'+
+				            '</select>'+
+				            
+				        '</div>'+
+				        '<div class="ckeditor-link-ft">'+
+				            '<a href="#" class="ckeditor-btn-default">关闭</a>'+
+				            '<a href="#" class="ckeditor-btn-primary">确认</a>'+
+				        '</div>'+
+				    '</div>';
+			$(str).appendTo($("body"));
+			editor.link.$dialog=$("#"+editor.link.dialogId);
+
+
+			editor.link.$text=editor.link.$dialog.find('input[name=linktext]');
+			editor.link.$xy=editor.link.$dialog.find('input[name="linkxy"]');
+			editor.link.$url=editor.link.$dialog.find('input[name="linkurl"]');
+			editor.link.$target=editor.link.$dialog.find('input[name="linktarget"]');
+
+    }
 
     // Loads the parameters in a selected link to the link dialog fields.
     var javascriptProtocolRegex = /^javascript:/,
