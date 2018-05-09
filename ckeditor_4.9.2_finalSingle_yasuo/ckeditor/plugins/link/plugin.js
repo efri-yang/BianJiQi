@@ -33,6 +33,33 @@
                 command: 'unlink',
                 toolbar: 'links,20'
             });
+            var xySelectedIndex, targetSelectedIndex;
+
+           
+            editor.on( 'doubleclick', function( evt ) {
+				editor.link.element=[];
+
+            	var element= evt.data.element.getAscendant( { a: 1, img: 1 }, true );
+            	editor.link.element.push(element);
+            	if ( !!element && element.is( 'a' ) ) {
+            		if (!editor.link.$dialog) {
+                        renderDialogHtml(editor);
+                    }
+                   	editor.getSelection().selectElement(element);
+
+                   	xySelectedIndex = (element.$.protocol == "http:") ? 0 : 1;
+                    targetSelectedIndex = (!element.$.target || element.$.target == "_self" ) ? 1 : 0;
+
+                    editor.link.$text.val(editor.getSelection().getSelectedText());
+                    editor.link.$xy.get(0).selectedIndex = xySelectedIndex;
+                    editor.link.$url.val(element.$.hostname+element.$.search);
+                    editor.link.$target.get(0).selectedIndex = targetSelectedIndex;
+                    openDialog(editor);
+
+
+
+            	}
+            },null, null, 0 )
 
 
 
@@ -45,7 +72,7 @@
                         renderDialogHtml(editor);
                     }
                     var selection = editor.getSelection();
-                    var elements = CKEDITOR.plugins.link.getSelectedLink(editor, true); //判断是或否是a链接
+                    var elements = editor.link.element=CKEDITOR.plugins.link.getSelectedLink(editor, true); //判断是或否是a链接
                     var firstLink = elements[0] || null;
 
                     var selectedText = selection.getSelectedText();
@@ -53,20 +80,20 @@
 
 
 
-                    if (firstLink && firstLink.hasAttribute('href')) {
-                        if (!selection.getSelectedElement() && !selection.isInTable()) {
-                            selection.selectElement(firstLink);
-                        }
-                    }
+                    if ( firstLink && firstLink.hasAttribute( 'href' ) ) {
+						if ( !selection.getSelectedElement() && !selection.isInTable() ) {
+							selection.selectElement( firstLink );
+						}
+					}
 
                     var data=editor.link.data = CKEDITOR.plugins.link.parseLinkAttributes(editor, firstLink);
-                    var xySelectedIndex, targetSelectedIndex;
-                    console.dir(data);
+                   
+                    
                     if (!!elements.length) {
                         //当前点击的是一个链接,编辑链接//editor.getSelection().getSelectedText() 就是可以获取文本
-                        editLinksInSelection(editor, elements, data);
+                        
                         xySelectedIndex = (data.url.protocol == "http://") ? 0 : 1;
-                        targetSelectedIndex = (data.target.type == "_self") ? 0 : 1;
+                        targetSelectedIndex = (!data.target || data.target.type == "_self" ) ? 1 : 0;
 
                         editor.link.$text.val(editor.getSelection().getSelectedText());
                         editor.link.$xy.get(0).selectedIndex = xySelectedIndex;
@@ -163,14 +190,21 @@
         	if(!data.advanced) data.advanced={};
         	if(!data.target) data.target={};
         	if(!data.url) data.url={};
-
         	data.type="url";
-        	alert(editor.link.$target.val());
-        	data.target.type=editor.link.$target.val();
+        	data.target.type =data.target.name=editor.link.$target.val();
         	data.url.protocol=editor.link.$xy.val();
         	data.url.url=editor.link.$url.val();
         	data.linkText=editor.link.$text.val();
-        	insertLinksIntoSelection(editor,editor.link.data);
+
+        	console.dir(data);
+        	if(editor.link.element &&!!editor.link.element.length){
+        		editLinksInSelection(editor, editor.link.element, data);
+        	}else{
+        		
+        		insertLinksIntoSelection(editor,data);
+
+        	}
+
         	layer.close(editor.link.layerIndex);
         })
 
@@ -229,7 +263,8 @@
             textView,
             newText,
             i;
-
+            console.group("editLinksInSelection调用");
+           console.dir(attributes);
         for (i = 0; i < selectedElements.length; i++) {
             // We're only editing an existing link, so just overwrite the attributes.
             element = selectedElements[i];
@@ -261,6 +296,8 @@
     }
 
     function insertLinksIntoSelection(editor, data) {
+    	console.group("insertLinksIntoSelection调用");
+    	console.dir(data);
         var attributes = plugin.getLinkAttributes(editor, data),
             ranges = editor.getSelection().getRanges(),
             style = new CKEDITOR.style({
@@ -275,7 +312,6 @@
             j;
 
         style.type = CKEDITOR.STYLE_INLINE; // need to override... dunno why.
-
         for (i = 0; i < ranges.length; i++) {
             range = ranges[i];
 
@@ -748,6 +784,7 @@
 
             // Popups and target.
             if (data.target) {
+
                 if (data.target.type == 'popup') {
                     var onclickList = [
                             'window.open(this.href, \'', data.target.name || '', '\', \''

@@ -116,6 +116,8 @@
 
 		// Handles the event when the "Target" selection box is changed.
 		var targetChanged = function() {
+
+			
 				var dialog = this.getDialog(),
 					popupFeatures = dialog.getContentElement( 'target', 'popupFeatures' ),
 					targetName = dialog.getContentElement( 'target', 'linkTargetName' ),
