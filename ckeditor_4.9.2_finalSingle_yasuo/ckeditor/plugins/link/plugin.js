@@ -58,14 +58,19 @@
                     console.dir(elements);
                     console.dir(selection);
                     console.dir(data);
+                    console.dir(text);
 
 
                     if(!!elements.length){
                     	//当前点击的是一个链接
+                    	editLinksInSelection( editor, elements, data );
+                    	//editor.getSelection().getSelectedText() 就是可以获取文本
+                    	
                     }else{
                     	//当前点击不是一个链接，判断是否又文本存在，
                     	//如果没有文本表示在光标定位地方插入一个链接，
                     	//如果有文本表示给当前文本添加一个链接
+                    	
                     }
 
 
@@ -109,6 +114,54 @@
         style: 'advStyles',
         rel: 'advRel'
     };
+
+    function createRangeForLink( editor, link ) {
+			var range = editor.createRange();
+
+			range.setStartBefore( link );
+			range.setEndAfter( link );
+
+			return range;
+		}
+
+    function editLinksInSelection( editor, selectedElements, data ) {
+			var attributes = plugin.getLinkAttributes( editor, data ),
+				ranges = [],
+				element,
+				href,
+				textView,
+				newText,
+				i;
+
+			for ( i = 0; i < selectedElements.length; i++ ) {
+				// We're only editing an existing link, so just overwrite the attributes.
+				element = selectedElements[ i ];
+				href = element.data( 'cke-saved-href' );
+				textView = element.getHtml();
+
+				element.setAttributes( attributes.set );
+				element.removeAttributes( attributes.removed );
+
+
+				if ( data.linkText && initialLinkText != data.linkText ) {
+					// Display text has been changed.
+					newText = data.linkText;
+				} else if ( href == textView || data.type == 'email' && textView.indexOf( '@' ) != -1 ) {
+					// Update text view when user changes protocol (https://dev.ckeditor.com/ticket/4612).
+					// Short mailto link text view (https://dev.ckeditor.com/ticket/5736).
+					newText = data.type == 'email' ? data.email.address : attributes.set[ 'data-cke-saved-href' ];
+				}
+
+				if ( newText ) {
+					element.setText( newText );
+				}
+
+				ranges.push( createRangeForLink( editor, element ) );
+			}
+
+			// We changed the content, so need to select it again.
+			editor.getSelection().selectRanges( ranges );
+		}
 
     function unescapeSingleQuote(str) {
         return str.replace(/\\'/g, '\'');
@@ -175,7 +228,7 @@
      * @class
      * @singleton
      */
-    CKEDITOR.plugins.link = {
+    var plugin=CKEDITOR.plugins.link = {
         /**
          * Get the surrounding link element of the current selection.
          *
