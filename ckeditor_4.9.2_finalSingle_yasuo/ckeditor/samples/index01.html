@@ -33,7 +33,13 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
         <p>3、整合常用的功能</p>
     </div>
     <div id="editor">
+       <h1 class="webstore-Xb-Ab-Cb-Db-Wb" style="display: table; font-size: inherit; font-weight: inherit; margin: 0px; padding: 0px;"><a class="webstore-Xb-Ab-Cb-i" href="https://chrome.google.com/webstore/category/apps" style="color: rgb(38, 38, 38); text-decoration: none; font-family: 'Open Sans', arial, sans-serif; font-size: 14px; line-height: normal; background-color: rgb(236, 236, 236);"><span class="webstore-Xb-Ab-Cb-Eb" style="font-size: 16px; position: relative; top: 5px; padding-left: 5px; width: 185px;">Chrome Web Store</span></a></h1>
+        
        <p>A sample <u>heavily formatted text</u> using <strong><span style="font-family: 'Comic Sans MS';font-size:16px">different fonts</span></strong> and <span style="font-size:18px;color:#00FF00;background-color: #FFFF00">text colors</span>. </p>
+       <a href="#">asdfasdfasdf</a>
+       <img src="images/demo/01.jpg" width="500" height="500">
+
+       <h1 class="webstore-Xb-Ab-Cb-Db-Wb" style="display: table; font-size: inherit; font-weight: inherit; margin: 0px; padding: 0px;"><a class="webstore-Xb-Ab-Cb-i" href="https://chrome.google.com/webstore/category/apps" style="color: rgb(38, 38, 38); text-decoration: none; font-family: 'Open Sans', arial, sans-serif; font-size: 14px; line-height: normal; background-color: rgb(236, 236, 236);"><span class="webstore-Xb-Ab-Cb-Eb" style="font-size: 16px; position: relative; top: 5px; padding-left: 5px; width: 185px;">Chrome Web Store</span></a></h1>
     </div>
 
 
@@ -53,6 +59,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
         extraPlugins: 'imagesingle,imagegallery,iframebox,tablebox,link',
         // allowedContent: true,
         // allowedContentRules:"p h1(left,right)",
+        disallowedContent:"img[width,height]",
         test:function(){
             alert(this.name);
         },
