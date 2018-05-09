@@ -7,45 +7,45 @@
 
 ( function() {
 	CKEDITOR.plugins.add( 'link', {
-		requires: 'dialog,fakeobjects',
+		requires: 'dialog',
 		// jscs:disable maximumLineLength
 		lang: 'af,ar,az,bg,bn,bs,ca,cs,cy,da,de,de-ch,el,en,en-au,en-ca,en-gb,eo,es,es-mx,et,eu,fa,fi,fo,fr,fr-ca,gl,gu,he,hi,hr,hu,id,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,oc,pl,pt,pt-br,ro,ru,si,sk,sl,sq,sr,sr-latn,sv,th,tr,tt,ug,uk,vi,zh,zh-cn', // %REMOVE_LINE_CORE%
 		// jscs:enable maximumLineLength
 		icons: 'anchor,anchor-rtl,link,unlink', // %REMOVE_LINE_CORE%
 		hidpi: true, // %REMOVE_LINE_CORE%
-		onLoad: function() {
-			// Add the CSS styles for anchor placeholders.
-			var iconPath = CKEDITOR.getUrl( this.path + 'images' + ( CKEDITOR.env.hidpi ? '/hidpi' : '' ) + '/anchor.png' ),
-				baseStyle = 'background:url(' + iconPath + ') no-repeat %1 center;border:1px dotted #00f;background-size:16px;';
+		// onLoad: function() {
+		// 	// Add the CSS styles for anchor placeholders.
+		// 	var iconPath = CKEDITOR.getUrl( this.path + 'images' + ( CKEDITOR.env.hidpi ? '/hidpi' : '' ) + '/anchor.png' ),
+		// 		baseStyle = 'background:url(' + iconPath + ') no-repeat %1 center;border:1px dotted #00f;background-size:16px;';
 
-			var template = '.%2 a.cke_anchor,' +
-				'.%2 a.cke_anchor_empty' +
-				',.cke_editable.%2 a[name]' +
-				',.cke_editable.%2 a[data-cke-saved-name]' +
-				'{' +
-					baseStyle +
-					'padding-%1:18px;' +
-					// Show the arrow cursor for the anchor image (FF at least).
-					'cursor:auto;' +
-				'}' +
-				'.%2 img.cke_anchor' +
-				'{' +
-					baseStyle +
-					'width:16px;' +
-					'min-height:15px;' +
-					// The default line-height on IE.
-					'height:1.15em;' +
-					// Opera works better with "middle" (even if not perfect)
-					'vertical-align:text-bottom;' +
-				'}';
+		// 	var template = '.%2 a.cke_anchor,' +
+		// 		'.%2 a.cke_anchor_empty' +
+		// 		',.cke_editable.%2 a[name]' +
+		// 		',.cke_editable.%2 a[data-cke-saved-name]' +
+		// 		'{' +
+		// 			baseStyle +
+		// 			'padding-%1:18px;' +
+		// 			// Show the arrow cursor for the anchor image (FF at least).
+		// 			'cursor:auto;' +
+		// 		'}' +
+		// 		'.%2 img.cke_anchor' +
+		// 		'{' +
+		// 			baseStyle +
+		// 			'width:16px;' +
+		// 			'min-height:15px;' +
+		// 			// The default line-height on IE.
+		// 			'height:1.15em;' +
+		// 			// Opera works better with "middle" (even if not perfect)
+		// 			'vertical-align:text-bottom;' +
+		// 		'}';
 
-			// Styles with contents direction awareness.
-			function cssWithDir( dir ) {
-				return template.replace( /%1/g, dir == 'rtl' ? 'right' : 'left' ).replace( /%2/g, 'cke_contents_' + dir );
-			}
+		// 	// Styles with contents direction awareness.
+		// 	function cssWithDir( dir ) {
+		// 		return template.replace( /%1/g, dir == 'rtl' ? 'right' : 'left' ).replace( /%2/g, 'cke_contents_' + dir );
+		// 	}
 
-			CKEDITOR.addCss( cssWithDir( 'ltr' ) + cssWithDir( 'rtl' ) );
-		},
+		// 	CKEDITOR.addCss( cssWithDir( 'ltr' ) + cssWithDir( 'rtl' ) );
+		// },
 
 		init: function( editor ) {
 			var allowed = 'a[!href]',
@@ -79,7 +79,7 @@
 				editor.ui.addButton( 'Unlink', {
 					label: editor.lang.link.unlink,
 					command: 'unlink',
-					toolbar: 'links,20'
+					toolbar: 'links'
 				} );
 				editor.ui.addButton( 'Anchor', {
 					label: editor.lang.link.anchor.toolbar,
@@ -175,32 +175,32 @@
 			this.compiledProtectionFunction = getCompiledProtectionFunction( editor );
 		},
 
-		afterInit: function( editor ) {
-			// Empty anchors upcasting to fake objects.
-			editor.dataProcessor.dataFilter.addRules( {
-				elements: {
-					a: function( element ) {
-						if ( !element.attributes.name )
-							return null;
+		// afterInit: function( editor ) {
+		// 	// Empty anchors upcasting to fake objects.
+		// 	editor.dataProcessor.dataFilter.addRules( {
+		// 		elements: {
+		// 			a: function( element ) {
+		// 				if ( !element.attributes.name )
+		// 					return null;
 
-						if ( !element.children.length )
-							return editor.createFakeParserElement( element, 'cke_anchor', 'anchor' );
+		// 				if ( !element.children.length )
+		// 					return editor.createFakeParserElement( element, 'cke_anchor', 'anchor' );
 
-						return null;
-					}
-				}
-			} );
+		// 				return null;
+		// 			}
+		// 		}
+		// 	} );
 
-			var pathFilters = editor._.elementsPath && editor._.elementsPath.filters;
-			if ( pathFilters ) {
-				pathFilters.push( function( element, name ) {
-					if ( name == 'a' ) {
-						if ( CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, element ) || ( element.getAttribute( 'name' ) && ( !element.getAttribute( 'href' ) || !element.getChildCount() ) ) )
-							return 'anchor';
-					}
-				} );
-			}
-		}
+		// 	var pathFilters = editor._.elementsPath && editor._.elementsPath.filters;
+		// 	if ( pathFilters ) {
+		// 		pathFilters.push( function( element, name ) {
+		// 			if ( name == 'a' ) {
+		// 				if ( CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, element ) || ( element.getAttribute( 'name' ) && ( !element.getAttribute( 'href' ) || !element.getChildCount() ) ) )
+		// 					return 'anchor';
+		// 			}
+		// 		} );
+		// 	}
+		// }
 	} );
 
 	// Loads the parameters in a selected link to the link dialog fields.

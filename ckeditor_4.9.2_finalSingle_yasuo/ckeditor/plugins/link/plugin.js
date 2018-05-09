@@ -30,6 +30,8 @@
                 toolbar: 'links,20'
             });
 
+            
+
 
             editor.addCommand('link', {
                 exec: function(editor) {
