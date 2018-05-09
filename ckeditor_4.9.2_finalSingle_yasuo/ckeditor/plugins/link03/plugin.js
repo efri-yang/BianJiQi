@@ -51,10 +51,12 @@
 			var allowed = 'a[!href]',
 				required = 'a[href]';
 
-			if ( CKEDITOR.dialog.isTabEnabled( editor, 'link', 'advanced' ) )
-				allowed = allowed.replace( ']', ',accesskey,charset,dir,id,lang,name,rel,tabindex,title,type,download]{*}(*)' );
-			if ( CKEDITOR.dialog.isTabEnabled( editor, 'link', 'target' ) )
-				allowed = allowed.replace( ']', ',target,onclick]' );
+			// if ( CKEDITOR.dialog.isTabEnabled( editor, 'link', 'advanced' ) )
+
+			// 	allowed = allowed.replace( ']', ',accesskey,charset,dir,id,lang,name,rel,tabindex,title,type,download]{*}(*)' );
+			// if ( CKEDITOR.dialog.isTabEnabled( editor, 'link', 'target' ) )
+		
+			// 	allowed = allowed.replace( ']', ',target,onclick]' );
 
 			// Add the link and unlink buttons.
 			editor.addCommand( 'link', new CKEDITOR.dialogCommand( 'link', {
@@ -66,7 +68,7 @@
 				requiredContent: 'a[name]'
 			} ) );
 			editor.addCommand( 'unlink', new CKEDITOR.unlinkCommand() );
-			editor.addCommand( 'removeAnchor', new CKEDITOR.removeAnchorCommand() );
+			
 
 			editor.setKeystroke( CKEDITOR.CTRL + 76 /*L*/, 'link' );
 
@@ -88,8 +90,8 @@
 				} );
 			}
 
-			CKEDITOR.dialog.add( 'link', this.path + 'dialogs/link.js' );
-			CKEDITOR.dialog.add( 'anchor', this.path + 'dialogs/anchor.js' );
+			// CKEDITOR.dialog.add( 'link', this.path + 'dialogs/link.js' );
+			// CKEDITOR.dialog.add( 'anchor', this.path + 'dialogs/anchor.js' );
 
 			editor.on( 'doubleclick', function( evt ) {
 				// If the link has descendants and the last part of it is also a part of a word partially
@@ -99,12 +101,12 @@
 
 				if ( element && !element.isReadOnly() ) {
 					if ( element.is( 'a' ) ) {
-						evt.data.dialog = ( element.getAttribute( 'name' ) && ( !element.getAttribute( 'href' ) || !element.getChildCount() ) ) ? 'anchor' : 'link';
+						// evt.data.dialog = ( element.getAttribute( 'name' ) && ( !element.getAttribute( 'href' ) || !element.getChildCount() ) ) ? 'anchor' : 'link';
 
-						// Pass the link to be selected along with event data.
-						evt.data.link = element;
+						// // Pass the link to be selected along with event data.
+						// evt.data.link = element;
 					} else if ( CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, element ) ) {
-						evt.data.dialog = 'anchor';
+						// evt.data.dialog = 'anchor';
 					}
 				}
 			}, null, null, 0 );
@@ -774,7 +776,9 @@
 
 	// TODO Much probably there's no need to expose these as public objects.
 
-	CKEDITOR.unlinkCommand = function() {};
+	CKEDITOR.unlinkCommand = function() {
+		
+	};
 	CKEDITOR.unlinkCommand.prototype = {
 		exec: function( editor ) {
 			// IE/Edge removes link from selection while executing "unlink" command when cursor

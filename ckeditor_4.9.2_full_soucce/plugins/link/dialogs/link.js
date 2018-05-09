@@ -213,7 +213,7 @@
 			anchors;
 
 		return {
-			title: linkLang.title,
+			title:"",
 			minWidth: ( CKEDITOR.skinName || editor.config.skin ) == 'moono-lisa' ? 450 : 350,
 			minHeight: 240,
 			contents: [ {
