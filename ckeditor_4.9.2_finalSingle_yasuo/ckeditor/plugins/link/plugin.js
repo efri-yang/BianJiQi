@@ -20,7 +20,14 @@
         },
 
         init: function(editor) {
+var myObject = { message: 'Example' };
+CKEDITOR.event.implementOn( myObject );
 
+myObject.on( 'testEvent', function(event) {
+	console.dir(this);
+    console.dir(event);
+} );
+myObject.fire( 'testEvent' ); // 'Example'
 
 
             editor.ui.addButton('Link', {
@@ -33,12 +40,14 @@
                 command: 'unlink',
                 toolbar: 'links,20'
             });
+
+
             var xySelectedIndex, targetSelectedIndex;
 
            
             editor.on( 'doubleclick', function( evt ) {
 				editor.link.element=[];
-
+				console.dir(evt.data.element);
             	var element= evt.data.element.getAscendant( { a: 1, img: 1 }, true );
             	editor.link.element.push(element);
             	if ( !!element && element.is( 'a' ) ) {
@@ -59,7 +68,7 @@
 
 
             	}
-            },null, null, 0 )
+            },null, null, 0)
 
 
 
@@ -143,7 +152,6 @@
     }
 
     function renderDialogHtml(editor) {
-
         var str = '<div class="ckeditor-link-dialog" id="' + editor.link.dialogId + '">' +
             '<div class="item-cell">' +
             '<label class="lab">显示文本</label>' +
@@ -248,10 +256,8 @@
 
     function createRangeForLink(editor, link) {
         var range = editor.createRange();
-
         range.setStartBefore(link);
         range.setEndAfter(link);
-
         return range;
     }
 
