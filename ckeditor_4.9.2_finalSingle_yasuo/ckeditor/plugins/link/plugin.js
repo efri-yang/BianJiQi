@@ -39,10 +39,15 @@
 
 
             editor.on('doubleclick', function(evt) {
+
+                
+
+
+
+
+
                 editor.link.element = [];
-                console.dir(evt);
-                console.dir(evt.data);
-                console.dir(evt.data.element);
+                
                 var element = evt.data.element.getAscendant({ a: 1, img: 1 }, true);
                 editor.link.element.push(element);
                 if (!!element && element.is('a')) {
@@ -59,9 +64,6 @@
                     editor.link.$url.val(element.$.hostname + element.$.search);
                     editor.link.$target.get(0).selectedIndex = targetSelectedIndex;
                     openDialog(editor);
-
-
-
                 }
             }, null, null, 0)
 
