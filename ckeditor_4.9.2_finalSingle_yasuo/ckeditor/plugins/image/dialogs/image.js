@@ -21,9 +21,11 @@
 						aMatch = value.match( regexGetSize ); // Check value
 					if ( aMatch ) {
 						if ( aMatch[ 2 ] == '%' ) // % is allowed - > unlock ratio.
+							
 						switchLockRatio( dialog, false ); // Unlock.
 						value = aMatch[ 1 ];
 					}
+					
 
 					// Only if ratio is locked
 					if ( dialog.lockRatio ) {
@@ -109,7 +111,7 @@
 						return null;
 
 					var oImageOriginal = dialog.originalElement;
-
+					alert("switchLockRatio")
 					// Dialog may already closed. (https://dev.ckeditor.com/ticket/5505)
 					if ( !oImageOriginal )
 						return null;

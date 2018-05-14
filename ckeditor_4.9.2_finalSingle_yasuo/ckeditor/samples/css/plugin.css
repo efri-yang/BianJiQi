@@ -507,6 +507,37 @@
       padding: 7px 5px;
       height: 18px;
       line-height: 18px; }
+  .ckeditor-imgedit-dialog .item-ratio {
+    position: absolute;
+    height: 30px;
+    overflow: hidden;
+    right: 80px;
+    top: 40px; }
+    .ckeditor-imgedit-dialog .item-ratio .btnlock {
+      width: 28px;
+      height: 28px;
+      float: left;
+      margin-right: 5px;
+      background: url("../images/lock_1.png") no-repeat center center;
+      display: block;
+      border: 1px solid #fff;
+      cursor: pointer; }
+      .ckeditor-imgedit-dialog .item-ratio .btnlock.unlock {
+        background: url("../images/unlock_1.png") no-repeat center center; }
+      .ckeditor-imgedit-dialog .item-ratio .btnlock:hover {
+        padding: 0;
+        border: 1px solid #e5e5e5; }
+    .ckeditor-imgedit-dialog .item-ratio .btnreset {
+      width: 28px;
+      height: 28px;
+      float: left;
+      border: 1px solid #fff;
+      display: block;
+      overflow: hidden;
+      background: url("../images/refresh_1.png") no-repeat center center;
+      cursor: pointer; }
+      .ckeditor-imgedit-dialog .item-ratio .btnreset:hover {
+        border: 1px solid #e5e5e5; }
 
 .ckeditor-imgedit-ft {
   border-top: 1px solid #eee;
@@ -612,4 +643,5 @@
   text-align: right; }
   .ckeditor-link-ft a {
     margin-left: 12px; }
+
 

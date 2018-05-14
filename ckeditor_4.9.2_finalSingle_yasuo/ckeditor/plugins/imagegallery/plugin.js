@@ -1,4 +1,12 @@
-﻿CKEDITOR.plugins.add('imagegallery', {
+﻿(function(){
+
+
+function getRatio(w,h){
+    return w/h;
+}
+
+
+CKEDITOR.plugins.add('imagegallery', {
     icons: 'imagegallery',
 
     _editImgInit: function() {
@@ -22,6 +30,10 @@
             '<label class="lab">描述：</label>' +
             '<input type="text" name="imgalt" class="ipt-text">' +
             '</div>' +
+            '<div class="item-ratio">' +
+                '<span class="btnlock J_btnlock"></span>' +
+                '<span class="btnreset J_btnreset"></span>' +
+            '</div>' +
 
             '<div class="ckeditor-imgedit-ft">' +
             '<a href="#" class="ft-btn-cancel">取消</a>' +
@@ -35,6 +47,11 @@
         editor.editImg.$inputAlt = editor.editImg.$dialog.find('input[name="imgalt"]');
         editor.editImg.$btnCancel = editor.editImg.$dialog.find('.ft-btn-cancel');
         editor.editImg.$btnConfirm = editor.editImg.$dialog.find('.ft-btn-insert');
+
+        editor.editImg.$btnReset=editor.editImg.$dialog.find(".J_btnreset");
+        editor.editImg.$btnLock=editor.editImg.$dialog.find(".J_btnlock");
+
+
     },
 
     _uploadImgInit: function() {
@@ -217,22 +234,18 @@
                 if (!!src) {
                     // str='<div class="simplebox"><p><img src="'+src+'" /></p><div class="simplebox-content"><p>Content...</p></div></div>';
                     var img = editor.document.createElement('img');
-                    img.setAttribute('src', src);
+                    img.setAttributes({'src':src});
                     editor.insertElement(img);
                     editor.insertHtml(str);
                     uploader.removeFile(id);
                     $el.remove();
                 }
-
-
             });
             stating =false;
             updateTotalText();
             layer.close(editor.uploaderImg.layerIndex);
 
         });
-
-
         editor.uploaderImg.$dialog.on("click", ".retry", function() {
             var len = uploader.files.length;
             for (var i = len - 1; i >= 0; i--) {
@@ -242,18 +255,12 @@
             }
             uploader.start();
         })
-
         editor.uploaderImg.$dialog.on("click", ".ignore", function() {
             var len = uploader.files.length;
             for (var i = len - 1; i >= 0; i--) {
                 uploader.removeFile(uploader.files[i]);
             }
-
-
         })
-
-
-
         uploader.bind("Init", function(uploader) {
             // console.group("Init事件:当Plupload初始化完成后触发监听函数参数：(uploader)");
         });
@@ -450,9 +457,6 @@
                     $uploadBtn.addClass("disabled");
                 }
             })
-
-
-
         });
 
         uploader.bind('ChunkUploaded', function(up, file, info) {
@@ -603,8 +607,8 @@
         editor.on('doubleclick', function(evt) {
 
             var element = evt.data.element,
-                imgW,
-                imgH,
+                imgW="",
+                imgH="",
                 imgAlt;
          
 
@@ -613,8 +617,21 @@
                 if (!editor.editImg.$dialog) {
                     that._editImgRender.call(editor);
                 }
-                imgW = element.$.clientWidth;
-                imgH = element.$.clientHeight;
+                if(!element.ratio){
+                   element.ratio= element.$.naturalWidth/element.$.naturalHeight;
+                }
+               
+               
+                // console.dir(element.);
+                // console.dir(element.style.width);
+                if(element.getAttribute("width")){
+                    imgW = element.$.clientWidth;
+                }
+                 if(element.getAttribute("height")){
+                    imgH = element.$.clientHeight;
+                 }
+                
+                
                 imgAlt = element.$.alt;
                 editor.editImg.layerIndex = layer.open({
                     type: 1,
@@ -626,6 +643,12 @@
                         editor.editImg.$inputW.val(imgW);
                         editor.editImg.$inputH.val(imgH);
                         editor.editImg.$inputAlt.val(imgAlt);
+                        if(element.imgLock || element.imgLock==null){
+                            editor.editImg.$btnLock.removeClass('unlock');
+                        }else{
+                            editor.editImg.$btnLock.addClass('unlock');
+                        }
+
                     }
                 });
 
@@ -640,12 +663,27 @@
                         height: editor.editImg.$inputH.val(),
                         alt: editor.editImg.$inputAlt.val()
                     });
-                    // var span=new CKEDITOR.dom.element('span');
-                    // span.appendText(editor.editImg.$inputAlt.val());
-                    // span.insertAfter(elem);
 
                     layer.close(editor.editImg.layerIndex);
 
+                });
+
+                editor.editImg.$btnReset.off("click").on("click",function(){
+                    imgW = element.$.naturalWidth;
+                    imgH = element.$.naturalHeight;
+                    editor.editImg.$inputW.val(imgW);
+                    editor.editImg.$inputH.val(imgH);
+                });
+
+                //锁住和解锁  锁住的时候还要根据图片的比例强制设置宽高
+                editor.editImg.$btnLock.off("click").on("click",function(){
+                    if(element.imgLock || element.imgLock==null){
+                        editor.editImg.$btnLock.addClass('unlock');
+                        element.imgLock=false;
+                    }else{
+                        element.imgLock=true;
+                        editor.editImg.$btnLock.removeClass('unlock');
+                    }
                 })
 
             }
@@ -687,3 +725,6 @@
 
 
 });
+
+
+})();
