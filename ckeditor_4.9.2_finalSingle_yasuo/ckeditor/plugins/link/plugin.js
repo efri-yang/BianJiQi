@@ -12,7 +12,7 @@
         beforeInit: function(editor) {
             editor.link = {};
             editor.link.dialogId = editor.name + "-link-dialog";
-            editor.link.initialLinkText="";
+            editor.link.initialLinkText = "";
         },
         onLoad: function() {
             // Add the CSS styles for anchor placeholders.
@@ -20,14 +20,7 @@
         },
 
         init: function(editor) {
-var myObject = { message: 'Example' };
-CKEDITOR.event.implementOn( myObject );
-
-myObject.on( 'testEvent', function(event) {
-	console.dir(this);
-    console.dir(event);
-} );
-myObject.fire( 'testEvent' ); // 'Example'
+            
 
 
             editor.ui.addButton('Link', {
@@ -44,31 +37,33 @@ myObject.fire( 'testEvent' ); // 'Example'
 
             var xySelectedIndex, targetSelectedIndex;
 
-           
-            editor.on( 'doubleclick', function( evt ) {
-				editor.link.element=[];
-				console.dir(evt.data.element);
-            	var element= evt.data.element.getAscendant( { a: 1, img: 1 }, true );
-            	editor.link.element.push(element);
-            	if ( !!element && element.is( 'a' ) ) {
-            		if (!editor.link.$dialog) {
+
+            editor.on('doubleclick', function(evt) {
+                editor.link.element = [];
+                console.dir(evt);
+                console.dir(evt.data);
+                console.dir(evt.data.element);
+                var element = evt.data.element.getAscendant({ a: 1, img: 1 }, true);
+                editor.link.element.push(element);
+                if (!!element && element.is('a')) {
+                    if (!editor.link.$dialog) {
                         renderDialogHtml(editor);
                     }
-                   	editor.getSelection().selectElement(element);
+                    editor.getSelection().selectElement(element);
 
-                   	xySelectedIndex = (element.$.protocol == "http:") ? 0 : 1;
-                    targetSelectedIndex = (!element.$.target || element.$.target == "_self" ) ? 1 : 0;
+                    xySelectedIndex = (element.$.protocol == "http:") ? 0 : 1;
+                    targetSelectedIndex = (!element.$.target || element.$.target == "_self") ? 1 : 0;
 
                     editor.link.$text.val(editor.getSelection().getSelectedText());
                     editor.link.$xy.get(0).selectedIndex = xySelectedIndex;
-                    editor.link.$url.val(element.$.hostname+element.$.search);
+                    editor.link.$url.val(element.$.hostname + element.$.search);
                     editor.link.$target.get(0).selectedIndex = targetSelectedIndex;
                     openDialog(editor);
 
 
 
-            	}
-            },null, null, 0)
+                }
+            }, null, null, 0)
 
 
 
@@ -81,7 +76,7 @@ myObject.fire( 'testEvent' ); // 'Example'
                         renderDialogHtml(editor);
                     }
                     var selection = editor.getSelection();
-                    var elements = editor.link.element=CKEDITOR.plugins.link.getSelectedLink(editor, true); //判断是或否是a链接
+                    var elements = editor.link.element = CKEDITOR.plugins.link.getSelectedLink(editor, true); //判断是或否是a链接
                     var firstLink = elements[0] || null;
 
                     var selectedText = selection.getSelectedText();
@@ -89,20 +84,20 @@ myObject.fire( 'testEvent' ); // 'Example'
 
 
 
-                    if ( firstLink && firstLink.hasAttribute( 'href' ) ) {
-						if ( !selection.getSelectedElement() && !selection.isInTable() ) {
-							selection.selectElement( firstLink );
-						}
-					}
+                    if (firstLink && firstLink.hasAttribute('href')) {
+                        if (!selection.getSelectedElement() && !selection.isInTable()) {
+                            selection.selectElement(firstLink);
+                        }
+                    }
 
-                    var data=editor.link.data = CKEDITOR.plugins.link.parseLinkAttributes(editor, firstLink);
-                   
-                    
+                    var data = editor.link.data = CKEDITOR.plugins.link.parseLinkAttributes(editor, firstLink);
+
+
                     if (!!elements.length) {
                         //当前点击的是一个链接,编辑链接//editor.getSelection().getSelectedText() 就是可以获取文本
-                        
+
                         xySelectedIndex = (data.url.protocol == "http://") ? 0 : 1;
-                        targetSelectedIndex = (!data.target || data.target.type == "_self" ) ? 1 : 0;
+                        targetSelectedIndex = (!data.target || data.target.type == "_self") ? 1 : 0;
 
                         editor.link.$text.val(editor.getSelection().getSelectedText());
                         editor.link.$xy.get(0).selectedIndex = xySelectedIndex;
@@ -135,8 +130,8 @@ myObject.fire( 'testEvent' ); // 'Example'
         }
     });
 
-    function openDialog(editor,callback) {
-        editor.link.layerIndex=layer.open({
+    function openDialog(editor, callback) {
+        editor.link.layerIndex = layer.open({
             type: 1,
             shade: false,
             title: "连接设置", //不显示标题
@@ -188,32 +183,32 @@ myObject.fire( 'testEvent' ); // 'Example'
         editor.link.$url = editor.link.$dialog.find('input[name="linkurl"]');
         editor.link.$target = editor.link.$dialog.find('select[name="linktarget"]');
 
-        editor.link.$dialog.find(".J_close-btn").on("click",function(){
-        	layer.close(editor.link.layerIndex);
+        editor.link.$dialog.find(".J_close-btn").on("click", function() {
+            layer.close(editor.link.layerIndex);
         });
 
-        editor.link.$dialog.find(".J_confirm-btn").on("click",function(){
-        	var data=editor.link.data;
-        	if(!data) data={};
-        	if(!data.advanced) data.advanced={};
-        	if(!data.target) data.target={};
-        	if(!data.url) data.url={};
-        	data.type="url";
-        	data.target.type =data.target.name=editor.link.$target.val();
-        	data.url.protocol=editor.link.$xy.val();
-        	data.url.url=editor.link.$url.val();
-        	data.linkText=editor.link.$text.val();
+        editor.link.$dialog.find(".J_confirm-btn").on("click", function() {
+            var data = editor.link.data;
+            if (!data) data = {};
+            if (!data.advanced) data.advanced = {};
+            if (!data.target) data.target = {};
+            if (!data.url) data.url = {};
+            data.type = "url";
+            data.target.type = data.target.name = editor.link.$target.val();
+            data.url.protocol = editor.link.$xy.val();
+            data.url.url = editor.link.$url.val();
+            data.linkText = editor.link.$text.val();
 
-        	console.dir(data);
-        	if(editor.link.element &&!!editor.link.element.length){
-        		editLinksInSelection(editor, editor.link.element, data);
-        	}else{
-        		
-        		insertLinksIntoSelection(editor,data);
+            console.dir(data);
+            if (editor.link.element && !!editor.link.element.length) {
+                editLinksInSelection(editor, editor.link.element, data);
+            } else {
 
-        	}
+                insertLinksIntoSelection(editor, data);
 
-        	layer.close(editor.link.layerIndex);
+            }
+
+            layer.close(editor.link.layerIndex);
         })
 
 
@@ -269,8 +264,8 @@ myObject.fire( 'testEvent' ); // 'Example'
             textView,
             newText,
             i;
-            console.group("editLinksInSelection调用");
-           console.dir(attributes);
+        console.group("editLinksInSelection调用");
+        console.dir(attributes);
         for (i = 0; i < selectedElements.length; i++) {
             // We're only editing an existing link, so just overwrite the attributes.
             element = selectedElements[i];
@@ -302,8 +297,8 @@ myObject.fire( 'testEvent' ); // 'Example'
     }
 
     function insertLinksIntoSelection(editor, data) {
-    	console.group("insertLinksIntoSelection调用");
-    	console.dir(data);
+        console.group("insertLinksIntoSelection调用");
+        console.dir(data);
         var attributes = plugin.getLinkAttributes(editor, data),
             ranges = editor.getSelection().getRanges(),
             style = new CKEDITOR.style({
@@ -427,16 +422,16 @@ myObject.fire( 'testEvent' ); // 'Example'
         /**
          * Get the surrounding link element of the current selection.
          *
-         *		CKEDITOR.plugins.link.getSelectedLink( editor );
+         *      CKEDITOR.plugins.link.getSelectedLink( editor );
          *
-         *		// The following selections will all return the link element.
+         *      // The following selections will all return the link element.
          *
-         *		<a href="#">li^nk</a>
-         *		<a href="#">[link]</a>
-         *		text[<a href="#">link]</a>
-         *		<a href="#">li[nk</a>]
-         *		[<b><a href="#">li]nk</a></b>]
-         *		[<a href="#"><b>li]nk</b></a>
+         *      <a href="#">li^nk</a>
+         *      <a href="#">[link]</a>
+         *      text[<a href="#">link]</a>
+         *      <a href="#">li[nk</a>]
+         *      [<b><a href="#">li]nk</a></b>]
+         *      [<a href="#"><b>li]nk</b></a>
          *
          * @since 3.2.1
          * @param {CKEDITOR.editor} editor
@@ -711,17 +706,17 @@ myObject.fire( 'testEvent' ); // 'Example'
          * @param {Object} data Data in {@link #parseLinkAttributes} format.
          * @returns {Object} An object consisting of two keys, i.e.:
          *
-         *		{
-         *			// Attributes to be set.
-         *			set: {
-         *				href: 'http://foo.bar',
-         *				target: 'bang'
-         *			},
-         *			// Attributes to be removed.
-         *			removed: [
-         *				'id', 'style'
-         *			]
-         *		}
+         *      {
+         *          // Attributes to be set.
+         *          set: {
+         *              href: 'http://foo.bar',
+         *              target: 'bang'
+         *          },
+         *          // Attributes to be removed.
+         *          removed: [
+         *              'id', 'style'
+         *          ]
+         *      }
          *
          */
         getLinkAttributes: function(editor, data) {
