@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<!--
-Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
--->
-<html>
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>CKEditor Sample</title>
@@ -20,6 +15,9 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
     <style type="text/css">
 .cke_toolbox .cke_toolbar:last-child>.cke_toolgroup>a:after{
         display: none;
+}
+#cke_editor .cke_button_label{
+    
 }
 </style>
 </head>
@@ -53,7 +51,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
     var editor = CKEDITOR.replace('editor', {
         height:500,
         /*enterMode:2,*/
-        extraPlugins: 'imagesingle,imagegallery,iframebox,tablebox,link',
+        extraPlugins: 'imagesingle,imagegallery,iframebox,tablebox,link,image',
         allowedContent: true,
         // allowedContentRules:"p h1(left,right)",
        
@@ -86,7 +84,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
                 filters: {
                     max_imgfile_count: 3,
                     prevent_duplicates: true,
-                    max_file_size: '50mb',
+                    max_file_size: '50mb',
                     mime_types: [
                         { title: "Image files", extensions: "jpg,jpeg,gif,png" }
                     ]

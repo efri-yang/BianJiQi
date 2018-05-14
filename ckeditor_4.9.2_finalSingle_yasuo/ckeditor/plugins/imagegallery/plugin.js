@@ -222,12 +222,12 @@
                     editor.insertHtml(str);
                     uploader.removeFile(id);
                     $el.remove();
-
                 }
 
 
             });
-
+            stating =false;
+            updateTotalText();
             layer.close(editor.uploaderImg.layerIndex);
 
         });
