@@ -75,6 +75,9 @@ hr
 	border: 0px;
 	border-top: 1px solid #ccc;
 }
+img{
+	max-width:100%; 
+}
 
 img.right
 {
