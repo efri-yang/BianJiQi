@@ -1,11 +1,6 @@
 ﻿(function(){
 
 
-function getRatio(w,h){
-    return w/h;
-}
-
-
 CKEDITOR.plugins.add('imagegallery', {
     icons: 'imagegallery',
 
@@ -52,6 +47,52 @@ CKEDITOR.plugins.add('imagegallery', {
         editor.editImg.$btnLock=editor.editImg.$dialog.find(".J_btnlock");
 
 
+        editor.editImg.$inputW.on("keyup",function(){
+            var $this=$(this);
+            var imgH;
+            var val=$this.val() ? parseInt($this.val()) :"";
+            var element=editor.editImg.element;
+
+            
+            editor.editImg.$inputW.val(val);
+            
+            if(element.imgLock){
+                //锁住那么要计算一下高度
+                if(val){
+                    imgH=Math.floor(val/element.ratio);
+                }else{
+                    imgH="";
+                }
+                
+                
+                editor.editImg.$inputH.val(imgH); 
+            }
+        });
+
+        editor.editImg.$inputH.on("keyup",function(){
+            var $this=$(this);
+            var imgH;
+            var val=$this.val() ? parseInt($this.val()) :"";
+            var element=editor.editImg.element;
+
+            
+            editor.editImg.$inputH.val(val);
+            
+            if(element.imgLock){
+                //锁住那么要计算一下高度
+                if(val){
+                    imgW=Math.floor(val*element.ratio);
+                }else{
+                    imgW="";
+                }
+                
+                
+                editor.editImg.$inputW.val(imgW); 
+            }
+        });
+
+
+
     },
 
     _uploadImgInit: function() {
@@ -62,7 +103,6 @@ CKEDITOR.plugins.add('imagegallery', {
 
     _uploadImgRender: function() {
         var editor = this;
-
         var htmlStr = '<div class="ckeditor-imgupload-dialog" id="' + editor.uploaderImg.dialogId + '"><ul class="imgupload-tab-hd"><li class="active"><a href="#' + editor.name + '-tabbd-localupload-container">本地上传</a></li><li><a href="#' + editor.name + '-tabbd-gallery-container">相册图片</a></li><li class="move-seat"></li></ul><div class="ckeditor-localupload-container active" id="' + editor.name + '-tabbd-localupload-container"><div class="ckeditor-uploadfile-container"><div class="ckeditor-uploadfile-hd"><div class="img-upload-allprogress"><span class="txt"></span><span class="percentage"></span></div><div class="img-upload-info"></div><a href="javascript:void(0);" class="img-upload-btn disabled">开始上传</a><div class="img-add-btn">添加文件</div><a href="javascript:void(0);" class="img-pause-btn">暂停上传</a></div><ul class="ckeditor-uploadfile-list"></ul><div class="ckeditor-uploadfile-ft"><label class="ft-save-checkbox"><input type="checkbox" name="saveingallery" />保存到相册</label><select class="ft-gallery-sel" disabled></select><a href="#" class="ft-btn-insert disabled">插入</a><a href="#" class="ft-btn-cancel">关闭</a></div><div class="ckeditor-uploadfile-errortip"><i class="close"></i><div class="txt"></div></div></div></div><div class="ckeditor-gallery-container" id="' + editor.name + '-tabbd-gallery-container"><div class="ckeditor-gallery-nodata" style="display:none;">您的相册目前还没有照片,<a href="#">立马去上传</a></div><div class="ckeditor-gallery-hasdata" style="display:block;"><ul class="ckeditor-gallery-list"></ul><div class="ckeditor-gallery-ft"><select class="ft-galleryall-sel"></select><a href="#" class="ft-galleryall-insert">插入</a><a href="#" class="ft-galleryall-cancel">取消</a></div></div></div></div>';
         $(htmlStr).appendTo($("body"));
         var $dialog = $("#" + editor.uploaderImg.dialogId);
@@ -506,10 +546,6 @@ CKEDITOR.plugins.add('imagegallery', {
             }
             $errorTip.show().find(".txt").html(details);
         });
-
-
-
-
         uploader.init();
     },
     _uploadImgGalleryHandler: function() {
@@ -601,26 +637,22 @@ CKEDITOR.plugins.add('imagegallery', {
         this._uploadImgInit.call(editor);
 
 
-
-
+        
         //绑定图片双击事件
         editor.on('doubleclick', function(evt) {
-
-            var element = evt.data.element,
+            var element =editor.editImg.element=evt.data.element,
                 imgW="",
                 imgH="",
                 imgAlt;
-         
-
             // if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
             if (element.is('img') && !element.data('cke-realelement') && !element.isReadOnly()) {
                 if (!editor.editImg.$dialog) {
                     that._editImgRender.call(editor);
                 }
                 if(!element.ratio){
-                   element.ratio= element.$.naturalWidth/element.$.naturalHeight;
+                   element.ratio=element.$.naturalWidth/element.$.naturalHeight;
                 }
-               
+               console.dir(editor.editImg.element);
                
                 // console.dir(element.);
                 // console.dir(element.style.width);
@@ -629,9 +661,12 @@ CKEDITOR.plugins.add('imagegallery', {
                 }
                  if(element.getAttribute("height")){
                     imgH = element.$.clientHeight;
-                 }
-                
-                
+                }
+
+                if(imgH !=element.$naturalWidth || imgW !=element.$.naturalHeight){
+                        element.imgLock=false;
+                }
+
                 imgAlt = element.$.alt;
                 editor.editImg.layerIndex = layer.open({
                     type: 1,
@@ -640,15 +675,14 @@ CKEDITOR.plugins.add('imagegallery', {
                     area: '350px',
                     content: editor.editImg.$dialog, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
                     success: function(layero, index) {
-                        editor.editImg.$inputW.val(imgW);
-                        editor.editImg.$inputH.val(imgH);
-                        editor.editImg.$inputAlt.val(imgAlt);
                         if(element.imgLock || element.imgLock==null){
                             editor.editImg.$btnLock.removeClass('unlock');
                         }else{
                             editor.editImg.$btnLock.addClass('unlock');
                         }
-
+                        editor.editImg.$inputW.val(imgW);
+                        editor.editImg.$inputH.val(imgH);
+                        editor.editImg.$inputAlt.val(imgAlt);
                     }
                 });
 
@@ -677,23 +711,29 @@ CKEDITOR.plugins.add('imagegallery', {
 
                 //锁住和解锁  锁住的时候还要根据图片的比例强制设置宽高
                 editor.editImg.$btnLock.off("click").on("click",function(){
+                    imgW = editor.editImg.$inputW.val(),
+                    imgH = element.$.naturalHeight;
                     if(element.imgLock || element.imgLock==null){
                         editor.editImg.$btnLock.addClass('unlock');
                         element.imgLock=false;
                     }else{
                         element.imgLock=true;
                         editor.editImg.$btnLock.removeClass('unlock');
+                        if(imgW){
+                            imgH=Math.floor(imgW/element.ratio);
+                            editor.editImg.$inputH.val(imgH);
+                            editor.editImg.$inputW.val(imgW);
+                        }else if(imgH){
+                            imgW=Math.floor(imgH*element.ratio);
+                            editor.editImg.$inputW.val(imgW);
+                        }
                     }
+
+
+
                 })
 
             }
-
-
-
-
-
-
-
         });
 
         //点击上传图片命令
