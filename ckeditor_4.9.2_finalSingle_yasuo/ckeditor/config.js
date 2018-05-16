@@ -28,4 +28,8 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Dialog windows are also simplified.
 	config.removeDialogTabs = 'link:advanced';
+
+	config.smiley_images=[
+		'regular_smile.png','sad_smile.png'
+	]
 };
