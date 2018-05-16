@@ -712,7 +712,8 @@ CKEDITOR.plugins.add('imagegallery', {
                 //锁住和解锁  锁住的时候还要根据图片的比例强制设置宽高
                 editor.editImg.$btnLock.off("click").on("click",function(){
                     imgW = editor.editImg.$inputW.val(),
-                    imgH = element.$.naturalHeight;
+                    imgH = editor.editImg.$inputH.val();
+                   
                     if(element.imgLock || element.imgLock==null){
                         editor.editImg.$btnLock.addClass('unlock');
                         element.imgLock=false;
@@ -726,6 +727,8 @@ CKEDITOR.plugins.add('imagegallery', {
                         }else if(imgH){
                             imgW=Math.floor(imgH*element.ratio);
                             editor.editImg.$inputW.val(imgW);
+                        }else{
+
                         }
                     }
 
