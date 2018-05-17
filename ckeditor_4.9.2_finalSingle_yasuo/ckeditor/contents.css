@@ -208,3 +208,22 @@ a > img {
 	max-height: 1080px;
 	margin:0 auto;
 }
+
+
+.iframebox-wrap{
+	position:relative;
+	display: block;
+
+}
+.iframebox-wrap:before{
+	content:attr(data-content);
+	position: absolute;
+	left:0;
+	top:0;
+	width:40px;
+	height:40px;
+	line-height:40px;
+	text-align:center;
+	color:#fff;     
+	background:#5cb85c; 
+}

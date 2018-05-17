@@ -124,12 +124,14 @@ editor.on("doubleclick",function(evt){
 
 		
 
-		$closeBtn.on("click",function(){
+		$closeBtn.on("click",function(event){
+            event.preventDefault();
 			layer.close(editor.iframeBox.layerIndex);
 		});
 
 
-		$confirmBtn.on("click",function(){
+		$confirmBtn.on("click",function(event){
+            event.preventDefault();
 			var iframebox='<span class="iframebox-wrap" data-content="编辑"><iframe frameborder="none" src="'+$formUrl.val()+'" width="'+$formW.val()+'"  height="'+$formH.val()+'"></iframe></span>';
 			editor.insertHtml(iframebox);
 			layer.close(editor.iframeBox.layerIndex);

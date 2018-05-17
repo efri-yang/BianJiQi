@@ -41,7 +41,7 @@ CKEDITOR.plugins.add('imagesingle', {
 
         }
 
-        var opts = $.extend(true, defaultConfig, editor.config.imageSingle);
+        var opts = jQuery.extend(true, defaultConfig, editor.config.imageSingle);
 
 
 

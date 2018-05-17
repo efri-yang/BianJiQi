@@ -182,7 +182,7 @@ CKEDITOR.plugins.add('imagegallery', {
         }
 
 
-        var opts = $.extend(true, defaultConfig, editor.config.imageGallery);
+        var opts = jQuery.extend(true, defaultConfig, editor.config.imageGallery);
 
 
         var uploader = new plupload.Uploader(opts.plupload);
@@ -245,11 +245,13 @@ CKEDITOR.plugins.add('imagegallery', {
         }
 
 
-        $closeBtn.on("click", function() {
+        $closeBtn.on("click", function(event) {
+            event.preventDefault();
             layer.close(editor.uploaderImg.layerIndex);
         });
 
-        $errorTip.find(".close").on("click", function() {
+        $errorTip.find(".close").on("click", function(event) {
+            event.preventDefault();
             $errorTip.hide();
         })
 
@@ -286,7 +288,8 @@ CKEDITOR.plugins.add('imagegallery', {
             layer.close(editor.uploaderImg.layerIndex);
 
         });
-        editor.uploaderImg.$dialog.on("click", ".retry", function() {
+        editor.uploaderImg.$dialog.on("click", ".retry", function(event) {
+            event.preventDefault();
             var len = uploader.files.length;
             for (var i = len - 1; i >= 0; i--) {
                 if (uploader.files[i].status == 4) {
@@ -295,7 +298,8 @@ CKEDITOR.plugins.add('imagegallery', {
             }
             uploader.start();
         })
-        editor.uploaderImg.$dialog.on("click", ".ignore", function() {
+        editor.uploaderImg.$dialog.on("click", ".ignore", function(event) {
+            event.preventDefault();
             var len = uploader.files.length;
             for (var i = len - 1; i >= 0; i--) {
                 uploader.removeFile(uploader.files[i]);
@@ -307,11 +311,13 @@ CKEDITOR.plugins.add('imagegallery', {
 
         uploader.bind("PostInit", function() {
             // console.group("PostInit事件:当Init事件发生后触发监听函数参数：(uploader)");
-            $uploadBtn.on("click", function() {
+            $uploadBtn.on("click", function(event) {
+                event.preventDefault();
                 uploader.start();
             });
 
             $pauseBtn.click(function(e) {
+
                 uploader.stop();
                 e.preventDefault();
             });
@@ -389,7 +395,8 @@ CKEDITOR.plugins.add('imagegallery', {
                 fileSize += file.size;
                 $del.show();
 
-                $del.on("click", function() {
+                $del.on("click", function(event) {
+                    event.preventDefault();
                     uploader.removeFile(file);
                     stating = 'Del';
                     updateTotalText();

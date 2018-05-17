@@ -75,11 +75,13 @@ CKEDITOR.plugins.add('tablebox', {
         var $closeBtn = $dialog.find(".J_closeBtn");
         var $confirm = $dialog.find(".J_confirmBtn");
 
-        $closeBtn.on("click", function() {
+        $closeBtn.on("click", function(event) {
+            event.preventDefault();
             layer.close(editor.tableBox.layerIndex);
         });
 
-        $confirm.on("click", function() {
+        $confirm.on("click", function(event) {
+            event.preventDefault();
         	tableStr="";
             row = parseInt($tableRow.val());
             col = parseInt($tableCol.val());
