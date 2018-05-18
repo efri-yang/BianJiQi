@@ -64,7 +64,7 @@
             //上传文件配置
             plupload:{ 
                 url: 'upload.php',
-                multipart_params:{},//用户id和帖子id 等额外参数
+                multipart_params:{id:10},//用户id和帖子id 等额外参数
                 filters: {
                     max_imgfile_count: 3,
                     prevent_duplicates: true,
