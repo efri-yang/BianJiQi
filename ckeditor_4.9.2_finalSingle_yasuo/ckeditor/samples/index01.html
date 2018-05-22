@@ -11,6 +11,9 @@
     <script type="text/javascript" src="./lazyload.js"></script>
     <script type="text/javascript" src="../js/layer/layer.js"></script>
     <script type="text/javascript" src="../js/tab.js"></script>
+
+    <script type="text/javascript" src="../js/at/js/jquery.atwho.js"></script>
+    <link rel="stylesheet" type="text/css" href="../js/at/css/jquery.atwho.css">
     <link rel="stylesheet" type="text/css" href="./css/base.css" />
     <link rel="stylesheet" type="text/css" href="css/plugin.css">
     <style type="text/css">
@@ -86,7 +89,7 @@
                 filters: {
                     max_imgfile_count: 3,
                     prevent_duplicates: true,
-                    max_file_size: '50mb',
+                    max_file_size: '50mb',
                     mime_types: [
                         { title: "Image files", extensions: "jpg,jpeg,gif,png" }
                     ]
@@ -94,6 +97,50 @@
             }
         },
     });
+
+    var names = ["Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你"];
+
+    var at_config = {
+        at: "@",
+        data: names,
+        limit: 20,
+        tpl: "<li data-value='@${name}'>${name} <small>${email}</small></li>"
+    }
+
+// Bind to every CKEditor instance that'll load in the future
+CKEDITOR.on('instanceReady', function(event) {
+        
+    var editor = event.editor;
+        
+    // Switching from and to source mode
+    editor.on('mode', function(e) {
+        load_atwho(this, at_config);
+    });
+    
+    // First load
+    load_atwho(editor, at_config);
+        
+});
+
+function load_atwho(editor, at_config) {
+    
+    // WYSIWYG mode when switching from source mode
+    if (editor.mode != 'source') {
+
+        editor.document.getBody().$.contentEditable = true;
+        
+        $(editor.document.getBody().$)
+            .atwho('setIframe', editor.window.getFrame().$)
+            .atwho(at_config);
+            
+    }
+    // Source mode when switching from WYSIWYG
+    else {
+        $(editor.container.$).find(".cke_source").atwho(at_config);
+    }
+    
+}
+
 
 
     //页面上面

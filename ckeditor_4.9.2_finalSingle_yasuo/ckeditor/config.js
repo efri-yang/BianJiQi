@@ -10,8 +10,8 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// The toolbar groups arrangement, optimized for a single toolbar row.
 	config.toolbarGroups = [
-		{ name: 'styles', groups: [ 'styles' ] },
 		{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+		{ name: 'styles', groups: [ 'styles' ] },
 		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
 		{ name: 'forms', groups: [ 'forms' ] },
@@ -24,7 +24,8 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'others', groups: [ 'others' ] },
 		{ name: 'about', groups: [ 'about' ] }
 	];
-	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript,Styles,Source,Outdent,Indent';
+
+	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript,Styles,Outdent,Indent';
 
 	// Dialog windows are also simplified.
 	config.removeDialogTabs = 'link:advanced';
