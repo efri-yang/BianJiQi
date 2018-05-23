@@ -705,6 +705,7 @@ EditableController = (function(superClass) {
     return node;
   };
 
+  //获取焦点
   EditableController.prototype.catchQuery = function(e) {
     var $inserted, $query, _range, index, inserted, isString, lastNode, matched, offset, query, query_content, range;
     if (!(range = this._getRange())) {
@@ -741,6 +742,8 @@ EditableController = (function(superClass) {
         }
       }
     }
+
+
     $(range.startContainer).closest('.atwho-inserted').addClass('atwho-query').siblings().removeClass('atwho-query');
     if (($query = $(".atwho-query", this.app.document)).length > 0 && $query.is(':empty') && $query.text().length === 0) {
       $query.remove();
@@ -823,8 +826,9 @@ EditableController = (function(superClass) {
     rect.bottom = rect.top + this.query.el.height();
     return rect;
   };
-
+  //插入东西的时候
   EditableController.prototype.insert = function(content, $li) {
+
     var data, overrides, range, suffix, suffixNode;
     if (!this.$inputor.is(':focus')) {
       this.$inputor.focus();
