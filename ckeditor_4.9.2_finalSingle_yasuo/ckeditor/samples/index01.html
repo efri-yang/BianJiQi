@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>CKEditor Sample</title>
-    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>
-
+   <!--  <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script> -->
+    <script type="text/javascript" src="http://bbs.dev.xmfish.com/apps/rt/www/js/jquery.xmfish.17.08.min.js?t=1.0"></script>
     <script src="../ckeditor.js"></script>
     <script type="text/javascript" src="../js/plupload/moxie.min.js"></script>
     <script type="text/javascript" src="../js/plupload/plupload.dev.js"></script>
@@ -106,8 +106,8 @@
         at: "@",
         data: names,
         limit: 20,
-        insertTpl: "<a href='${url}'>${atwho-at}${name}</a>",
-        tpl: "<li data-value='@${name}' data-url='${url}'>${name}</li>"
+        insertTpl: "<a href='#{url}'>#{atwho-at}#{name}</a>",
+        displayTpl: "<li data-value='@#{name}' data-url='#{url}'>#{name}</li>"
     }
 
 // Bind to every CKEditor instance that'll load in the future

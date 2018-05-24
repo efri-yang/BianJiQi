@@ -94,7 +94,10 @@ DEFAULT_CALLBACKS = {
       if (typeof tpl !== 'string') {
         template = tpl(map);
       }
-      return template.replace(/\$\{([^\}]*)\}/g, function(tag, key, pos) {
+
+       console.dir(template)
+      return template.replace(/#\{([^\}]*)\}/g, function(tag, key, pos) {
+        
         return map[key];
       });
     } catch (error1) {
@@ -619,6 +622,7 @@ TextareaController = (function(superClass) {
   };
 
   TextareaController.prototype.insert = function(content, $li) {
+
     var $inputor, source, startStr, suffix, text;
     $inputor = this.$inputor;
     source = $inputor.val();
@@ -994,6 +998,7 @@ View = (function() {
     var $li, content;
     if (($li = this.$el.find(".cur")).length) {
       content = this.context.insertContentFor($li);
+
       this.context._stopDelayedCall();
       this.context.insert(this.context.callbacks("beforeInsert").call(this.context, content, $li, e), $li);
       this.context.trigger("inserted", [$li, e]);
@@ -1190,7 +1195,7 @@ $.fn.atwho["default"] = {
   at: void 0,
   alias: void 0,
   data: null,
-  displayTpl: "<li>${name}</li>",
+  displayTpl: "<li>#{name}</li>",
   insertTpl: "${atwho-at}${name}",
   headerTpl: null,
   callbacks: DEFAULT_CALLBACKS,
