@@ -8,7 +8,7 @@
     <script src="../ckeditor.js"></script>
     <script type="text/javascript" src="../js/plupload/moxie.min.js"></script>
     <script type="text/javascript" src="../js/plupload/plupload.dev.js"></script>
-    <script type="text/javascript" src="./lazyload.js"></script>
+    
     <script type="text/javascript" src="../js/layer/layer.js"></script>
     <script type="text/javascript" src="../js/tab.js"></script>
 
@@ -57,7 +57,10 @@
     var editor = CKEDITOR.replace('editor', {
         height:500,
         /*enterMode:2,*/
-        extraPlugins: 'imagesingle,imagegallery,iframebox,tablebox,link,smileybox,simplebox',
+        /**
+         * simplebox
+         */
+        extraPlugins: 'imagesingle,imagegallery,iframebox,tablebox,link,smileybox',
         allowedContent: true,
 
         // allowedContentRules:"p h1(left,right)",

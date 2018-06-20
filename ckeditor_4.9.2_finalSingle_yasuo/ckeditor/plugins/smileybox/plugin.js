@@ -16,10 +16,20 @@
                 toolbar: 'insert,2'
             });
 
+            $(document).on("click",".smiley-pic-list img",function(event){
+                event.preventDefault();
+                var $el = $(this);
+                var src = $el.attr("src");
+                var img = new CKEDITOR.dom.element('img');
+                    img.setAttribute('src', src);
+                    editor.insertElement(img);
+            });
+
 
             editor.addCommand('smileybox', {
                 exec: function(editor) {
                 	if(!editor.smiley.$dialog){
+                        //进行ajax请求并返回数据
                         renderDialogHtml.call(editor);
                     }
 
@@ -52,7 +62,7 @@
                     '</ul>'+
                     '<div class="smiley-bd">'+
                         '<ul class="smiley-pic-list">'+
-                            '<li><img src="./images/demo/angel_smile.gif"></li><li><img src="9./images/demo/angel_smile.gif"></li>'+
+                            '<li><img src="./images/demo/angel_smile.gif"></li><li><img src="./images/demo/angel_smile.gif"></li>'+
                         '</ul>'+
                     '</div>'+
                 '<div>';
