@@ -510,11 +510,6 @@
         //初始化执行
         $uploadBtn.addClass('state-' + editor.uploader.state);
         updateTotalProgress();
-
-
-
-
-
     });
 
 })();
