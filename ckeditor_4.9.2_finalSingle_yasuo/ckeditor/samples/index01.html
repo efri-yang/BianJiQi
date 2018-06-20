@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>CKEditor Sample</title>
-    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script>
-
+   <!--  <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.9.0/jquery.js"></script> -->
+    <script type="text/javascript" src="http://bbs.dev.xmfish.com/apps/rt/www/js/jquery.xmfish.17.08.min.js?t=1.0"></script>
     <script src="../ckeditor.js"></script>
     <script type="text/javascript" src="../js/plupload/moxie.min.js"></script>
     <script type="text/javascript" src="../js/plupload/plupload.dev.js"></script>
@@ -39,6 +39,7 @@
         <p id="x22">foo<b>barcccccc</b>sadafasdfasdfasdfasdf  ^</p>
         <p id="x11"><a href="https://wwww.baidu.com?id=20&age=30" id="x1" >链接</a></p>
         <p id="x2"><a href="http://wwww.baidu.com" target="_self">链接2</a></p>
+        <div class="simplebox"><h2 class="simplebox-title">Title</h2><div class="simplebox-content"><p>Content...</p></div></div>
     </div>
 
 
@@ -56,8 +57,9 @@
     var editor = CKEDITOR.replace('editor', {
         height:500,
         /*enterMode:2,*/
-        extraPlugins: 'imagesingle,imagegallery,iframebox,tablebox,link,smileybox',
+        extraPlugins: 'imagesingle,imagegallery,iframebox,tablebox,link,smileybox,simplebox',
         allowedContent: true,
+
         // allowedContentRules:"p h1(left,right)",
        
         test:function(){
@@ -98,21 +100,22 @@
         },
     });
 
-    var names = ["Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你","Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你"];
+    var names = [{name:"x1",url:"www.baidu.com"},{name:"x2",url:"www.baidu.com"},{name:"x3",url:"www.baidu.com"},{name:"x4",url:"www.baidu.com"}];
 
     var at_config = {
         at: "@",
         data: names,
         limit: 20,
-        tpl: "<li data-value='@${name}'>${name} <small>${email}</small></li>"
+        insertTpl: "<a href='#{url}'>#{atwho-at}#{name}</a>",
+        displayTpl: "<li data-value='@#{name}' data-url='#{url}'>#{name}</li>"
     }
 
 // Bind to every CKEditor instance that'll load in the future
 CKEDITOR.on('instanceReady', function(event) {
        
     var editor = event.editor;
-        
     // Switching from and to source mode
+    // 远吗切换的时候触发这个事件  两个值 source 和 wysiwyg
     editor.on('mode', function(e) {
         load_atwho(this, at_config);
     });
@@ -127,7 +130,7 @@ function load_atwho(editor, at_config) {
     // WYSIWYG mode when switching from source mode
     if (editor.mode != 'source') {
 
-        editor.document.getBody().$.contentEditable = true;
+        // editor.document.getBody().$.contentEditable = true;
         
         $(editor.document.getBody().$)
             .atwho('setIframe', editor.window.getFrame().$)
