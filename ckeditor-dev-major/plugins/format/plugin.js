@@ -175,7 +175,7 @@ CKEDITOR.config.format_p = { element: 'p' };
  * @cfg {Object} [format_div={ element: 'div' }]
  * @member CKEDITOR.config
  */
-CKEDITOR.config.format_div = { element: 'div' };
+// CKEDITOR.config.format_div = { element: 'div' };
 
 /**
  * The style definition to be used to apply the `Formatted` format.
@@ -188,7 +188,7 @@ CKEDITOR.config.format_div = { element: 'div' };
  * @cfg {Object} [format_pre={ element: 'pre' }]
  * @member CKEDITOR.config
  */
-CKEDITOR.config.format_pre = { element: 'pre' };
+// CKEDITOR.config.format_pre = { element: 'pre' };
 
 /**
  * The style definition to be used to apply the `Address` format.
@@ -201,7 +201,7 @@ CKEDITOR.config.format_pre = { element: 'pre' };
  * @cfg {Object} [format_address={ element: 'address' }]
  * @member CKEDITOR.config
  */
-CKEDITOR.config.format_address = { element: 'address' };
+// CKEDITOR.config.format_address = { element: 'address' };
 
 /**
  * The style definition to be used to apply the `Heading 1` format.
