@@ -12,6 +12,8 @@
 		var names = entries.split( ';' ),
 			values = [];
 
+		
+
 		// Create style objects for all fonts.
 		var styles = {};
 		for ( var i = 0; i < names.length; i++ ) {
@@ -31,6 +33,8 @@
 				names.splice( i--, 1 );
 			}
 		}
+
+
 
 		editor.ui.addRichCombo( comboName, {
 			label: lang.label,
@@ -62,8 +66,9 @@
 							];
 
 							element.name = 'span';
-
+							
 							if ( element.attributes.size ) {
+
 								element.styles[ 'font-size' ] = sizes[ element.attributes.size ];
 								delete element.attributes.size;
 							}
@@ -88,18 +93,19 @@
 			},
 
 			init: function() {
-				var name,
-					defaultText = '(' + editor.lang.common.optionDefault + ')';
+				var name,defaultText="";
+					// defaultText = '(' + editor.lang.common.optionDefault + ')'+"ccccccccccc";
 
 				this.startGroup( lang.panelTitle );
 
 				// Add `(Default)` item as a first element on the drop-down list.
-				this.add( this.defaultValue, defaultText, defaultText );
+				// this.add( this.defaultValue, defaultText, defaultText );
 
 				for ( var i = 0; i < names.length; i++ ) {
 					name = names[ i ];
+					
 					// Add the tag entry to the panel list.
-					this.add( name, styles[ name ].buildPreview(), name );
+					this.add( name, styles[ name ].buildPreview(), name);
 				}
 			},
 
@@ -336,7 +342,8 @@ CKEDITOR.config.font_style = {
  * @cfg {String} [fontSize_sizes=see source]
  * @member CKEDITOR.config
  */
-CKEDITOR.config.fontSize_sizes = '8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;36/36px;48/48px;72/72px';
+CKEDITOR.config.fontSize_sizes = '12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;36/36px;48/48px;72/72px';
+
 
 /**
  * The text to be displayed in the Font Size combo is none of the available
@@ -348,7 +355,7 @@ CKEDITOR.config.fontSize_sizes = '8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16
  * @cfg {String} [fontSize_defaultLabel='']
  * @member CKEDITOR.config
  */
-CKEDITOR.config.fontSize_defaultLabel = '';
+CKEDITOR.config.fontSize_defaultLabel = '12';
 
 /**
  * The style definition to be used to apply the font size in the text.
